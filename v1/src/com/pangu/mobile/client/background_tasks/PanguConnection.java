@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.widget.ImageView;
 import android.widget.Toast;
-import com.pangu.mobile.client.interfaces.AsyncResponse;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
+
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -17,19 +19,20 @@ import java.net.Socket;
  * @desc Connects to a PANGU server and returns the current image.
  */
 public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
+    private final WeakReference<ImageView> imageViewReference;
     private Context context;
     private final String dstName = "172.16.178.129";
     private final int dstPort = 10363;
     private ClientConnection clientConnection;
     private Bitmap bitmap;
-    public AsyncResponse asyncResponse = null;
 
     /**
      * @param context the current state of application.
      * @desc Constructor for the Socket Connection class
      */
-    public PanguConnection(Context context) {
+    public PanguConnection(Context context, ImageView imageView) {
         this.context = context;
+        imageViewReference = new WeakReference<ImageView>(imageView);
     }
 
     /**
@@ -63,6 +66,7 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
 
                 //Convert .ppm byte array to bitmap
                 bitmap = PanguImage.Image(image_data);
+                if(bitmap == null) return false;
 
                 //Close connection
                 clientConnection.stop();
@@ -70,7 +74,7 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
             } catch (IOException e) {
                 Logger.e("IO Exception has occurred when connecting to PANGU server.");
                 e.printStackTrace();
-                return false;
+                return true;
             }
         } else {
             //There is no Internet Connection available.
@@ -85,11 +89,15 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if (result == true) {
-            Toast.makeText(context, "You are connected to the Internet.", Toast.LENGTH_LONG).show();
+            if (imageViewReference != null && bitmap != null) {
+                final ImageView imageView = imageViewReference.get();
+                if (imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
         } else {
             Toast.makeText(context, "You are currently not connected to the Internet.", Toast.LENGTH_LONG).show();
         }
-        asyncResponse.processImage(bitmap);
     }
 
     /**

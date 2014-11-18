@@ -1,21 +1,17 @@
 package com.pangu.mobile.client.activities;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
-import com.pangu.mobile.client.background_tasks.Logger;
-import com.pangu.mobile.client.background_tasks.PanguConnection;
-import com.pangu.mobile.client.interfaces.AsyncResponse;
 import com.pangu.mobile.client.R;
+import com.pangu.mobile.client.background_tasks.PanguConnection;
 
 /**
  * @Author Mark Goddard
  * @Date 08/10/2014
  * @Desc Starts the main activity.
  */
-public class MyActivity extends Activity implements AsyncResponse {
+public class MyActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
@@ -24,18 +20,8 @@ public class MyActivity extends Activity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        PanguConnection panguConnection = new PanguConnection(this);
+        ImageView imgView = (ImageView) findViewById(R.id.image);
+        PanguConnection panguConnection = new PanguConnection(this, imgView);
         panguConnection.execute();
-        panguConnection.asyncResponse = this;
-    }
-
-    /**
-     * @desc processes the image from the async-task (Pangu Connection).
-     * @param bitmap
-     */
-    public void processImage(Bitmap bitmap) {
-        Logger.i("Displaying Image");
-        ImageView imageView = (ImageView) findViewById(R.id.image);
-        imageView.setImageBitmap(bitmap);
     }
 }

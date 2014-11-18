@@ -9,108 +9,76 @@ import android.graphics.Bitmap;
 
 public class PanguImage {
 
-    //Default constructor.
-    public PanguImage() { }
-
-    public static Bitmap Image(byte image_data[]) {
-        // Return immediately if it isn't a PPM RAW image.
-        if (image_data.length < 3) return null;
-        if (image_data[0] != 'P' || image_data[1] != '6') return null;
-        if (!ppmIsSpace(image_data[2])) return null;
+    public static Bitmap Image(byte img_data[]) {
+        //Check if it is a .ppm image or not
+        if (img_data.length < 3) return null;
+        if (img_data[0] != 'P' || img_data[1] != '6') return null;
+        if (!ppmIsSpace(img_data[2])) return null;
 
         // Continue the parsing after the first white space.
-        int cp = 3, ep = image_data.length;
-
-        // Unfortunately Java doesn't have pointers or references ...
-        int iptr[] = {0};
+        int cp = 3, ep = img_data.length;
+        int ptr[] = {0};
 
         // Read the width.
-        cp = ppmReadInteger(image_data, cp, ep, iptr);
+        cp = ppmReadInteger(img_data, cp, ep, ptr);
         if (cp >= ep) return null; // Invalid image
-        int w = iptr[0];
+        int img_width = ptr[0];
 
         // Read the height.
-        cp = ppmReadInteger(image_data, cp, ep, iptr);
+        cp = ppmReadInteger(img_data, cp, ep, ptr);
         if (cp >= ep) return null; // Invalid image
-        int h = iptr[0];
+        int img_height = ptr[0];
 
         // Read the depth.
-        cp = ppmReadInteger(image_data, cp, ep, iptr);
+        cp = ppmReadInteger(img_data, cp, ep, ptr);
         if (cp >= ep) return null; // Invalid image
-        int dep = iptr[0];
+        int img_depth = ptr[0];
 
         // Skip the single white space between header and data.
-        if (!ppmIsSpace(image_data[cp])) return null;
+        if (!ppmIsSpace(img_data[cp])) return null;
         cp++;
         if (cp >= ep) return null; // Invalid image
 
         // For maxval < 256 we have one byte per sample, otherwise
         // we have two bytes. If we don't have enough bytes for this
         // then stop now. This saves us continuously bound-checking.
-        int isize = 3 * w * h;
-        if (dep >= 256) isize *= 2;
+        int isize = 3 * img_width * img_height;
+        if (img_depth >= 256) isize *= 2;
         if (ep - cp < isize) return null;
 
-        // Hack up a fake image so that we know our code is still
-        // working. Once the PPM has been completely decoded we can
-        // replace this fake image with the real thing.
-        int[] pixels = new int[w * h];
+        //Set up pixel array.
+        int[] pixels = new int[img_width * img_height];
 
-        // Initialise to blue so that we can see what we've missed.
-        for (int y = 0; y < h; y++)
-            for (int x = 0; x < w; x++)
-                pixels[y * w + x] = 0xff0000ff;
-
-        // Read single or double-pixels.
-        if (dep < 256)
-            ppmOneByte(image_data, cp, w, h, dep, pixels);
+        //Read single or double-pixels.
+        if (img_depth < 256)
+            pixels = ppmByte(img_data, cp, img_width, img_height, pixels, 1);
         else
-            ppmTwoByte(image_data, cp, w, h, dep, pixels);
+            pixels = ppmByte(img_data, cp, img_width, img_height, pixels, 2);
 
 
-        Bitmap bmp = Bitmap.createBitmap(pixels, w, h, Bitmap.Config.ARGB_8888);
-
+        Bitmap bmp = Bitmap.createBitmap(pixels, img_width, img_height, Bitmap.Config.ARGB_8888);
         return bmp;
     }
 
-    // Read PPM RAW with one byte per sample.
-    private static void ppmOneByte(byte s[], int i, int w, int h, int m, int d[]) {
-        // Samples are stored RGB.
+    //Read PPM RAW with @param bps per sample.
+    private static int[] ppmByte(byte s[], int i, int w, int h, int d[], int bps) {
+        //Samples are stored RGB.
         for (int p = 0; p < w * h; p++) {
-            // Read the samples.
+            //Read the samples.
             int r = (int) s[i];
-            i++;
+            i+=bps;
             if (r < 0) r += 256;
             int g = (int) s[i];
-            i++;
+            i+=bps;
             if (g < 0) g += 256;
             int b = (int) s[i];
-            i++;
+            i+=bps;
             if (b < 0) b += 256;
 
             // Update the pixel array.
             d[p] = 0xff000000 | (r << 16) | (g << 8) | b;
         }
-    }
-
-    // Read PPM RAW with two bytes per sample.
-    private static void ppmTwoByte(byte s[], int i, int w, int h, int m, int d[]) {
-        // Samples are stored RGB.
-        for (int p = 0; p < w * h; p++) {
-            // Read the samples: skip the low bits.
-            int r = (int) s[i];
-            i += 2;
-            if (r < 0) r += 256;
-            int g = (int) s[i];
-            i += 2;
-            if (g < 0) g += 256;
-            int b = (int) s[i];
-            i += 2;
-            if (b < 0) b += 256;
-
-            // Update the pixel array.
-            d[p] = 0xff000000 | (r << 16) | (g << 8) | b;
-        }
+        return d;
     }
 
     private static boolean ppmIsSpace(byte b) {
