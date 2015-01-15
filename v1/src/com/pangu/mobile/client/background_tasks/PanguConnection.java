@@ -22,7 +22,7 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
     private final WeakReference<ImageView> imageViewReference;
     private Context context;
     private final String dstName = "172.16.178.129";
-    private final int dstPort = 10363;
+    private final int dstPort = 10364;
     private ClientConnection clientConnection;
     private Bitmap bitmap;
 

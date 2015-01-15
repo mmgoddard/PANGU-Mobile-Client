@@ -9,7 +9,7 @@ import android.util.Log;
  */
 public class Logger {
 
-    //INFO: Logger
+    //INFO
     public static void i(String msg) {
         final Throwable t = new Throwable();
         final StackTraceElement[] elements = t.getStackTrace();
@@ -18,7 +18,7 @@ public class Logger {
         Log.i(callerClassName, "[INFO] " + msg);
     }
 
-    //VERBOSE: Logger
+    //VERBOSE
     public static void v(String msg) {
         final Throwable t = new Throwable();
         final StackTraceElement[] elements = t.getStackTrace();
@@ -28,7 +28,7 @@ public class Logger {
         Log.v(callerClassName, "[DEBUG: " + callerMethodName + "] " + msg);
     }
 
-    //EXCEPTION: Logger
+    //EXCEPTION
     public static void e(String msg) {
         final Throwable t = new Throwable();
         final StackTraceElement[] elements = t.getStackTrace();
