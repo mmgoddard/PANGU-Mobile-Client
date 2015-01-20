@@ -5,10 +5,10 @@ import android.os.Build;
 import android.test.ActivityInstrumentationTestCase2;
 
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
-public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity> {
+public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public MyActivityTest() {
-        super(MyActivity.class);
+    public MainActivityTest() {
+        super(MainActivity.class);
     }
 }

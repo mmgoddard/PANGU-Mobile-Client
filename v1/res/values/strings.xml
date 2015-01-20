@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PANGU</string>
+
+    <string name="x_coordinate">x-coordinate</string>
+    <string name="y_coordinate">y-coordinate</string>
+    <string name="z_coordinate">z-coordinate</string>
+    <string name="coordinate_submit">Submit</string>
 </resources>

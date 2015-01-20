@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <ImageView
+       android:id="@+id/pangu_image"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" />
+
+   <EditText
+           android:id="@+id/x_coordinate"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:hint="@string/x_coordinate"
+           android:inputType="number" />
+
+   <EditText
+           android:id="@+id/y_coordinate"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:hint="@string/y_coordinate"
+           android:inputType="number" />
+
+   <EditText
+           android:id="@+id/z_coordinate"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:hint="@string/z_coordinate"
+           android:inputType="number" />
+
+   <Button
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/coordinate_submit"
+           android:onClick="coordinateListener"/>
+</LinearLayout>

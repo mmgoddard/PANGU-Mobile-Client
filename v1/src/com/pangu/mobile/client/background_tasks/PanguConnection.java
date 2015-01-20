@@ -6,10 +6,8 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.pangu.mobile.client.models.ViewPoint;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
-import uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidElevation;
-import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
@@ -27,15 +25,17 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
     private int dstPort;
     private ClientConnection client;
     private Bitmap bitmap;
+    private ViewPoint viewPoint;
 
     /**
      * @param context the current state of application.
      * @desc Constructor for the Socket Connection class
      */
-    public PanguConnection(Context context, ImageView imageView, int dstPort) {
+    public PanguConnection(Context context, ImageView imageView, int dstPort, ViewPoint viewPoint) {
         this.context = context;
         imageViewReference = new WeakReference<ImageView>(imageView);
         this.dstPort = dstPort;
+        this.viewPoint = viewPoint;
     }
 
     /**
@@ -65,9 +65,10 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
 
                 //Get new image data from the server.
                 Logger.i("Getting Image from Server.");
-                Vector3D initialVec = new Vector3D(0, 0, 100000.0);
-                double yawAngle = 0.0, pitchAngle = -90.0, rollAngle = 0.0;
-                byte[] image_data = client.getImageByDegrees(initialVec, yawAngle, pitchAngle, rollAngle);
+                //Vector3D initialVec = new Vector3D(0, 0, 100000.0);
+                //double yawAngle = 0.0, pitchAngle = -90.0, rollAngle = 0.0;
+                //byte[] image_data = client.getImageByDegrees(initialVec, yawAngle, pitchAngle, rollAngle);
+                byte[] image_data = client.getImageByDegrees(viewPoint.getVector3D(), viewPoint.getYawAngle(), viewPoint.getPitchAngle(), viewPoint.getRollAngle());
 
                 //Convert .ppm byte array to bitmap
                 bitmap = PanguImage.Image(image_data);
