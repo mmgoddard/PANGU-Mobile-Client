@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 import android.widget.Toast;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
+import uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidElevation;
+import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -22,17 +24,18 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
     private final WeakReference<ImageView> imageViewReference;
     private Context context;
     private final String dstName = "172.16.178.129";
-    private final int dstPort = 10364;
-    private ClientConnection clientConnection;
+    private int dstPort;
+    private ClientConnection client;
     private Bitmap bitmap;
 
     /**
      * @param context the current state of application.
      * @desc Constructor for the Socket Connection class
      */
-    public PanguConnection(Context context, ImageView imageView) {
+    public PanguConnection(Context context, ImageView imageView, int dstPort) {
         this.context = context;
         imageViewReference = new WeakReference<ImageView>(imageView);
+        this.dstPort = dstPort;
     }
 
     /**
@@ -57,19 +60,21 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
                 Logger.i("Connecting to address: " + dstName + " & port: " + dstPort);
                 InetAddress dstAddress = InetAddress.getByName(dstName);
                 Socket sock = new Socket(dstAddress, dstPort);
-                clientConnection = new ClientConnection(sock);
+                client = new ClientConnection(sock);
                 Logger.i("Connection complete.");
 
                 //Get new image data from the server.
                 Logger.i("Getting Image from Server.");
-                byte[] image_data = clientConnection.getImage();
+                Vector3D initialVec = new Vector3D(0, 0, 100000.0);
+                double yawAngle = 0.0, pitchAngle = -90.0, rollAngle = 0.0;
+                byte[] image_data = client.getImageByDegrees(initialVec, yawAngle, pitchAngle, rollAngle);
 
                 //Convert .ppm byte array to bitmap
                 bitmap = PanguImage.Image(image_data);
                 if(bitmap == null) return false;
 
                 //Close connection
-                clientConnection.stop();
+                client.stop();
                 return true;
             } catch (IOException e) {
                 Logger.e("IO Exception has occurred when connecting to PANGU server.");
