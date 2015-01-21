@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.background_tasks.PanguConnection;
 import com.pangu.mobile.client.models.ViewPoint;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
@@ -20,6 +21,7 @@ public class PanguActivity extends Activity {
     private double z_coordinate = 100000.0;
     private Vector3D vector3D = new Vector3D(x_coordinate, y_coordinate, z_coordinate);
     private ViewPoint viewPoint = new ViewPoint(vector3D, 0.0, -90.0, 0.0);
+
     /**
      * Called when the activity is first created.
      */
@@ -69,5 +71,14 @@ public class PanguActivity extends Activity {
             PanguConnection panguConnection = new PanguConnection(this, imgView, dstPort, viewPoint);
             panguConnection.execute();
         }
+    }
+
+    /**
+     * Called when the activity is paused.
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }

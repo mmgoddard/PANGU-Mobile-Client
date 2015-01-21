@@ -1,12 +1,15 @@
 package com.pangu.mobile.client.activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.pangu.mobile.client.R;
 
 /**
  * Created by Mark on 20/01/15.
@@ -44,7 +47,7 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
         TextView textView = (TextView)grid.findViewById(R.id.grid_text);
         imageView.setImageResource(mThumbIds[position]);
-        textView.setText(String.valueOf(position));
+        textView.setText("Position: " + String.valueOf(position));
         return grid;
     }
 

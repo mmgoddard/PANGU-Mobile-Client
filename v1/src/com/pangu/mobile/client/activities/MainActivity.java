@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import com.pangu.mobile.client.R;
 
 /**
  * @Author Mark Goddard
@@ -28,11 +29,17 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        GridView gridview = (GridView) findViewById(R.id.grid_view);
-        gridview.setAdapter(new ImageAdapter(this));
+        final GridView gridView = (GridView) findViewById(R.id.grid_view);
+        gridView.setAdapter(new ImageAdapter(this));
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                //ImageView imageView = (ImageView) findViewById(R.id.grid_image);
+                //imageView.setBackgroundResource(R.drawable.selector_colour);
+
+                v.findViewById(position);
+                v.setBackgroundColor(getResources().getColor(R.color.blurred));
+
                 Intent intent = new Intent(getApplicationContext(), PanguActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
@@ -46,6 +53,14 @@ public class MainActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    /**
+     * Called when the back button is pressed
+     */
+    @Override
+    public void onBackPressed() {
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }
