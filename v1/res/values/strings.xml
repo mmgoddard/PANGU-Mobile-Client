@@ -5,6 +5,10 @@
     <string name="x_coordinate">x-coordinate</string>
     <string name="y_coordinate">y-coordinate</string>
     <string name="z_coordinate">z-coordinate</string>
+    <string name="range">range</string>
+    <string name="azimuth">azimuth</string>
+    <string name="elevation">elevation</string>
+    <string name="roll">roll</string>
     <string name="coordinate_submit">Submit</string>
 
     <color name="blurred">#26000000</color>

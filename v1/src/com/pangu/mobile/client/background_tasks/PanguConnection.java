@@ -69,7 +69,9 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
                 //double yawAngle = 0.0, pitchAngle = -90.0, rollAngle = 0.0;
                 //byte[] image_data = client.getImageByDegrees(initialVec, yawAngle, pitchAngle, rollAngle);
                 byte[] image_data = client.getImageByDegrees(viewPoint.getVector3D(), viewPoint.getYawAngle(), viewPoint.getPitchAngle(), viewPoint.getRollAngle());
-
+                Logger.v("Yaw: "+viewPoint.getYawAngle());
+                Logger.v("Pitch: "+viewPoint.getPitchAngle());
+                Logger.v("Roll: "+viewPoint.getRollAngle());
                 //Convert .ppm byte array to bitmap
                 bitmap = PanguImage.Image(image_data);
                 if(bitmap == null) return false;

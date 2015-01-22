@@ -34,9 +34,6 @@ public class MainActivity extends Activity {
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                //ImageView imageView = (ImageView) findViewById(R.id.grid_image);
-                //imageView.setBackgroundResource(R.drawable.selector_colour);
-
                 v.findViewById(position);
                 v.setBackgroundColor(getResources().getColor(R.color.blurred));
 
