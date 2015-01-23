@@ -7,8 +7,17 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.pangu.mobile.client.models.ViewPoint;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -82,12 +91,9 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
             } catch (IOException e) {
                 Logger.e("IO Exception has occurred when connecting to PANGU server.");
                 e.printStackTrace();
-                return true;
             }
-        } else {
-            //There is no Internet Connection available.
-            return false;
         }
+        return false;
     }
 
     /**

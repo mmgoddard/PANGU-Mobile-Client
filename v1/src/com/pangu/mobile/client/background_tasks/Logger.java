@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * @author Mark Goddard
  * @date 08/10/2014
- * @desc Display log information based on a msg and where the log was initiated from.
+ * @desc Display log information based on a msg and where it was initiated from.
  */
 public class Logger {
 
