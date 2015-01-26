@@ -3,13 +3,21 @@ package com.pangu.mobile.client.background_tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.pangu.mobile.client.models.PanguModel;
 import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.utils.NetworkHelper;
-import org.apache.http.client.ResponseHandler;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * Created by Mark on 23/01/15.
@@ -46,9 +54,13 @@ public class APICall extends AsyncTask<Void, Void, ErrorHandler> {
             HttpGet httpGet = new HttpGet(url);
             httpGet.setHeader("Accept", "application/json");
             httpGet.setHeader("Content-type", "application/json;charset=utf-8");
-            ResponseHandler responseHandler = new BasicResponseHandler();
             try {
-                defaultHttpClient.execute(httpGet, responseHandler);
+                HttpResponse response = defaultHttpClient.execute(httpGet);
+                HttpEntity entity = response.getEntity();
+                Reader reader = new InputStreamReader(entity.getContent());
+                Type arrayListType = new TypeToken<ArrayList<PanguModel>>() {
+                }.getType();
+                ArrayList<PanguModel> data = new Gson().fromJson(reader, arrayListType);
                 return ErrorHandler.OK;
             } catch (IOException e) {
                 e.printStackTrace();
