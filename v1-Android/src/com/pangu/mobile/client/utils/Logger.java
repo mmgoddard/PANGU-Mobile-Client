@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.background_tasks;
+package com.pangu.mobile.client.utils;
 
 import android.util.Log;
 

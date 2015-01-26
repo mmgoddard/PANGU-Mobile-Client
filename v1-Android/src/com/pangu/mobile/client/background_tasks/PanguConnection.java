@@ -2,22 +2,15 @@ package com.pangu.mobile.client.background_tasks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.models.ViewPoint;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.pangu.mobile.client.utils.Logger;
+import com.pangu.mobile.client.utils.NetworkHelper;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -27,7 +20,7 @@ import java.net.Socket;
  * @date 08/10/2014
  * @desc Connects to a PANGU server and returns the current image.
  */
-public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
+public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
     private final WeakReference<ImageView> imageViewReference;
     private Context context;
     private final String dstName = "172.16.178.129";
@@ -62,8 +55,8 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
      * it to a bitmap image.
      */
     @Override
-    protected Boolean doInBackground(Void... arg0) {
-        if (checkInternetConnection(context)) {
+    protected ErrorHandler doInBackground(Void... arg0) {
+        if (NetworkHelper.isOnline(context)) {
             try {
                 //Connecting to the PANGU Server.
                 Logger.i("Connecting to address: " + dstName + " & port: " + dstPort);
@@ -83,17 +76,18 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
                 Logger.v("Roll: "+viewPoint.getRollAngle());
                 //Convert .ppm byte array to bitmap
                 bitmap = PanguImage.Image(image_data);
-                if(bitmap == null) return false;
+                if(bitmap == null) return ErrorHandler.IO_ERROR;
 
                 //Close connection
                 client.stop();
-                return true;
+                return ErrorHandler.OK;
             } catch (IOException e) {
                 Logger.e("IO Exception has occurred when connecting to PANGU server.");
                 e.printStackTrace();
+                return ErrorHandler.IO_ERROR;
             }
         }
-        return false;
+        return ErrorHandler.NO_INTERNET_CONNECTION;
     }
 
     /**
@@ -101,31 +95,16 @@ public class PanguConnection extends AsyncTask<Void, Void, Boolean> {
      * @desc Runs on the UI thread after doInBackground().
      */
     @Override
-    protected void onPostExecute(Boolean result) {
-        if (result == true) {
+    protected void onPostExecute(ErrorHandler result) {
+        if (result == ErrorHandler.OK) {
             if (imageViewReference != null && bitmap != null) {
                 final ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
                 }
             }
-        } else {
-            Toast.makeText(context, "You are currently not connected to the Internet.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * @param context state of the application used to access the connectivity service.
-     * @return boolean value - if the phone/app is connected to the Internet.
-     * @desc Checks if the phone/app is connected to the Internet.
-     */
-    private boolean checkInternetConnection(Context context) {
-        ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable()
-                && conMgr.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            return false;
+        } else if (result == ErrorHandler.NO_INTERNET_CONNECTION || result == ErrorHandler.IO_ERROR) {
+            Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

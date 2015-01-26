@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.pangu.mobile.client.R;
+import com.pangu.mobile.client.background_tasks.APICall;
 import com.pangu.mobile.client.background_tasks.PanguConnection;
 import com.pangu.mobile.client.models.ViewPoint;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
@@ -49,6 +50,8 @@ public class PanguActivity extends Activity {
         PanguConnection panguConnection = new PanguConnection(this, imgView, dstPort, viewPoint);
         panguConnection.execute();
 
+        APICall apiCall = new APICall(this);
+        apiCall.execute();
     }
 
     //Called when the user touches the submit button

@@ -1,26 +1,22 @@
 package com.pangu.mobile.client.background_tasks;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.widget.Toast;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import com.pangu.mobile.client.utils.ErrorHandler;
+import com.pangu.mobile.client.utils.NetworkHelper;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Mark on 23/01/15.
  */
-public class APICall extends AsyncTask<Void, Void, Boolean> {
+public class APICall extends AsyncTask<Void, Void, ErrorHandler> {
     private Context context;
-    private final String url = "http://192.168.56.1:8081/hello";
+    private final String url = "http://10.0.2.2:11000/api";
 
     /**
      * @param context the current state of application.
@@ -41,28 +37,25 @@ public class APICall extends AsyncTask<Void, Void, Boolean> {
     /**
      * @param arg0 not used, but still needed for Android.
      * @return
-     * @desc Connects to RESTful API and pulls down required information from it.
+     * @desc Connects to a RESTful API and pulls down required information from it.
      */
     @Override
-    protected Boolean doInBackground(Void... arg0) {
-        if (checkInternetConnection(context)) {
+    protected ErrorHandler doInBackground(Void... arg0) {
+        if (NetworkHelper.isOnline(context)) {
+            DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(url);
+            httpGet.setHeader("Accept", "application/json");
+            httpGet.setHeader("Content-type", "application/json;charset=utf-8");
+            ResponseHandler responseHandler = new BasicResponseHandler();
             try {
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
-                HttpResponse response = httpclient.execute(httpGet);
-                HttpEntity entity = response.getEntity();
-                InputStream is = entity.getContent();
-                Logger.i("Connection complete.");
-                return true;
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
+                defaultHttpClient.execute(httpGet, responseHandler);
+                return ErrorHandler.OK;
             } catch (IOException e) {
                 e.printStackTrace();
+                return ErrorHandler.IO_ERROR;
             }
         }
-        return false;
+        return ErrorHandler.NO_INTERNET_CONNECTION;
     }
 
     /**
@@ -70,27 +63,11 @@ public class APICall extends AsyncTask<Void, Void, Boolean> {
      * @desc Runs on the UI thread after doInBackground().
      */
     @Override
-    protected void onPostExecute(Boolean result) {
-        if (result == true) {
-
-        } else {
-            Toast.makeText(context, "You are currently not connected to the Internet.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * @param context state of the application used to access the connectivity service.
-     * @return boolean value - if the phone/app is connected to the Internet.
-     * @desc Checks if the phone/app is connected to the Internet.
-     */
-    private boolean checkInternetConnection(Context context) {
-        ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable()
-                && conMgr.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+    protected void onPostExecute(ErrorHandler result) {
+        if (result == ErrorHandler.IO_ERROR)
+            Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
+        else if (result == ErrorHandler.NO_INTERNET_CONNECTION)
+            Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
     }
 }
 
