@@ -7,7 +7,7 @@ import android.util.Log;
  * @date 08/10/2014
  * @desc Display log information based on a msg and where it was initiated from.
  */
-public class Logger {
+public class LoggerHandler {
 
     //INFO
     public static void i(String msg) {

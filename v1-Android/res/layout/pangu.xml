@@ -1,66 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <LinearLayout
+            android:id="@+id/linlaHeaderProgress"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+        <ProgressBar
+                android:id="@+id/pbHeaderProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/progress_bar" >
+        </ProgressBar>
+    </LinearLayout>
 
     <ImageView
        android:id="@+id/pangu_image"
        android:layout_width="wrap_content"
-       android:layout_height="wrap_content" />
+       android:layout_height="wrap_content"
+       android:layout_gravity="center"/>
 
-    <EditText
-        android:id="@+id/x_coordinate"
-        android:layout_width="fill_parent"
+    <LinearLayout android:id="@+id/linearLayout1"
+                  android:layout_height="wrap_content"
+                  android:layout_width="fill_parent"
+                  android:weightSum="1">
+
+        <Button android:id="@+id/left_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/left_control" android:layout_weight="0.33"/>
+
+        <Button android:id="@+id/up_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/up_control" android:layout_weight="0.33"/>
+
+        <Button android:id="@+id/right_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/right_control" android:layout_weight="0.33"/>
+    </LinearLayout>
+
+    <Button android:id="@+id/down_button"
         android:layout_height="wrap_content"
-        android:hint="@string/x_coordinate"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/y_coordinate"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/y_coordinate"
-        android:inputType="number" />
-
-    <EditText
-           android:id="@+id/z_coordinate"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"
-           android:hint="@string/z_coordinate"
-           android:inputType="number" />
-
-    <EditText
-            android:id="@+id/range"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/range"
-            android:inputType="number" />
-
-    <EditText
-            android:id="@+id/azimuth"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/azimuth"
-            android:inputType="number" />
-
-    <EditText
-            android:id="@+id/elevation"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/elevation"
-            android:inputType="number" />
-
-    <EditText
-            android:id="@+id/roll"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/roll"
-            android:inputType="number" />
-
-    <Button
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"
-           android:text="@string/coordinate_submit"
-           android:onClick="coordinateListener"/>
+        android:text="@string/down_control"
+        android:gravity="center" android:layout_gravity="center_horizontal"/>
 </LinearLayout>

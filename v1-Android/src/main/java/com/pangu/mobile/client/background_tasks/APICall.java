@@ -23,6 +23,7 @@ import java.util.ArrayList;
  * Created by Mark on 23/01/15.
  */
 public class APICall extends AsyncTask<Void, Void, ErrorHandler> {
+    private ArrayList<PanguModel> data;
     private Context context;
     private final String url = "http://10.0.2.2:11000/api";
 
@@ -58,9 +59,8 @@ public class APICall extends AsyncTask<Void, Void, ErrorHandler> {
                 HttpResponse response = defaultHttpClient.execute(httpGet);
                 HttpEntity entity = response.getEntity();
                 Reader reader = new InputStreamReader(entity.getContent());
-                Type arrayListType = new TypeToken<ArrayList<PanguModel>>() {
-                }.getType();
-                ArrayList<PanguModel> data = new Gson().fromJson(reader, arrayListType);
+                Type arrayListType = new TypeToken<ArrayList<PanguModel>>() {}.getType();
+                data = new Gson().fromJson(reader, arrayListType);
                 return ErrorHandler.OK;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -80,6 +80,9 @@ public class APICall extends AsyncTask<Void, Void, ErrorHandler> {
             Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
         else if (result == ErrorHandler.NO_INTERNET_CONNECTION)
             Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
+        else if (result == ErrorHandler.OK) {
+
+        }
     }
 }
 
