@@ -3,7 +3,6 @@ package com.pangu.mobile.client.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,9 +49,6 @@ public class PanguActivity extends Activity implements View.OnClickListener {
 
         downControl = (Button) findViewById(R.id.down_button);
         downControl.setOnClickListener(this);
-
-        //APICall apiCall = new APICall(this);
-        //apiCall.execute();
     }
 
     @Override

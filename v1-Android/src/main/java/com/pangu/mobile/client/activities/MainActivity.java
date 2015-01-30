@@ -7,6 +7,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import com.pangu.mobile.client.R;
+import com.pangu.mobile.client.models.ConfigurationModel;
+import com.pangu.mobile.client.utils.DatabaseHelper;
+import com.pangu.mobile.client.utils.DatabaseOperations;
+import com.pangu.mobile.client.utils.LoggerHandler;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Mark Goddard
@@ -14,6 +21,7 @@ import com.pangu.mobile.client.R;
  * @Desc Starts the main activity.
  */
 public class MainActivity extends Activity {
+    private DatabaseHelper db;
     /**
      * Called when the activity is first created.
      */
@@ -30,8 +38,10 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
         final GridView gridView = (GridView) findViewById(R.id.grid_view);
-        gridView.setAdapter(new ImageAdapter(this));
-
+        db = new DatabaseHelper(getApplicationContext());
+        DatabaseOperations databaseOperations = new DatabaseOperations(db);
+        List<ConfigurationModel> values = databaseOperations.readConfiguration();
+        gridView.setAdapter(new ImageAdapter(this, values));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 v.findViewById(position);
