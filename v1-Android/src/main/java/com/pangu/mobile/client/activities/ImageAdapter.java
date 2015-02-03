@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.pangu.mobile.client.R;
@@ -40,7 +42,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        View grid;
+        final View grid;
         if (convertView == null) {
             grid = inflater.inflate(R.layout.grid, parent, false);
         } else {
@@ -50,7 +52,8 @@ public class ImageAdapter extends BaseAdapter {
         TextView imageView = (TextView)grid.findViewById(R.id.grid_image);
         TextView textView = (TextView)grid.findViewById(R.id.grid_text);
         imageView.setBackgroundColor(Color.RED);
-        textView.setText(values.get(position).getName());
+        if(values.size() != 0)
+            textView.setText(values.get(position).getName());
         return grid;
     }
 }

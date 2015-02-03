@@ -23,7 +23,6 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
     private Button addConfigBtn;
     private OnCompleteListener mListener;
     private boolean nameCheck = false, ipAddressCheck = false, portNumCheck = false;
-
     public AddConfigDialog() {}
 
     public static AddConfigDialog newInstance(String title) {
@@ -37,9 +36,7 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int style = DialogFragment.STYLE_NORMAL;
-        int theme = android.R.style.Theme_Holo_Light;
-        setStyle(style, theme);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light);
     }
 
     @Override

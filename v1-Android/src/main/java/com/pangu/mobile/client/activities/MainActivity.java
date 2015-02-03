@@ -28,8 +28,9 @@ import java.util.List;
  * @Date 08/10/2014
  * @Desc Starts the main activity.
  */
-public class MainActivity extends Activity implements AddConfigDialog.OnCompleteListener {
+public class MainActivity extends Activity implements AddConfigDialog.OnCompleteListener, UpdateConfigDialog.UpdateOnCompleteListener {
     private DatabaseHelper db;
+
     /**
      * Called when the activity is first created.
      */
@@ -40,15 +41,7 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
 
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
-//
-//        db = new DatabaseHelper(getApplicationContext());
-//        DatabaseOperations databaseOperations = new DatabaseOperations(db);
-//        ConfigurationModel cm = new ConfigurationModel(1, "Test Model", "172.16.178.129", "10363");
-//        ConfigurationModel cm1 = new ConfigurationModel(2, "Test Model", "172.16.178.129", "10363");
-//        ConfigurationModel cm2 = new ConfigurationModel(3, "Test Model", "172.16.178.129", "10363");
-//        databaseOperations.insertConfiguration(cm);
-//        databaseOperations.insertConfiguration(cm1);
-//        databaseOperations.insertConfiguration(cm2);
+        db = new DatabaseHelper(getApplicationContext());
     }
 
     /**
@@ -62,6 +55,7 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
 
     /**
      * Called when the action bar is created.
+     *
      * @param menu
      * @return onCreateOptionsMenu()
      */
@@ -74,6 +68,7 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
 
     /**
      * Called when action bar item is selected.
+     *
      * @param item
      * @return
      */
@@ -87,19 +82,6 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void addConfiguration() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-
-        // Create and show the dialog.
-        AddConfigDialog newFragment = AddConfigDialog.newInstance("Some Title");
-        newFragment.show(ft, "dialog");
     }
 
     /**
@@ -121,13 +103,14 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
 
     /**
      * After the AddConfigDialog fragment completes, it calls this callback.
+     *
      * @param cm
      */
     public void onCompleteAddConfiguration(ConfigurationModel cm) {
         db = new DatabaseHelper(getApplicationContext());
         DatabaseOperations databaseOperations = new DatabaseOperations(db);
         ErrorHandler e = databaseOperations.insertConfiguration(cm);
-        if(e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
+        if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
             Toast.makeText(getApplicationContext(), "Added Configuration", Toast.LENGTH_LONG).show();
             getGridItems();
         } else {
@@ -136,49 +119,75 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
     }
 
     /**
-     * Get any configurations from database.
+     * After the AddConfigDialog fragment completes, it calls this callback.
+     *
+     * @param cm
+     */
+    public void onCompleteUpdateConfiguration(ConfigurationModel cm) {
+        db = new DatabaseHelper(getApplicationContext());
+        DatabaseOperations databaseOperations = new DatabaseOperations(db);
+        ErrorHandler e = databaseOperations.updateConfiguration(cm);
+        if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
+            Toast.makeText(getApplicationContext(), "Updated Configuration", Toast.LENGTH_LONG).show();
+            getGridItems();
+        } else {
+            Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Get configurations from database.
      */
     public void getGridItems() {
         final GridView gridView = (GridView) findViewById(R.id.grid_view);
         db = new DatabaseHelper(getApplicationContext());
         DatabaseOperations databaseOperations = new DatabaseOperations(db);
         final List<ConfigurationModel> values = databaseOperations.readConfiguration();
-        if(values.size() != 0) {
-            gridView.setAdapter(new ImageAdapter(this, values));
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
-                    final View newView = v;
-                    PopupMenu popup = new PopupMenu(getBaseContext(), v);
-                    popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        gridView.setAdapter(new ImageAdapter(this, values));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
+                final View newView = v;
+                PopupMenu popup = new PopupMenu(getBaseContext(), v);
+                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            ConfigurationModel config = values.get(position);
-                            switch(item.getItemId()) {
-                                case R.id.popupMenu_runConfiguration:
-                                    runConfiguration(newView, config);
-                                    newView.findViewById(position);
-                                    newView.setBackgroundColor(getResources().getColor(R.color.blurred));
-                                    break;
-                                case R.id.popupMenu_updateConfiguration:
-                                    updateConfiguration();
-                                        break;
-                                case R.id.popupMenu_deleteConfiguration:
-                                    deleteConfiguration(config.getId());
-                                    break;
-                                default:
-                                    break;
-                            }
-                            return true;
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        ConfigurationModel config = values.get(position);
+                        switch (item.getItemId()) {
+                            case R.id.popupMenu_runConfiguration:
+                                runConfiguration(newView, config);
+                                newView.findViewById(position);
+                                newView.setBackgroundColor(getResources().getColor(R.color.blurred));
+                                break;
+                            case R.id.popupMenu_updateConfiguration:
+                                updateConfiguration();
+                                break;
+                            case R.id.popupMenu_deleteConfiguration:
+                                deleteConfiguration(config.getId());
+                                break;
+                            default:
+                                break;
                         }
-                    });
-                    popup.show();
-                }
-            });
-        } else {
-            //display no configurations
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
+    }
+
+    public void addConfiguration() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
         }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        AddConfigDialog newFragment = AddConfigDialog.newInstance("Add Configuration");
+        newFragment.show(ft, "dialog");
     }
 
     private void runConfiguration(View v, ConfigurationModel config) {
@@ -189,25 +198,24 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
         intent.putExtra("portNum", config.getPortNum());
         startActivity(intent);
     }
-//
-//    private void updateConfiguration() {
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-//        if (prev != null) {
-//            ft.remove(prev);
-//        }
-//        ft.addToBackStack(null);
-//
-//        // Create and show the dialog.
-//        UpdateConfigDialog newFragment = UpdateConfigDialog.newInstance("Some Title");
-//        newFragment.show(ft, "dialog");
-//    }
+
+    private void updateConfiguration() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        UpdateConfigDialog newFragment = UpdateConfigDialog.newInstance("Some Title");
+        newFragment.show(ft, "dialog");
+    }
 
     private void deleteConfiguration(int id) {
         db = new DatabaseHelper(getApplicationContext());
         DatabaseOperations databaseOperations = new DatabaseOperations(db);
         ErrorHandler e = databaseOperations.deleteConfiguration(id);
-        if(e == ErrorHandler.SQL_EXECUTION_ERROR)
+        if (e == ErrorHandler.SQL_EXECUTION_ERROR)
             Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
         else {
             Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
