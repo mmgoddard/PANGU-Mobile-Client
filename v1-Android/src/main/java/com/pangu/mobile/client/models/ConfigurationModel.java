@@ -3,33 +3,21 @@ package com.pangu.mobile.client.models;
 /**
  * Created by Mark on 30/01/15.
  */
-public class ConfigurationModel {
-    private int id;
-    private String name;
+public class ConfigurationModel extends BaseConfigurationModel {
     private String ipAddress;
     private String portNum;
+
+    public ConfigurationModel(String name, String ipAddress, String portNum) {
+        this.name = name;
+        this.ipAddress = ipAddress;
+        this.portNum = portNum;
+    }
 
     public ConfigurationModel(int id, String name, String ipAddress, String portNum) {
         this.id = id;
         this.name = name;
         this.ipAddress = ipAddress;
         this.portNum = portNum;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getIpAddress() {

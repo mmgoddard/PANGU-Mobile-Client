@@ -1,23 +1,17 @@
 package com.pangu.mobile.client.activities;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
-import com.pangu.mobile.client.utils.DatabaseOperations;
-import com.pangu.mobile.client.utils.LoggerHandler;
-
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Mark on 20/01/15.
@@ -25,7 +19,6 @@ import java.util.Map;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater inflater;
-    private DatabaseHelper db;
     private List<ConfigurationModel> values;
 
     public ImageAdapter(Context c, List<ConfigurationModel> values) {
@@ -35,7 +28,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return values.size();
     }
 
     public Object getItem(int position) {
@@ -54,16 +47,10 @@ public class ImageAdapter extends BaseAdapter {
             grid = convertView;
         }
 
-        ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
+        TextView imageView = (TextView)grid.findViewById(R.id.grid_image);
         TextView textView = (TextView)grid.findViewById(R.id.grid_text);
-        imageView.setImageResource(mThumbIds[position]);
-        textView.setText("Position: " + values.get(position).getName());
+        imageView.setBackgroundColor(Color.RED);
+        textView.setText(values.get(position).getName());
         return grid;
     }
-
-    private Integer[] mThumbIds = {
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher
-    };
 }

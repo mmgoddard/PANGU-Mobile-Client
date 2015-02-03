@@ -15,7 +15,8 @@ import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
  * Created by Mark on 20/01/15.
  */
 public class PanguActivity extends Activity implements View.OnClickListener {
-    private int dstPort = 10363;
+    private int dstPort;
+    private String modelName, ipAddress;
     private double x_coordinate = 0.0, y_coordinate = 0.0, z_coordinate = 100000.0;
     private double range = 0.0, yaw = 0.0, pitch = -90.0, roll = 0.0;
     private Vector3D vector3D = new Vector3D(x_coordinate, y_coordinate, z_coordinate);
@@ -24,6 +25,7 @@ public class PanguActivity extends Activity implements View.OnClickListener {
     private PanguConnection panguConnection;
     private ImageView imgView;
     private LinearLayout headerProgress;
+    private Bundle extras;
 
     /**
      * Called when the activity is first created.
@@ -32,6 +34,19 @@ public class PanguActivity extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pangu);
+
+        if (savedInstanceState == null) {
+            extras = getIntent().getExtras();
+            if (extras != null) {
+                modelName = extras.getString("name");
+                ipAddress = extras.getString("ipAddress");
+                dstPort = Integer.parseInt(extras.getString("portNum"));
+            }
+        } else {
+            modelName = extras.getString("name");
+            ipAddress = extras.getString("ipAddress");
+            dstPort = Integer.parseInt(extras.getString("portNum"));
+        }
 
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
 
@@ -56,13 +71,13 @@ public class PanguActivity extends Activity implements View.OnClickListener {
         int step = 1000;
         switch (v.getId()) {
             case R.id.left_button:
-                x_coordinate-=step;
+                x_coordinate -= step;
             case R.id.up_button:
-                y_coordinate+=step;
+                y_coordinate += step;
             case R.id.right_button:
-                x_coordinate+=step;
+                x_coordinate += step;
             case R.id.down_button:
-                y_coordinate-=step;
+                y_coordinate -= step;
         }
         vector3D = new Vector3D(x_coordinate, y_coordinate, z_coordinate);
         getImage(vector3D);
@@ -70,7 +85,7 @@ public class PanguActivity extends Activity implements View.OnClickListener {
 
     public void getImage(Vector3D vector3D) {
         viewPoint = new ViewPoint(vector3D, yaw, pitch, roll);
-        panguConnection = new PanguConnection(this, imgView, dstPort, viewPoint, headerProgress);
+        panguConnection = new PanguConnection(this, imgView, ipAddress, dstPort, viewPoint, headerProgress);
         panguConnection.execute();
     }
 

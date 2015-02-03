@@ -19,4 +19,6 @@
     <string name="right_control">right</string>
     <string name="up_control">up</string>
     <string name="down_control">down</string>
+
+    <string name="action_add">Add Configuration</string>
 </resources>

@@ -12,6 +12,7 @@ public class ConfigurationContract {
         private static final String TEXT_TYPE = " TEXT";
         private static final String COMMA_SEP = ",";
         private static final String PK = " PRIMARY KEY";
+        private static final String AUTO_INCREMENT = " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL";
 
         //Pangu Table
         public static final String PANGU_TABLE = "configurations";
@@ -23,7 +24,8 @@ public class ConfigurationContract {
 
         //PANGU Table - Create Statement
         public static final String CREATE_TABLE_PANGU = "CREATE TABLE IF NOT EXISTS "
-                + PANGU_TABLE+ "(" + _ID + TEXT_TYPE + PK + COMMA_SEP
+                + PANGU_TABLE+ "("
+                + _ID + AUTO_INCREMENT + COMMA_SEP
                 + PANGU_NAME + TEXT_TYPE + COMMA_SEP
                 + PANGU_IP_ADDRESS + TEXT_TYPE + COMMA_SEP
                 + PANGU_PORT_NUM + TEXT_TYPE + ")";
@@ -32,5 +34,6 @@ public class ConfigurationContract {
         public static final String DELETE_TABLE_PANGU = "DROP TABLE IF EXISTS " + PANGU_TABLE;
 
         public static final String[] allPanguColumns = new String[] { _ID, PANGU_NAME, PANGU_IP_ADDRESS, PANGU_PORT_NUM };
+        public static final String[] idAndName = new String[] { _ID, PANGU_NAME};
     }
 }

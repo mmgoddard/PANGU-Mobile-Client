@@ -3,6 +3,7 @@ package com.pangu.mobile.client.utils;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.pangu.mobile.client.models.BaseConfigurationModel;
 import com.pangu.mobile.client.models.ConfigurationModel;
 
 import java.util.*;
@@ -19,7 +20,6 @@ public class DatabaseOperations {
 
     public void insertConfiguration(ConfigurationModel cm) {
         ContentValues values = new ContentValues();
-        values.put(ConfigurationContract.PanguEntry._ID, cm.getId());
         values.put(ConfigurationContract.PanguEntry.PANGU_NAME, cm.getName());
         values.put(ConfigurationContract.PanguEntry.PANGU_IP_ADDRESS, cm.getIpAddress());
         values.put(ConfigurationContract.PanguEntry.PANGU_PORT_NUM, cm.getPortNum());
@@ -42,10 +42,7 @@ public class DatabaseOperations {
         String selection = ConfigurationContract.PanguEntry._ID + " LIKE ?";
         String[] selectionArgs = { String.valueOf(cm.getId()) };
 
-         db.update(ConfigurationContract.PanguEntry.PANGU_TABLE,
-                values,
-                selection,
-                selectionArgs);
+         db.update(ConfigurationContract.PanguEntry.PANGU_TABLE, values, selection, selectionArgs);
     }
 
     public List<ConfigurationModel> readConfiguration() {
@@ -54,7 +51,7 @@ public class DatabaseOperations {
         ConfigurationModel cm;
         int count = 0;
         while (c.moveToNext()) {
-            cm = new ConfigurationModel(Integer.parseInt(c.getString(0)), c.getString(1), c.getString(2), c.getString(3));
+            cm = new ConfigurationModel(c.getInt(0), c.getString(1), c.getString(2), c.getString(3));
             list.add(count, cm);
             LoggerHandler.i(list.get(0).getName());
             count++;

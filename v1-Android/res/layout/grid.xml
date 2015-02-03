@@ -5,10 +5,10 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <ImageView
+        <TextView
                 android:id="@+id/grid_image"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:padding="10dp"
                 android:gravity="center"
                 android:background="@color/black" />
@@ -22,5 +22,5 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textSize="11sp"
                 android:textColor="@color/white"
-                android:background="#8888"/>
+                android:background="#8888" />
 </RelativeLayout>

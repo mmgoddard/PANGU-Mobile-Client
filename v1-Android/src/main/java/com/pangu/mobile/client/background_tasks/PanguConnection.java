@@ -28,8 +28,8 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
     private final WeakReference<LinearLayout> headerProgressReference;
     private final WeakReference<ImageView> imageViewReference;
     private Context context;
-    private final String dstName = "172.16.178.129";
-    private int dstPort;
+    private String dstName = "192.168.0.13";
+    private int dstPort = 8080;
     private ClientConnection client;
     private Bitmap bitmap;
     private ViewPoint viewPoint;
@@ -38,12 +38,13 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
      * @param context the current state of application.
      * @desc Constructor for the Socket Connection class
      */
-    public PanguConnection(Context context, ImageView imageView, int dstPort, ViewPoint viewPoint, LinearLayout headerProgress) {
+    public PanguConnection(Context context, ImageView imageView, String dstName, int dstPort, ViewPoint viewPoint, LinearLayout headerProgress) {
         this.context = context;
         imageViewReference = new WeakReference<ImageView>(imageView);
         this.headerProgressReference = new WeakReference<LinearLayout>(headerProgress);
         this.dstPort = dstPort;
         this.viewPoint = viewPoint;
+        this.dstName = dstName;
     }
 
     /**
@@ -70,9 +71,10 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
                 Socket sock = new Socket(dstAddress, dstPort);
                 client = new ClientConnection(sock);
                 byte[] image_data = client.getImageByDegrees(viewPoint.getVector3D(), viewPoint.getYawAngle(), viewPoint.getPitchAngle(), viewPoint.getRollAngle());
-                client.stop();
+                //byte[] image_data = client.getImage();
                 bitmap = PanguImage.Image(image_data);
                 if(bitmap == null) return ErrorHandler.IO_ERROR;
+                client.stop();
                 return ErrorHandler.OK;
             } catch (Exception e) {
                 LoggerHandler.e("IO Exception has occurred when connecting to PANGU server.");
