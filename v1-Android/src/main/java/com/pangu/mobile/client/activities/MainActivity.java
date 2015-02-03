@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,11 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
+import com.pangu.mobile.client.utils.ErrorHandler;
+
 import java.util.List;
 
 /**
@@ -122,9 +126,13 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
     public void onCompleteAddConfiguration(ConfigurationModel cm) {
         db = new DatabaseHelper(getApplicationContext());
         DatabaseOperations databaseOperations = new DatabaseOperations(db);
-        databaseOperations.insertConfiguration(cm);
-        Toast.makeText(getApplicationContext(), "Added Configuration", Toast.LENGTH_LONG).show();
-        getGridItems();
+        ErrorHandler e = databaseOperations.insertConfiguration(cm);
+        if(e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
+            Toast.makeText(getApplicationContext(), "Added Configuration", Toast.LENGTH_LONG).show();
+            getGridItems();
+        } else {
+            Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -138,20 +146,72 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
         if(values.size() != 0) {
             gridView.setAdapter(new ImageAdapter(this, values));
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    ConfigurationModel config = values.get(position);
-                    v.findViewById(position);
-                    v.setBackgroundColor(getResources().getColor(R.color.blurred));
-                    Intent intent = new Intent(getApplicationContext(), PanguActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    intent.putExtra("name", config.getName());
-                    intent.putExtra("ipAddress", config.getIpAddress());
-                    intent.putExtra("portNum", config.getPortNum());
-                    startActivity(intent);
+                public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
+                    final View newView = v;
+                    PopupMenu popup = new PopupMenu(getBaseContext(), v);
+                    popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            ConfigurationModel config = values.get(position);
+                            switch(item.getItemId()) {
+                                case R.id.popupMenu_runConfiguration:
+                                    runConfiguration(newView, config);
+                                    newView.findViewById(position);
+                                    newView.setBackgroundColor(getResources().getColor(R.color.blurred));
+                                    break;
+                                case R.id.popupMenu_updateConfiguration:
+                                    updateConfiguration();
+                                        break;
+                                case R.id.popupMenu_deleteConfiguration:
+                                    deleteConfiguration(config.getId());
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    popup.show();
                 }
             });
         } else {
             //display no configurations
+        }
+    }
+
+    private void runConfiguration(View v, ConfigurationModel config) {
+        Intent intent = new Intent(getApplicationContext(), PanguActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra("name", config.getName());
+        intent.putExtra("ipAddress", config.getIpAddress());
+        intent.putExtra("portNum", config.getPortNum());
+        startActivity(intent);
+    }
+//
+//    private void updateConfiguration() {
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+//        if (prev != null) {
+//            ft.remove(prev);
+//        }
+//        ft.addToBackStack(null);
+//
+//        // Create and show the dialog.
+//        UpdateConfigDialog newFragment = UpdateConfigDialog.newInstance("Some Title");
+//        newFragment.show(ft, "dialog");
+//    }
+
+    private void deleteConfiguration(int id) {
+        db = new DatabaseHelper(getApplicationContext());
+        DatabaseOperations databaseOperations = new DatabaseOperations(db);
+        ErrorHandler e = databaseOperations.deleteConfiguration(id);
+        if(e == ErrorHandler.SQL_EXECUTION_ERROR)
+            Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
+        else {
+            Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
+            getGridItems();
         }
     }
 }

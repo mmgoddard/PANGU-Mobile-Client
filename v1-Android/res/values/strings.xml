@@ -21,4 +21,8 @@
     <string name="down_control">down</string>
 
     <string name="action_add">Add Configuration</string>
+
+    <string name="popup_menu_run">Run Configuration</string>
+    <string name="popup_menu_update">Update Configuration</string>
+    <string name="popup_menu_delete">Delete Configuration</string>
 </resources>
