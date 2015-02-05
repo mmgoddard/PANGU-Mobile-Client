@@ -156,12 +156,12 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
                         ConfigurationModel config = values.get(position);
                         switch (item.getItemId()) {
                             case R.id.popupMenu_runConfiguration:
-                                runConfiguration(newView, config);
+                                runConfiguration(config);
                                 newView.findViewById(position);
                                 newView.setBackgroundColor(getResources().getColor(R.color.blurred));
                                 break;
                             case R.id.popupMenu_updateConfiguration:
-                                updateConfiguration();
+                                updateConfiguration(config);
                                 break;
                             case R.id.popupMenu_deleteConfiguration:
                                 deleteConfiguration(config.getId());
@@ -190,7 +190,7 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
         newFragment.show(ft, "dialog");
     }
 
-    private void runConfiguration(View v, ConfigurationModel config) {
+    private void runConfiguration(ConfigurationModel config) {
         Intent intent = new Intent(getApplicationContext(), PanguActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("name", config.getName());
@@ -199,7 +199,7 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
         startActivity(intent);
     }
 
-    private void updateConfiguration() {
+    private void updateConfiguration(ConfigurationModel cm) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
@@ -207,7 +207,7 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
         }
         ft.addToBackStack(null);
 
-        UpdateConfigDialog newFragment = UpdateConfigDialog.newInstance("Some Title");
+        UpdateConfigDialog newFragment = UpdateConfigDialog.newInstance("Update Configuration", cm);
         newFragment.show(ft, "dialog");
     }
 

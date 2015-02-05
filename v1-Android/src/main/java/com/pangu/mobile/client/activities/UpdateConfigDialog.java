@@ -16,19 +16,24 @@ import com.pangu.mobile.client.utils.Validation;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
 /**
- * Created by Mark on 02/02/15.
+ * Created by Mark on 03/02/15.
  */
-public class AddConfigDialog extends DialogFragment implements View.OnClickListener {
+public class UpdateConfigDialog extends DialogFragment implements View.OnClickListener{
     private EditText nameEditText, ipAddressEditText, portNumEditText;
-    private Button addConfigBtn;
-    private OnCompleteListener mListener;
-    private boolean nameCheck = false, ipAddressCheck = false, portNumCheck = false;
-    public AddConfigDialog() {}
+    private Button updateConfigBtn;
+    private UpdateOnCompleteListener mListener;
+    private boolean nameCheck = true, ipAddressCheck = true, portNumCheck = true;
+    private int id;
+    public UpdateConfigDialog() {}
 
-    public static AddConfigDialog newInstance(String title) {
-        AddConfigDialog frag = new AddConfigDialog();
+    public static UpdateConfigDialog newInstance(String title, ConfigurationModel cm) {
+        UpdateConfigDialog frag = new UpdateConfigDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
+        args.putInt("id", cm.getId());
+        args.putString("name", cm.getName());
+        args.putString("ipAddress", cm.getIpAddress());
+        args.putString("portNum", cm.getPortNum());
         frag.setArguments(args);
         return frag;
     }
@@ -42,10 +47,12 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_config, container);
-        addConfigBtn = (Button) v.findViewById(R.id.add_config_btn);
-        addConfigBtn.setOnClickListener(this);
-        addConfigBtn.setEnabled(false);
+        id = getArguments().getInt("id");
+        updateConfigBtn = (Button) v.findViewById(R.id.add_config_btn);
+        updateConfigBtn.setText("Update Configuration");
+        updateConfigBtn.setOnClickListener(this);
         nameEditText = (EditText) v.findViewById(R.id.name_editText);
+        nameEditText.setText(getArguments().getString("name"));
         nameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -67,6 +74,7 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
             }
         });
         ipAddressEditText = (EditText) v.findViewById(R.id.ipAddress_editText);
+        ipAddressEditText.setText(getArguments().getString("ipAddress"));
         ipAddressEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -88,6 +96,7 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
             }
         });
         portNumEditText = (EditText) v.findViewById(R.id.portNum_editText);
+        portNumEditText.setText(getArguments().getString("portNum"));
         portNumEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -108,7 +117,7 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
                 enableBtnIfReady();
             }
         });
-        getDialog().setTitle("Add Configuration");
+        getDialog().setTitle(getArguments().getString("title"));
         return v;
     }
 
@@ -118,28 +127,28 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
         String ipAddress = ipAddressEditText.getText().toString();
         String portNum = portNumEditText.getText().toString();
 
-        ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum);
-        this.mListener.onCompleteAddConfiguration(cm);
+        ConfigurationModel cm = new ConfigurationModel(id, name, ipAddress, portNum);
+        this.mListener.onCompleteUpdateConfiguration(cm);
         dismiss();
     }
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            this.mListener = (OnCompleteListener) activity;
+            this.mListener = (UpdateOnCompleteListener) activity;
         } catch (final ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
         }
     }
 
-    public static interface OnCompleteListener {
-        public abstract void onCompleteAddConfiguration(ConfigurationModel cm);
+    public static interface UpdateOnCompleteListener {
+        public abstract void onCompleteUpdateConfiguration(ConfigurationModel cm);
     }
 
     public void enableBtnIfReady() {
         if (ipAddressCheck == true && portNumCheck == true && nameCheck == true)
-            addConfigBtn.setEnabled(true);
+            updateConfigBtn.setEnabled(true);
         else
-            addConfigBtn.setEnabled(false);
+            updateConfigBtn.setEnabled(false);
     }
 }

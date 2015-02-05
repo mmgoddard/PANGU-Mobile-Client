@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface APIRepository extends JpaRepository<PanguModel, Long> {
     List<PanguModel> findAll();
+    List<PanguModel> findById(Long id);
 }

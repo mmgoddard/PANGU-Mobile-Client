@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Table(name = "pangu_model")
 public class PanguModel implements Serializable {
     @Id
+    @NotNull
     private long id;
     @Column
     private String name;
