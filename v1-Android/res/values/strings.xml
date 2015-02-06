@@ -11,10 +11,6 @@
     <string name="roll">roll</string>
     <string name="coordinate_submit">Submit</string>
 
-    <color name="blurred">#26000000</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-
     <string name="left_control">left</string>
     <string name="right_control">right</string>
     <string name="up_control">up</string>
@@ -25,4 +21,10 @@
     <string name="popup_menu_run">Run Configuration</string>
     <string name="popup_menu_update">Update Configuration</string>
     <string name="popup_menu_delete">Delete Configuration</string>
+
+    <!-- Close App Dialog-->
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_title">Quit</string>
+    <string name="dialog_message">Really Quit</string>
 </resources>

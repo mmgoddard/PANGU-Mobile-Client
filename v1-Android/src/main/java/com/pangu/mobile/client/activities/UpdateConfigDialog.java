@@ -41,7 +41,7 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.MyCustomTheme);
     }
 
     @Override

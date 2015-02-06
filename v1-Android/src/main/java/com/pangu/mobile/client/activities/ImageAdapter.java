@@ -1,19 +1,25 @@
 package com.pangu.mobile.client.activities;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
+import com.pangu.mobile.client.utils.DatabaseOperations;
+import com.pangu.mobile.client.utils.ErrorHandler;
+
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Mark on 20/01/15.
@@ -22,11 +28,14 @@ public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater inflater;
     private List<ConfigurationModel> values;
+    private FragmentManager fm;
+    private ViewClickListener mViewClickListener;
 
-    public ImageAdapter(Context c, List<ConfigurationModel> values) {
+    public ImageAdapter(Context c, List<ConfigurationModel> values, FragmentManager fm) {
         mContext = c;
         this.inflater = LayoutInflater.from(c);
         this.values = values;
+        this.fm = fm;
     }
 
     public int getCount() {
@@ -49,11 +58,66 @@ public class ImageAdapter extends BaseAdapter {
             grid = convertView;
         }
 
-        TextView imageView = (TextView)grid.findViewById(R.id.grid_image);
-        TextView textView = (TextView)grid.findViewById(R.id.grid_text);
-        imageView.setBackgroundColor(Color.RED);
-        if(values.size() != 0)
-            textView.setText(values.get(position).getName());
+        TextView title = (TextView)grid.findViewById(R.id.item_title);
+        TextView desc = (TextView)grid.findViewById(R.id.item_desc);
+        final ConfigurationModel element = values.get(position);
+        if(values.size() != 0) {
+            title.setText(element.getName());
+            desc.setText(element.getIpAddress()+":"+element.getPortNum());
+        }
+
+        TextView deleteBtn = (TextView)grid.findViewById(R.id.item_delete);
+        deleteBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mViewClickListener.onCompleteDeleteConfiguration(element.getId());
+            }
+        });
+
+        TextView editBtn = (TextView)grid.findViewById(R.id.item_edit);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateConfiguration(element);
+            }
+        });
+
+        TextView runBtn = (TextView)grid.findViewById(R.id.item_run);
+        runBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                runConfiguration(element);
+            }
+        });
         return grid;
+    }
+
+    private void runConfiguration(ConfigurationModel config) {
+        Intent intent = new Intent(mContext, PanguActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra("name", config.getName());
+        intent.putExtra("ipAddress", config.getIpAddress());
+        intent.putExtra("portNum", config.getPortNum());
+        mContext.startActivity(intent);
+    }
+
+    public void updateConfiguration(ConfigurationModel cm) {
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        UpdateConfigDialog newFragment = UpdateConfigDialog.newInstance("Update Configuration", cm);
+        newFragment.show(ft, "dialog");
+    }
+
+    public interface ViewClickListener {
+        void onCompleteDeleteConfiguration(int id);
+    }
+
+    public void setViewClickListener (ViewClickListener viewClickListener) {
+        mViewClickListener = viewClickListener;
     }
 }
