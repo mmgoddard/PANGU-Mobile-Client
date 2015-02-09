@@ -1,6 +1,5 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,35 +15,30 @@ import com.pangu.mobile.client.utils.Validation;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
 /**
- * Created by Mark on 02/02/15.
+ * Created by Mark on 06/02/15.
  */
-public class AddConfigDialog extends DialogFragment implements View.OnClickListener {
+public abstract class InputDialog extends DialogFragment {
     private EditText nameEditText, ipAddressEditText, portNumEditText;
-    private Button addConfigBtn;
-    private OnCompleteListener mListener;
     private boolean nameCheck = false, ipAddressCheck = false, portNumCheck = false;
-    public AddConfigDialog() {}
+    private Button confirmBtn;
 
-    public static AddConfigDialog newInstance(String title) {
-        AddConfigDialog frag = new AddConfigDialog();
+    public void setArgs(String title) {
         Bundle args = new Bundle();
         args.putString("title", title);
-        frag.setArguments(args);
-        return frag;
+        setArguments(args);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.MyCustomTheme);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_config, container);
-        addConfigBtn = (Button) v.findViewById(R.id.add_config_btn);
-        addConfigBtn.setOnClickListener(this);
-        addConfigBtn.setEnabled(false);
+        String title = getArguments().getString("title");
+
         nameEditText = (EditText) v.findViewById(R.id.name_editText);
         nameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -108,38 +102,33 @@ public class AddConfigDialog extends DialogFragment implements View.OnClickListe
                 enableBtnIfReady();
             }
         });
-        getDialog().setTitle("Add Configuration");
+        confirmBtn = (Button) v.findViewById(R.id.add_config_btn);
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = nameEditText.getText().toString();
+                String ipAddress = ipAddressEditText.getText().toString();
+                String portNum = portNumEditText.getText().toString();
+
+                ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum);
+                confirm(cm);
+            }
+        });
+        confirmBtn.setEnabled(false);
+        getDialog().setTitle(title);
         return v;
     }
 
-    @Override
-    public void onClick(View v) {
-        String name = nameEditText.getText().toString();
-        String ipAddress = ipAddressEditText.getText().toString();
-        String portNum = portNumEditText.getText().toString();
+    /**
+     * Must override this method to handle confirmation event
+     */
+    public abstract void confirm(ConfigurationModel cm);
 
-        ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum);
-        this.mListener.onCompleteAddConfiguration(cm);
-        dismiss();
-    }
 
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            this.mListener = (OnCompleteListener) activity;
-        } catch (final ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
-        }
-    }
-
-    public static interface OnCompleteListener {
-        public abstract void onCompleteAddConfiguration(ConfigurationModel cm);
-    }
-
-    public void enableBtnIfReady() {
+    private void enableBtnIfReady() {
         if (ipAddressCheck == true && portNumCheck == true && nameCheck == true)
-            addConfigBtn.setEnabled(true);
+            confirmBtn.setEnabled(true);
         else
-            addConfigBtn.setEnabled(false);
+            confirmBtn.setEnabled(false);
     }
 }

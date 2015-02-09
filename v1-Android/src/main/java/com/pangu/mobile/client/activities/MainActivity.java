@@ -2,6 +2,7 @@ package com.pangu.mobile.client.activities;
 
 import android.app.*;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +14,6 @@ import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.ErrorHandler;
-
 import java.util.List;
 
 /**
@@ -21,8 +21,9 @@ import java.util.List;
  * @Date 08/10/2014
  * @Desc Starts the main activity.
  */
-public class MainActivity extends Activity implements AddConfigDialog.OnCompleteListener, UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
+public class MainActivity extends Activity implements UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
     private DatabaseHelper db;
+    public MainActivity() {}
 
     /**
      * Called when the activity is first created.
@@ -91,25 +92,15 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
      */
     @Override
     public void onBackPressed() {
-        DialogFragment newFragment = new CloseAppDialog();
-        newFragment.show(getFragmentManager(), "missiles");
-    }
-
-    /**
-     * After the AddConfigDialog fragment completes, it calls this callback.
-     *
-     * @param cm
-     */
-    public void onCompleteAddConfiguration(ConfigurationModel cm) {
-        db = new DatabaseHelper(getApplicationContext());
-        DatabaseOperations databaseOperations = new DatabaseOperations(db);
-        ErrorHandler e = databaseOperations.insertConfiguration(cm);
-        if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
-            Toast.makeText(getApplicationContext(), "Added Configuration", Toast.LENGTH_LONG).show();
-            getGridItems();
-        } else {
-            Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
-        }
+        String message = "Really Quit";
+        ConfirmationDialog dialog = new ConfirmationDialog () {
+            @Override
+            public void confirm() {
+                startIntent(Intent.ACTION_MAIN);
+            }
+        };
+        dialog.setArgs("", message);
+        showDialogFragment(dialog);
     }
 
     /**
@@ -135,14 +126,22 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
      * @param id
      */
     public void onCompleteDeleteConfiguration(int id) {
-        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        db = new DatabaseHelper(getApplicationContext());
         DatabaseOperations databaseOperations = new DatabaseOperations(db);
         ErrorHandler e = databaseOperations.deleteConfiguration(id);
         if (e == ErrorHandler.SQL_EXECUTION_ERROR)
             Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
         else {
-            Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
-            getGridItems();
+            String message = "Are are you sure you want to delete this item?";
+            ConfirmationDialog dialog = new ConfirmationDialog () {
+                @Override
+                public void confirm() {
+                    Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
+                    getGridItems();
+                }
+            };
+            dialog.setArgs("", message);
+            showDialogFragment(dialog);
         }
     }
 
@@ -161,15 +160,39 @@ public class MainActivity extends Activity implements AddConfigDialog.OnComplete
     }
 
     public void addConfiguration() {
+        final InputDialog dialog = new InputDialog() {
+            @Override
+            public void confirm(ConfigurationModel cm) {
+                db = new DatabaseHelper(getApplicationContext());
+                DatabaseOperations databaseOperations = new DatabaseOperations(db);
+                ErrorHandler e = databaseOperations.insertConfiguration(cm);
+                if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
+                    Toast.makeText(getApplicationContext(), "Added Configuration", Toast.LENGTH_LONG).show();
+                    dismiss();
+                    getGridItems();
+                } else {
+                    Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        dialog.setArgs("Add Configuration");
+        showDialogFragment(dialog);
+    }
+
+    public void showDialogFragment(DialogFragment newFragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
             ft.remove(prev);
         }
-        ft.addToBackStack(null);
-
-        // Create and show the dialog.
-        AddConfigDialog newFragment = AddConfigDialog.newInstance("Add Configuration");
+        ft.addToBackStack("dialog");
         newFragment.show(ft, "dialog");
+    }
+
+    public void startIntent(String intentStr) {
+        Intent intent = new Intent(intentStr);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
