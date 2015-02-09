@@ -1,25 +1,18 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
-import com.pangu.mobile.client.utils.DatabaseHelper;
-import com.pangu.mobile.client.utils.DatabaseOperations;
-import com.pangu.mobile.client.utils.ErrorHandler;
 
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Mark on 20/01/15.
@@ -53,7 +46,7 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final View grid;
         if (convertView == null) {
-            grid = inflater.inflate(R.layout.grid, parent, false);
+            grid = inflater.inflate(R.layout.list_view_content, parent, false);
         } else {
             grid = convertView;
         }
@@ -101,7 +94,7 @@ public class ImageAdapter extends BaseAdapter {
         mContext.startActivity(intent);
     }
 
-    public void updateConfiguration(ConfigurationModel cm) {
+    private void updateConfiguration(ConfigurationModel cm) {
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag("dialog");
         if (prev != null) {

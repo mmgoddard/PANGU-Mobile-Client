@@ -14,7 +14,7 @@ import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 /**
  * Created by Mark on 20/01/15.
  */
-public class PanguActivity extends Activity implements View.OnClickListener {
+public class PanguActivity extends BaseActivity implements View.OnClickListener {
     private int dstPort;
     private String modelName, ipAddress;
     private double x_coordinate = 0.0, y_coordinate = 0.0, z_coordinate = 100000.0;
@@ -33,7 +33,7 @@ public class PanguActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pangu);
+        setContentView(getResID());
 
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();
@@ -67,6 +67,11 @@ public class PanguActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected int getResID() {
+        return R.layout.pangu;
+    }
+
+    @Override
     public void onClick(View v) {
         int step = 1000;
         switch (v.getId()) {
@@ -87,14 +92,5 @@ public class PanguActivity extends Activity implements View.OnClickListener {
         viewPoint = new ViewPoint(vector3D, yaw, pitch, roll);
         panguConnection = new PanguConnection(this, imgView, ipAddress, dstPort, viewPoint, headerProgress);
         panguConnection.execute();
-    }
-
-    /**
-     * Called when the activity is paused.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }

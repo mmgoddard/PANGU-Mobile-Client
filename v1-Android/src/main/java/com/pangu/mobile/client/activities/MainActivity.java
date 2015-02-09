@@ -2,12 +2,10 @@ package com.pangu.mobile.client.activities;
 
 import android.app.*;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
@@ -21,9 +19,8 @@ import java.util.List;
  * @Date 08/10/2014
  * @Desc Starts the main activity.
  */
-public class MainActivity extends Activity implements UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
+public class MainActivity extends BaseActivity implements UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
     private DatabaseHelper db;
-    public MainActivity() {}
 
     /**
      * Called when the activity is first created.
@@ -31,11 +28,16 @@ public class MainActivity extends Activity implements UpdateConfigDialog.UpdateO
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.grid_view);
+        setContentView(getResID());
 
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
         db = new DatabaseHelper(getApplicationContext());
+    }
+
+    @Override
+    protected int getResID() {
+        return R.layout.list_view;
     }
 
     /**
@@ -79,21 +81,12 @@ public class MainActivity extends Activity implements UpdateConfigDialog.UpdateO
     }
 
     /**
-     * Called when the activity is paused.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-    }
-
-    /**
      * Called when the back button is pressed
      */
     @Override
     public void onBackPressed() {
         String message = "Really Quit";
-        ConfirmationDialog dialog = new ConfirmationDialog () {
+        ConfirmationDialog dialog = new ConfirmationDialog() {
             @Override
             public void confirm() {
                 startIntent(Intent.ACTION_MAIN);
@@ -133,7 +126,7 @@ public class MainActivity extends Activity implements UpdateConfigDialog.UpdateO
             Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
         else {
             String message = "Are are you sure you want to delete this item?";
-            ConfirmationDialog dialog = new ConfirmationDialog () {
+            ConfirmationDialog dialog = new ConfirmationDialog() {
                 @Override
                 public void confirm() {
                     Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
