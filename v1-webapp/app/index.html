@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app>
+<head lang="en">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
+    <title>Admin Portal</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="assets/js/services.js"></script>
+</head>
+<body>
+    <h1 class="text-center">PANGU Mobile Admin Portal</h1>
+    <div ng-controller="findAll" class="container">
+        <table ng-table class="table table-hover">
+            <tr>
+                <td><b>Name</b></td>
+            </tr>
+            <tr ng-repeat="x in pangu">
+                <td>{{x.name}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

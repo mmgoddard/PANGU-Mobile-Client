@@ -1,0 +1,6 @@
+@import 'app/components/bootstrap-sass-official/assets/stylesheets/bootstrap';
+@import 'mixin';
+
+.container {
+  @include center-block(80%);
+}
