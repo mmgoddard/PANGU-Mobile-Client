@@ -14,14 +14,21 @@ import java.util.List;
 public class DatabaseOperationsTest extends AndroidTestCase {
     private DatabaseHelper databaseHelper;
     private DatabaseOperations databaseOperations;
+    private ConfigurationModel insertConfig, updateConfig;
+    private String testDbName = "test_";
+    private int testID = 1;
+    private String insertName = "Config1", insertIpAddress = "127.0.0.1", insertPortNum = "8080";
+    private String updateName = "Test", updateIpAddress = "154.23.12.1", updatePortNum = "11000";
 
     @Override
     protected void setUp() throws Exception {
         //Performs database and file operations with a renamed database
-        RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "test_");
+        RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), testDbName);
 
         databaseHelper = new DatabaseHelper(context);
         databaseOperations = new DatabaseOperations(databaseHelper);
+        insertConfig = new ConfigurationModel(testID, insertName, insertIpAddress, insertPortNum);
+        updateConfig = new ConfigurationModel(testID, updateName, updateIpAddress, updatePortNum);
     }
 
     /**
@@ -51,7 +58,6 @@ public class DatabaseOperationsTest extends AndroidTestCase {
      */
     public void testInsertOperation() {
         //Insert a new record into the database
-        ConfigurationModel insertConfig = new ConfigurationModel(1, "Config1", "127.0.0.1", "8080");
         ErrorHandler insertErrorHandler = databaseOperations.insertConfiguration(insertConfig);
         assertEquals(ErrorHandler.SQL_EXECUTION_SUCCESS.code(), insertErrorHandler.code());
 
@@ -74,12 +80,10 @@ public class DatabaseOperationsTest extends AndroidTestCase {
      */
     public void testUpdateOperation() {
         //Add a configuration into database
-        ConfigurationModel insertConfig = new ConfigurationModel(1, "Config1", "127.0.0.1", "8080");
         ErrorHandler insertErrorHandler = databaseOperations.insertConfiguration(insertConfig);
         assertEquals(ErrorHandler.SQL_EXECUTION_SUCCESS.code(), insertErrorHandler.code());
 
         //Update existing record in database
-        ConfigurationModel updateConfig = new ConfigurationModel(1, "Test", "154.23.12.1", "11000");
         ErrorHandler updateErrorHandler = databaseOperations.updateConfiguration(updateConfig);
         assertEquals(ErrorHandler.SQL_EXECUTION_SUCCESS.code(), updateErrorHandler.code());
 
@@ -102,7 +106,6 @@ public class DatabaseOperationsTest extends AndroidTestCase {
      */
     public void testDeleteOperation() {
         //Add a configuration into database
-        ConfigurationModel insertConfig = new ConfigurationModel(1, "Config1", "127.0.0.1", "8080");
         ErrorHandler insertErrorHandler = databaseOperations.insertConfiguration(insertConfig);
         assertEquals(ErrorHandler.SQL_EXECUTION_SUCCESS.code(), insertErrorHandler.code());
 
@@ -121,6 +124,10 @@ public class DatabaseOperationsTest extends AndroidTestCase {
         assertNull(readList);
     }
 
+    /**
+     * The method is called after the tests are executed and closes the database connection.
+     * @throws Exception
+     */
     public void tearDown() throws Exception{
         databaseHelper.close();
         super.tearDown();
