@@ -1,6 +1,16 @@
+$icon-font-path: '../../../app/components/bootstrap-sass-official/assets/fonts/bootstrap/';
 @import 'app/components/bootstrap-sass-official/assets/stylesheets/bootstrap';
 @import 'mixin';
 
+//Global Variables
+$margin-btm: 25px;
+
 .container {
+  margin-top: $margin-btm;
   @include center-block(80%);
+}
+
+.glyph {
+  margin-top:2px;
+
 }

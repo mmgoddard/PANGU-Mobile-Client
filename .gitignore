@@ -26,3 +26,10 @@ proguard/
 *.iws
 .idea/
 local.properties
+
+# Sass
+.sass-cache
+*.css.map
+
+# Ignore tempfiles
+*.swp
