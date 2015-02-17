@@ -22,9 +22,13 @@
     <string name="popup_menu_update">Update Configuration</string>
     <string name="popup_menu_delete">Delete Configuration</string>
 
-    <!-- Close App Dialog-->
+    <!-- Close App Dialog -->
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="dialog_title">Quit</string>
     <string name="dialog_message">Really Quit</string>
+
+    <!-- Fonts -->
+    <string name="condensed">sans-serif-condensed</string>
+    <string name="light">sans-serif-light</string>
 </resources>

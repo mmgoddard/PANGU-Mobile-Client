@@ -46,7 +46,7 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_config, container);
+        View v = inflater.inflate(R.layout.fragment_config_dialog, container);
         id = getArguments().getInt("id");
         updateConfigBtn = (Button) v.findViewById(R.id.add_config_btn);
         updateConfigBtn.setText("Update Configuration");

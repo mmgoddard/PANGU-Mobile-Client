@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
+        //Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_add:
                 addConfiguration();

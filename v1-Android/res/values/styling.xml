@@ -4,7 +4,8 @@
         <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
         <item name="android:windowBackground">@color/background_colour</item>
         <item name="android:actionBarItemBackground">@color/action_bar_bg_colour</item>
-        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:textViewStyle">@style/TextViewStyle</item>
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
     </style>
 
     <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -14,10 +15,14 @@
 
     <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/action_bar_text_colour</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">@string/condensed</item>
     </style>
 
-    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-light</item>
+    <style name="TextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@string/light</item>
+    </style>
+
+    <style name="ButtonStyle" parent="android:Widget.Button">
+        <item name="android:textColor">@color/button_text_colour</item>
     </style>
 </resources>

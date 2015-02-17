@@ -36,7 +36,7 @@ public abstract class InputDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_config, container);
+        View v = inflater.inflate(R.layout.fragment_config_dialog, container);
         String title = getArguments().getString("title");
 
         nameEditText = (EditText) v.findViewById(R.id.name_editText);

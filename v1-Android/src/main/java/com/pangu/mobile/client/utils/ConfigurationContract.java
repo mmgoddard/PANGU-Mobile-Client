@@ -11,7 +11,6 @@ public class ConfigurationContract {
     public static abstract class PanguEntry implements BaseColumns {
         private static final String TEXT_TYPE = " TEXT";
         private static final String COMMA_SEP = ",";
-        private static final String PK = " PRIMARY KEY";
         private static final String AUTO_INCREMENT = " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL";
 
         //Pangu Table
@@ -32,8 +31,5 @@ public class ConfigurationContract {
 
         //PANGU TABLE - Delete Statement
         public static final String DELETE_TABLE_PANGU = "DROP TABLE IF EXISTS " + PANGU_TABLE;
-
-        public static final String[] allPanguColumns = new String[] { _ID, PANGU_NAME, PANGU_IP_ADDRESS, PANGU_PORT_NUM };
-        public static final String[] idAndName = new String[] { _ID, PANGU_NAME};
     }
 }
