@@ -20,6 +20,10 @@ public class DatabaseOperationsTest extends AndroidTestCase {
     private String insertName = "Config1", insertIpAddress = "127.0.0.1", insertPortNum = "8080";
     private String updateName = "Test", updateIpAddress = "154.23.12.1", updatePortNum = "11000";
 
+    /**
+     * Setups the testing conditions and is called before any tests are executed
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         //Performs database and file operations with a renamed database

@@ -3,14 +3,15 @@ package com.pangu.mobile.client.activities;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
-
     private MainActivity mActivity;
     private ListView listView;
-    private ImageAdapter imageAdapter;
+    private BaseAdapter baseAdapter;
 
     @TargetApi(Build.VERSION_CODES.FROYO)
     public MainActivityTest() {
@@ -26,16 +27,13 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         super.setUp();
 
         mActivity = getActivity();
-        listView = new ListView(mActivity);
+        listView = findlistViewById(com.pangu.mobile.client.R.layout.list_view);
     }
 
-//    public void testNoView() {
-//        assertNotNull(mActivity);
-//        assertNotNull(listView);
-//        assertNotNull(imageAdapter);
-//        assertTrue(imageAdapter.areAllItemsEnabled());
-//    }
-//
+    public void testActivity() {
+        assertNotNull(mActivity);
+    }
+
 //    public void testImageAdapter() {
 //        listView.setAdapter(imageAdapter);
 //        assertSame(imageAdapter, listView.getAdapter());
