@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Mark on 23/01/15.
- */
+*/
 @RestController
 public class ErrorControl implements ErrorController {
     private static final String PATH = "/error";
