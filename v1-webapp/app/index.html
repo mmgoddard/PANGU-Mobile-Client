@@ -1,30 +1,40 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="myapp">
+<html ng-app="web-app">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Portal</title>
-
+    <!-- Load global stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
-
+    <!-- Load Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <!-- Load angular app and controllers -->
     <script src="app.js"></script>
     <script src="controllers.js"></script>
+    <base href="/webapp/app/">
 </head>
 <body>
-    <div class="container">
-        <!-- Include the header -->
-        <div ng-include="'views/_header.html'"></div>
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">PANGU Mobile Admin Portal</a>
+            </div>
 
-        <!-- Main Content -->
-        <p class="lead">Title of page</p>
-        <div ng-view></div>
-    </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="viewOne"><i class="fa fa-shield"></i> About</a></li>
+                <li><a href="contact"><i class="fa fa-comment"></i> Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <p class="lead">Title of page</p>
+    <div ng-view></div>
+</div>
 
-    <!-- Include the footer -->
-    <div ng-include="'views/_footer.html'"></div>
+<!-- Include the footer -->
+<div ng-include="'views/_footer.html'"></div>
 </body>
-</html>
