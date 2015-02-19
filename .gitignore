@@ -33,3 +33,6 @@ local.properties
 
 # Ignore tempfiles
 *.swp
+
+# So db credentials are compromised
+application.properties
