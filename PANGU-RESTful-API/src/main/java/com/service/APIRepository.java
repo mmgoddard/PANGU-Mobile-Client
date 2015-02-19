@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface APIRepository extends JpaRepository<PanguModel, Long> {
     public List<PanguModel> findAll();
-    public PanguModel findById(Long id);
+    public PanguModel findById(long id);
 }

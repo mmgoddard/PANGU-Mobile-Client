@@ -20,7 +20,7 @@ public class APIController {
      * Returns a list of PANGU records.
      * @return list
      */
-    @RequestMapping(value="/getAll", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value="/models", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<PanguModel> findAll() {
         return apiRepository.findAll();
     }
@@ -30,38 +30,29 @@ public class APIController {
      * @param panguId
      * @return
      */
-    @RequestMapping(value="/getById/{panguId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value="/models/{panguId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public PanguModel findById(@PathVariable("panguId") long panguId) {
         return apiRepository.findById(panguId);
     }
 
     /**
      * Adds a new record to the database.
+     * Updates a existing record in the database.
      * @param panguModel
      * @return
      */
-    @RequestMapping(value="/addRecord", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value="/models/add", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void addRecord(@RequestBody PanguModel panguModel) {
         apiRepository.save(panguModel);
     }
 
     /**
-     * Deletes an existing record from the database
+     * Deletes an existing record from the database.
      * @param panguId
      * @return
      */
-//    @RequestMapping(value="/getById/{panguId}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public void deleteRecord(@RequestBody long panguId) {
-//        apiRepository.delete(panguId);
-//    }
-
-    /**
-     * Updates an existing record from the database
-     * @param panguModel
-     * @return
-     */
-    @RequestMapping(value="/updateRecord", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateRecord(@RequestBody PanguModel panguModel) {
-        apiRepository.save(panguModel);
+    @RequestMapping(value="/models/{panguId}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deleteRecord(@PathVariable long panguId) {
+        apiRepository.delete(panguId);
     }
 }
