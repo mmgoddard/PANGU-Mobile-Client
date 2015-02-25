@@ -3,7 +3,6 @@ package com.pangu.mobile.client.activities;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.test.AndroidTestCase;
-import android.widget.EditText;
 import com.pangu.mobile.client.utils.Validation;
 
 /**
@@ -11,8 +10,6 @@ import com.pangu.mobile.client.utils.Validation;
  */
 public class ValidationTest extends AndroidTestCase {
     private Validation validation;
-    private EditText editText;
-    private InputDialog inputDialog;
 
     /**
      * Setups the testing conditions and is called before any tests are executed

@@ -5,8 +5,10 @@
     <color name="white">#FFFFFF</color>
 
     <!-- MyTheme Colours -->
-    <color name="action_bar_bg_colour">#54BE39</color>
+    <color name="default_color_theme">#54BE39</color>
     <color name="action_bar_text_colour">#FFFFFF</color>
     <color name="background_colour">#D8DEE4</color>
-    <color name="button_text_colour">#54BE39</color>
+
+    <!-- Progress Bar Color -->
+    <color name="end_color">#DDDDDD</color>
 </resources>

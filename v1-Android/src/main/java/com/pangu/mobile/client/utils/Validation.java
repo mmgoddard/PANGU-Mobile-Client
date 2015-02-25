@@ -46,7 +46,7 @@ public class Validation {
      * @return
      */
     public boolean isAlphaNumeric(String input){
-        String pattern= "^[a-zA-Z0-9]*$";
+        String pattern= "^[a-zA-Z0-9 ]*$";
         if(input.matches(pattern)){
             return true;
         }

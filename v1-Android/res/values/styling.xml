@@ -3,13 +3,13 @@
     <style name="MyCustomTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
         <item name="android:windowBackground">@color/background_colour</item>
-        <item name="android:actionBarItemBackground">@color/action_bar_bg_colour</item>
+        <item name="android:actionBarItemBackground">@color/default_color_theme</item>
         <item name="android:textViewStyle">@style/TextViewStyle</item>
         <item name="android:buttonStyle">@style/ButtonStyle</item>
     </style>
 
     <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/action_bar_bg_colour</item>
+        <item name="android:background">@color/default_color_theme</item>
         <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
     </style>
 
@@ -23,6 +23,20 @@
     </style>
 
     <style name="ButtonStyle" parent="android:Widget.Button">
-        <item name="android:textColor">@color/button_text_colour</item>
+        <item name="android:textColor">@color/default_color_theme</item>
+    </style>
+
+    <style name="InformationActivityTextViewTitle" parent="android:Widget.TextView">
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingLeft">25dp</item>
+        <item name="android:fontFamily">@string/condensed</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="InformationActivityTextViewContent" parent="android:Widget.TextView">
+        <item name="android:textSize">15dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
     </style>
 </resources>

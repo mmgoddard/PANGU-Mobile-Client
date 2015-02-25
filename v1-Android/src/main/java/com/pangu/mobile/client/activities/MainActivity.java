@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_bar_actions, menu);
+        inflater.inflate(R.menu.main_activity_action_bar_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

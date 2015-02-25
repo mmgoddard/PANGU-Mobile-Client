@@ -2,22 +2,21 @@ package com.pangu.mobile.client.background_tasks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import com.pangu.mobile.client.utils.ErrorHandler;
+import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.utils.LoggerHandler;
 import com.pangu.mobile.client.utils.NetworkHelper;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
-import java.io.IOException;
+
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * @author Mark Goddard
@@ -28,8 +27,8 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
     private final WeakReference<LinearLayout> headerProgressReference;
     private final WeakReference<ImageView> imageViewReference;
     private Context context;
-    private String dstName = "192.168.0.13";
-    private int dstPort = 8080;
+    private String dstName;
+    private int dstPort;
     private ClientConnection client;
     private Bitmap bitmap;
     private ViewPoint viewPoint;
@@ -102,6 +101,8 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
             }
         } else if (result == ErrorHandler.NO_INTERNET_CONNECTION || result == ErrorHandler.IO_ERROR) {
             Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
+            final ImageView imageView = imageViewReference.get();
+            imageView.setImageResource(R.drawable.no_image_available);
         }
     }
 }

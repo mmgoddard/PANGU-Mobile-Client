@@ -19,5 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.PanguActivity"></activity>
+        <activity android:name=".activities.InformationActivity"></activity>
     </application>
 </manifest>

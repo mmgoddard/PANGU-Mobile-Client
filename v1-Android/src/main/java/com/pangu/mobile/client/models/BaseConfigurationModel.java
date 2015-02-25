@@ -1,5 +1,9 @@
 package com.pangu.mobile.client.models;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by Mark on 30/01/15.
  */

@@ -6,7 +6,7 @@ package com.pangu.mobile.client.utils;
 public enum ErrorHandler {
     OK("200", "OK", "Successful Request"),
     NO_INTERNET_CONNECTION("503", "Service Unavailable", "There is no active Internet Connection"),
-    IO_ERROR("501", "Internal Server Error", "I/O Error Occurred"),
+    IO_ERROR("501", "Internal Server Error", "An Error Occurred. Check you Internet Connection and Server Details and try again!"),
 
     //Database Messages
     SQL_EXECUTION_ERROR("800", "SQL Execution Error", "An Error Occurred"),

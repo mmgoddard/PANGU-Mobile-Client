@@ -15,11 +15,11 @@
                 android:width="48dip"/>
 
         <gradient
-                android:centerColor="@color/white"
+                android:centerColor="@color/default_color_theme"
                 android:centerY="0.50"
-                android:endColor="@color/white"
-                android:startColor="@color/black"
-                android:type="sweep"
+                android:endColor="@color/end_color"
+                android:startColor="@color/default_color_theme"
+                android:type="linear"
                 android:useLevel="false" />
     </shape>
 </rotate>

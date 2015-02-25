@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
-
 import java.util.List;
 
 /**
@@ -88,9 +87,7 @@ public class ImageAdapter extends BaseAdapter {
     private void runConfiguration(ConfigurationModel config) {
         Intent intent = new Intent(mContext, PanguActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra("name", config.getName());
-        intent.putExtra("ipAddress", config.getIpAddress());
-        intent.putExtra("portNum", config.getPortNum());
+        intent.putExtra("Configuration",config);
         mContext.startActivity(intent);
     }
 
