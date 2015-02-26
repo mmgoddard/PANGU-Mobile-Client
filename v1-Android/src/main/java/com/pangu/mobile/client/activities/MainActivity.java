@@ -12,6 +12,7 @@ import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.ErrorHandler;
+
 import java.util.List;
 
 /**
@@ -118,24 +119,24 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
      *
      * @param id
      */
-    public void onCompleteDeleteConfiguration(int id) {
-        db = new DatabaseHelper(getApplicationContext());
-        DatabaseOperations databaseOperations = new DatabaseOperations(db);
-        ErrorHandler e = databaseOperations.deleteConfiguration(id);
-        if (e == ErrorHandler.SQL_EXECUTION_ERROR)
-            Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
-        else {
-            String message = "Are are you sure you want to delete this item?";
-            ConfirmationDialog dialog = new ConfirmationDialog() {
-                @Override
-                public void confirm() {
+    public void onCompleteDeleteConfiguration(final int id) {
+        String message = "Are are you sure you want to delete this configuration?";
+        ConfirmationDialog dialog = new ConfirmationDialog() {
+            @Override
+            public void confirm() {
+                db = new DatabaseHelper(getApplicationContext());
+                DatabaseOperations databaseOperations = new DatabaseOperations(db);
+                ErrorHandler e = databaseOperations.deleteConfiguration(id);
+                if (e == ErrorHandler.SQL_EXECUTION_ERROR)
+                    Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
+                else
                     Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
-                    getGridItems();
-                }
-            };
-            dialog.setArgs("", message);
-            showDialogFragment(dialog);
-        }
+                getGridItems();
+            }
+        };
+        dialog.setArgs("", message);
+        showDialogFragment(dialog);
+
     }
 
     /**
