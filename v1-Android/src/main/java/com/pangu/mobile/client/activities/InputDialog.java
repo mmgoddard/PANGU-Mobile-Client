@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.Validation;
@@ -57,7 +58,6 @@ public abstract class InputDialog extends DialogFragment {
                     nameEditText.setError(null);
                     nameCheck = true;
                 }
-                enableBtnIfReady();
             }
         });
         ipAddressEditText = (EditText) v.findViewById(R.id.ipAddress_editText);
@@ -78,7 +78,6 @@ public abstract class InputDialog extends DialogFragment {
                     ipAddressEditText.setError(null);
                     ipAddressCheck = true;
                 }
-                enableBtnIfReady();
             }
         });
         portNumEditText = (EditText) v.findViewById(R.id.portNum_editText);
@@ -99,22 +98,23 @@ public abstract class InputDialog extends DialogFragment {
                     portNumEditText.setError(null);
                     portNumCheck = true;
                 }
-                enableBtnIfReady();
             }
         });
         confirmBtn = (Button) v.findViewById(R.id.add_config_btn);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = nameEditText.getText().toString();
-                String ipAddress = ipAddressEditText.getText().toString();
-                String portNum = portNumEditText.getText().toString();
+                if (ipAddressCheck == true && portNumCheck == true && nameCheck == true) {
+                    String name = nameEditText.getText().toString();
+                    String ipAddress = ipAddressEditText.getText().toString();
+                    String portNum = portNumEditText.getText().toString();
 
-                ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum);
-                confirm(cm);
+                    ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum);
+                    confirm(cm);
+                } else
+                    Toast.makeText(getActivity(), "The form has been incorrectly filled out.", Toast.LENGTH_LONG).show();
             }
         });
-        confirmBtn.setEnabled(false);
         getDialog().setTitle(title);
         return v;
     }
@@ -123,12 +123,4 @@ public abstract class InputDialog extends DialogFragment {
      * Must override this method to handle confirmation event
      */
     public abstract void confirm(ConfigurationModel cm);
-
-
-    private void enableBtnIfReady() {
-        if (ipAddressCheck == true && portNumCheck == true && nameCheck == true)
-            confirmBtn.setEnabled(true);
-        else
-            confirmBtn.setEnabled(false);
-    }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.Validation;
@@ -70,7 +71,6 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
                     nameEditText.setError(null);
                     nameCheck = true;
                 }
-                enableBtnIfReady();
             }
         });
         ipAddressEditText = (EditText) v.findViewById(R.id.ipAddress_editText);
@@ -92,7 +92,6 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
                     ipAddressEditText.setError(null);
                     ipAddressCheck = true;
                 }
-                enableBtnIfReady();
             }
         });
         portNumEditText = (EditText) v.findViewById(R.id.portNum_editText);
@@ -114,7 +113,6 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
                     portNumEditText.setError(null);
                     portNumCheck = true;
                 }
-                enableBtnIfReady();
             }
         });
         getDialog().setTitle(getArguments().getString("title"));
@@ -123,13 +121,17 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        String name = nameEditText.getText().toString();
-        String ipAddress = ipAddressEditText.getText().toString();
-        String portNum = portNumEditText.getText().toString();
+        if (ipAddressCheck == true && portNumCheck == true && nameCheck == true) {
+            String name = nameEditText.getText().toString();
+            String ipAddress = ipAddressEditText.getText().toString();
+            String portNum = portNumEditText.getText().toString();
 
-        ConfigurationModel cm = new ConfigurationModel(id, name, ipAddress, portNum);
-        this.mListener.onCompleteUpdateConfiguration(cm);
-        dismiss();
+            ConfigurationModel cm = new ConfigurationModel(id, name, ipAddress, portNum);
+            this.mListener.onCompleteUpdateConfiguration(cm);
+            dismiss();
+        } else {
+            Toast.makeText(getActivity(), "The form has been incorrectly filled out.", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void onAttach(Activity activity) {
@@ -143,12 +145,5 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
 
     public static interface UpdateOnCompleteListener {
         public abstract void onCompleteUpdateConfiguration(ConfigurationModel cm);
-    }
-
-    public void enableBtnIfReady() {
-        if (ipAddressCheck == true && portNumCheck == true && nameCheck == true)
-            updateConfigBtn.setEnabled(true);
-        else
-            updateConfigBtn.setEnabled(false);
     }
 }
