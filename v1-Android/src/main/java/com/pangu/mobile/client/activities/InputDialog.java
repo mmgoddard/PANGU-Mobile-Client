@@ -51,7 +51,7 @@ public abstract class InputDialog extends DialogFragment {
             public void afterTextChanged(Editable s) {
                 String name = s.toString();
                 if (Validation.getInstance().isEmpty(nameEditText) || !Validation.getInstance().isAlphaNumeric(name) || name.length() > 15) {
-                    nameEditText.setError("e.g. Config1");
+                    nameEditText.setError("e.g. 433 Eros");
                     nameCheck = false;
                 } else {
                     nameEditText.setError(null);

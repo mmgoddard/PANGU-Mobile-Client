@@ -33,18 +33,18 @@ public abstract class ConfirmationDialog extends DialogFragment {
             builder.setTitle(getArguments().getString("title"));
         }
         builder.setMessage(getArguments().getString("message"));
-        // Set confirmation action
-        builder.setPositiveButton(res.getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                confirm();
-            }
-        });
         // Set cancel action
-        builder.setNegativeButton(res.getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(res.getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 cancel();
+            }
+        });
+        // Set confirmation action
+        builder.setNegativeButton(res.getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirm();
             }
         });
         return builder.create();
@@ -58,7 +58,7 @@ public abstract class ConfirmationDialog extends DialogFragment {
 
 
     /**
-     * Override this method to do something special when operation cancelled
+     * Override this method to handle when operation is cancelled
      */
     public void cancel() {
         dismiss();

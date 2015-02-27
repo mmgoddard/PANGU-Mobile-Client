@@ -1,7 +1,9 @@
 package com.pangu.mobile.client.activities;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
@@ -13,12 +15,17 @@ import com.pangu.mobile.client.models.InformationModel;
  * Created by Mark on 24/02/15.
  */
 public class InformationActivity extends BaseActivity implements AsyncResponse {
+    private LinearLayout headerProgress;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getResID());
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle("About Model");
+        headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
         Bundle extras = getIntent().getExtras();
-        DataCollectionTask data = new DataCollectionTask(this, extras.getString("modelName"));
+        DataCollectionTask data = new DataCollectionTask(this, extras.getString("modelName"), headerProgress);
         data.asyncResponse = this;
         data.execute();
     }
@@ -33,10 +40,9 @@ public class InformationActivity extends BaseActivity implements AsyncResponse {
      * @param im
      */
     public void processData(InformationModel im) {
-        if(im != null) {
-            TextView nameText = (TextView) this.findViewById(R.id.info_name_title);
-            nameText.setText("About: " + im.getName());
-
+        TextView nameText = (TextView) this.findViewById(R.id.info_name_title);
+        nameText.setText("Name: " + im.getName());
+        if(im.getApproximateMass() != null) {
             TextView discoveredByText = (TextView) this.findViewById(R.id.info_discoveredBy_content);
             discoveredByText.setText(im.getDiscoveredBy());
 

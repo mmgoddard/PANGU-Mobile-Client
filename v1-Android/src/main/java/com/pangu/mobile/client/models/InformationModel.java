@@ -7,6 +7,9 @@ public class InformationModel extends BaseConfigurationModel{
     private String discoveredBy, discoveryDate, size, approximateMass, orbitalPeriod, description, comments;
 
     public InformationModel() {}
+    public InformationModel(String name) {
+        this.name = name;
+    }
 
     public String getComments() {
         return comments;

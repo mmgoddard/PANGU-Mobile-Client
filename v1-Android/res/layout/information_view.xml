@@ -4,6 +4,16 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
+    <LinearLayout
+            android:id="@+id/linlaHeaderProgress"
+            style="@style/ProgressBarLinearLayout">
+
+        <ProgressBar
+                android:id="@+id/pbHeaderProgress"
+                style="@style/ProgressBarHeader">
+        </ProgressBar>
+    </LinearLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -34,93 +44,65 @@
             <!-- Discovered By -->
             <TextView android:layout_weight="1"
                       android:id="@+id/info_discoveredBy_title"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       android:text="Discovered By"
                       android:layout_marginTop="10dp"
                       style="@style/InformationActivityTextViewTitle"/>
 
             <TextView android:id="@+id/info_discoveredBy_content"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       style="@style/InformationActivityTextViewContent"/>
 
             <!-- Discovery Date -->
             <TextView android:layout_weight="1"
                       android:id="@+id/info_discoveryDate_title"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       android:text="Discovery Date"
                       style="@style/InformationActivityTextViewTitle"/>
 
             <TextView android:id="@+id/info_discoveryDate_content"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       style="@style/InformationActivityTextViewContent"/>
 
             <!--Size -->
             <TextView android:layout_weight="1"
                       android:id="@+id/info_size_title"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       android:text="Size"
                       style="@style/InformationActivityTextViewTitle"/>
 
             <TextView android:id="@+id/info_size_content"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       style="@style/InformationActivityTextViewContent"/>
 
             <!-- Approximate Mass -->
             <TextView android:layout_weight="1"
                       android:id="@+id/info_approximateMass_title"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       android:text="Approximate Mass"
                       style="@style/InformationActivityTextViewTitle"/>
 
             <TextView android:id="@+id/info_approximateMass_content"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       style="@style/InformationActivityTextViewContent"/>
 
             <!-- Orbital Period -->
             <TextView android:layout_weight="1"
                       android:id="@+id/info_orbitalPeriod_title"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       android:text="Orbital Period"
                       style="@style/InformationActivityTextViewTitle"/>
 
             <TextView android:id="@+id/info_orbitalPeriod_content"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       style="@style/InformationActivityTextViewContent"/>
 
             <!-- Description -->
             <TextView android:layout_weight="1"
                       android:id="@+id/info_description_title"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       android:text="Description"
                       style="@style/InformationActivityTextViewTitle"/>
 
             <TextView android:id="@+id/info_description_content"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       style="@style/InformationActivityTextViewContent"/>
 
             <!-- Interesting Facts -->
             <TextView android:layout_weight="1"
                       android:id="@+id/info_interestingFacts_title"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       android:text="Interesting Facts"
                       style="@style/InformationActivityTextViewTitle"/>
 
             <TextView android:id="@+id/info_interestingFacts_content"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent"
                       style="@style/InformationActivityTextViewContent"/>
         </LinearLayout>
     </ScrollView>

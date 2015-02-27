@@ -6,6 +6,8 @@ package com.pangu.mobile.client.background_tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.pangu.mobile.client.interfaces.AsyncResponse;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.net.URLEncoder;
 
 /**
@@ -30,9 +33,10 @@ import java.net.URLEncoder;
  * @desc Connects to a PANGU server and returns the current image.
  */
 public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
+    private final WeakReference<LinearLayout> headerProgressReference;
     private Context context;
     private InformationModel data;
-    private String baseUrl = "http://192.168.0.7:11000/api/models/name/";
+    private String baseUrl = "http://192.168.0.7:8080/PANGU-RESTful-API-1.0-SNAPSHOT/api/models/name/";
     public AsyncResponse asyncResponse = null;
     private String modelName;
 
@@ -40,9 +44,10 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
      * @param context the current state of application.
      * @desc Constructor for the Socket Connection class
      */
-    public DataCollectionTask(Context context, String modelName) {
+    public DataCollectionTask(Context context, String modelName, LinearLayout headerProgress) {
         this.context = context;
         this.modelName = modelName;
+        this.headerProgressReference = new WeakReference<LinearLayout>(headerProgress);
     }
 
     /**
@@ -51,6 +56,8 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        final LinearLayout linearLayout = headerProgressReference.get();
+        linearLayout.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -78,6 +85,7 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
                 HttpEntity entity = response.getEntity();
                 reader = new InputStreamReader(entity.getContent());
                 data = new Gson().fromJson(reader, InformationModel.class);
+                data = new InformationModel(modelName);
                 return ErrorHandler.OK;
             } catch (IOException e) {
                 LoggerHandler.e("IO Exception has occurred when connecting to PANGU server.");
@@ -102,6 +110,8 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
      */
     @Override
     protected void onPostExecute(ErrorHandler result) {
+        final LinearLayout linearLayout = headerProgressReference.get();
+        linearLayout.setVisibility(View.GONE);
         if (result == ErrorHandler.OK) {
             asyncResponse.processData(data);
         } else if (result == ErrorHandler.NO_INTERNET_CONNECTION || result == ErrorHandler.IO_ERROR) {

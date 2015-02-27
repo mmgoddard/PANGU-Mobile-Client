@@ -8,5 +8,6 @@
         android:paddingRight="10dp"
         android:stretchMode="columnWidth"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp">
+        android:dividerHeight="10dp"
+        android:layout_marginBottom="10dp">
 </ListView>

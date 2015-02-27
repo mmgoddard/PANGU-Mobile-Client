@@ -1,5 +1,6 @@
 package com.pangu.mobile.client.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,6 +39,8 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getResID());
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle("View Model");
 
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();
