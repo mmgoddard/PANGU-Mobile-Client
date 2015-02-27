@@ -85,7 +85,9 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
                 HttpEntity entity = response.getEntity();
                 reader = new InputStreamReader(entity.getContent());
                 data = new Gson().fromJson(reader, InformationModel.class);
-                data = new InformationModel(modelName);
+                if(data == null) {
+                    data = new InformationModel(modelName);
+                }
                 return ErrorHandler.OK;
             } catch (IOException e) {
                 LoggerHandler.e("IO Exception has occurred when connecting to PANGU server.");
