@@ -1,6 +1,5 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,29 +10,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
+import com.pangu.mobile.client.base_classes.InputDialog;
 import com.pangu.mobile.client.models.ConfigurationModel;
+import com.pangu.mobile.client.models.ViewPoint;
 import com.pangu.mobile.client.utils.Validation;
 import org.apache.commons.validator.routines.InetAddressValidator;
+import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
 /**
  * Created by Mark on 06/02/15.
  */
-public abstract class InputDialog extends DialogFragment {
+public abstract class AddConfigDialog extends InputDialog {
     private EditText nameEditText, ipAddressEditText, portNumEditText;
     private boolean nameCheck = false, ipAddressCheck = false, portNumCheck = false;
     private Button confirmBtn;
-
-    public void setArgs(String title) {
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        setArguments(args);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.MyCustomTheme);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,7 +81,7 @@ public abstract class InputDialog extends DialogFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 String portNum = s.toString();
-                if (Validation.getInstance().isEmpty(portNumEditText) || !Validation.getInstance().isParsable(portNum) || Integer.parseInt(portNum) > 65565) {
+                if (Validation.getInstance().isEmpty(portNumEditText) || !Validation.getInstance().isIntParsable(portNum) || Integer.parseInt(portNum) > 65565) {
                     portNumEditText.setError("e.g. 8080");
                     portNumCheck = false;
                 } else {
@@ -109,8 +99,10 @@ public abstract class InputDialog extends DialogFragment {
                     String ipAddress = ipAddressEditText.getText().toString();
                     String portNum = portNumEditText.getText().toString();
 
-                    ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum);
-                    confirm(cm);
+                    Vector3D vector3D = new Vector3D(0.0, 0.0, 0.0);
+                    ViewPoint viewPoint = new ViewPoint(vector3D, 0.0, 0.0, 0.0);
+                    ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum, viewPoint, "false");
+                    submit(cm);
                 } else
                     Toast.makeText(getActivity(), "The form has been incorrectly filled out.", Toast.LENGTH_LONG).show();
             }
@@ -120,7 +112,7 @@ public abstract class InputDialog extends DialogFragment {
     }
 
     /**
-     * Must override this method to handle confirmation event
+     * Must override this method to handle submission event
      */
-    public abstract void confirm(ConfigurationModel cm);
+    public abstract void submit(ConfigurationModel v);
 }

@@ -3,34 +3,47 @@ package com.pangu.mobile.client.activities;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.*;
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.background_tasks.DataCollectionTask;
 import com.pangu.mobile.client.background_tasks.PanguConnection;
+import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.utils.DatabaseHelper;
+import com.pangu.mobile.client.utils.DatabaseOperations;
+import com.pangu.mobile.client.utils.Validation;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
 /**
  * Created by Mark on 20/01/15.
  */
-public class PanguActivity extends BaseActivity implements View.OnClickListener {
-    private double x_coordinate = 0.0, y_coordinate = 0.0, z_coordinate = 100000.0;
-    private double range = 0.0, yaw = 0.0, pitch = -90.0, roll = 0.0;
-    private Vector3D vector3D = new Vector3D(x_coordinate, y_coordinate, z_coordinate);
-    private ViewPoint viewPoint = new ViewPoint(vector3D, yaw, pitch, roll);
-    private Button leftControl, upControl, rightControl, downControl;
-    private PanguConnection panguConnection;
+public class PanguActivity extends BaseActivity implements View.OnClickListener, View.OnTouchListener {
+    private Vector3D vector3D = new Vector3D(0, 0, 0);
     private ImageView imgView;
     private LinearLayout headerProgress;
     private Bundle extras;
     private ConfigurationModel cm;
+    private ViewPoint viewPoint = new ViewPoint(vector3D, 0, 0, 0);
+    private boolean value = false;
+    private TextView yawAngle_TextView, pitchAngle_TextView, rollAngle_TextView, xCoordinate_TextView, yCoordinate_TextView, zCoordinate_TextView;
+    private double startX = 0, startY = 0;
+    private double yawAngle = 0.0, pitchAngle = 0.0, rollAngle = 0.0;
+    private int step = 10000;
+
+    @Override
+    protected int getMainLayoutResID() {
+        return R.layout.pangu;
+    }
+
+    @Override
+    protected int getOptionsMenuLayoutResID() {
+        return R.menu.pangu_activity_action_bar_actions;
+    }
 
     /**
      * Called when the activity is first created.
@@ -38,7 +51,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getResID());
+        setContentView(getMainLayoutResID());
         ActionBar actionBar = getActionBar();
         actionBar.setTitle("View Model");
 
@@ -54,60 +67,151 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener 
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
 
         imgView = (ImageView) findViewById(R.id.pangu_image);
-        getImage(vector3D);
+        getImage(viewPoint, value);
 
-        leftControl = (Button) findViewById(R.id.left_button);
+        Button leftControl = (Button) findViewById(R.id.left_button);
         leftControl.setOnClickListener(this);
 
-        upControl = (Button) findViewById(R.id.up_button);
+        Button upControl = (Button) findViewById(R.id.up_button);
         upControl.setOnClickListener(this);
 
-        rightControl = (Button) findViewById(R.id.right_button);
+        Button rightControl = (Button) findViewById(R.id.right_button);
         rightControl.setOnClickListener(this);
 
-        downControl = (Button) findViewById(R.id.down_button);
+        leftControl.setWidth(getScreenWidth() / 3);
+        rightControl.setWidth(getScreenWidth() / 3);
+        upControl.setWidth(getScreenWidth() / 3);
+
+        Button downControl = (Button) findViewById(R.id.down_button);
         downControl.setOnClickListener(this);
+        downControl.setWidth(getScreenWidth() / 3);
+
+        Button zoomIn = (Button) findViewById(R.id.zoom_in);
+        zoomIn.setOnClickListener(this);
+        zoomIn.setWidth(getScreenWidth() / 3);
+
+        Button zoomOut = (Button) findViewById(R.id.zoom_out);
+        zoomOut.setOnClickListener(this);
+        zoomOut.setWidth(getScreenWidth() / 3);
+
+        TextView stepTextView = (TextView) findViewById(R.id.step_TextView);
+        //stepTextView.setWidth(getScreenWidth() / 2);
+        final EditText stepEditText = (EditText) findViewById(R.id.step_EditText);
+        //stepEditText.setWidth(getScreenWidth() / 2);
+        stepEditText.setText(String.valueOf(step));
+        stepEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String str = s.toString();
+                if (Validation.getInstance().isEmpty(stepEditText) || !Validation.getInstance().isIntParsable(str))
+                    stepEditText.setError("Value needs to be number");
+                else {
+                    stepEditText.setError(null);
+                    step = Integer.parseInt(stepEditText.getText().toString());
+                }
+            }
+        });
+
+        yawAngle_TextView = (TextView) this.findViewById(R.id.yawAngle_TextView);
+        yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + yawAngle));
+
+        pitchAngle_TextView = (TextView) this.findViewById(R.id.pitchAngle_TextView);
+        pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + pitchAngle));
+
+        rollAngle_TextView = (TextView) this.findViewById(R.id.rollAngle_TextView);
+        rollAngle_TextView.setText(String.valueOf("Roll Angle: " + rollAngle));
+
+        xCoordinate_TextView = (TextView) this.findViewById(R.id.xCoordinate_TextView);
+        xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + viewPoint.getVector3D().i));
+
+        yCoordinate_TextView = (TextView) this.findViewById(R.id.yCoordinate_TextView);
+        yCoordinate_TextView.setText(String.valueOf("y-Coordinate: " + viewPoint.getVector3D().j));
+
+        zCoordinate_TextView = (TextView) this.findViewById(R.id.zCoordinate_TextView);
+        zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + viewPoint.getVector3D().k));
+
+        imgView.setOnTouchListener(this);
     }
 
     @Override
-    protected int getResID() {
-        return R.layout.pangu;
+    public void onResume() {
+        super.onResume();
+        if (cm.getSaved().equals("true")) {
+            viewPoint = cm.getViewPoint();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        cm.setViewPoint(viewPoint);
+        cm.setSaved("true");
+        DatabaseHelper db = new DatabaseHelper(this);
+        DatabaseOperations dOp = new DatabaseOperations(db);
+        dOp.updateAll(cm);
     }
 
     @Override
     public void onClick(View v) {
-        int step = 1000;
         switch (v.getId()) {
             case R.id.left_button:
-                x_coordinate -= step;
-            case R.id.up_button:
-                y_coordinate += step;
+                viewPoint.adjustOrigin(new Vector3D(-step, 0, 0));
+                break;
             case R.id.right_button:
-                x_coordinate += step;
+                viewPoint.adjustOrigin(new Vector3D(step, 0, 0));
+                break;
+            case R.id.up_button:
+                viewPoint.adjustOrigin(new Vector3D(0, step, 0));
+                break;
             case R.id.down_button:
-                y_coordinate -= step;
+                viewPoint.adjustOrigin(new Vector3D(0, -step, 0));
+                break;
+            case R.id.zoom_in:
+                viewPoint.adjustOrigin(new Vector3D(0, 0, -step));
+                break;
+            case R.id.zoom_out:
+                viewPoint.adjustOrigin(new Vector3D(0, 0, step));
+                break;
+            default:
+                break;
         }
-        vector3D = new Vector3D(x_coordinate, y_coordinate, z_coordinate);
-        getImage(vector3D);
+        getImage(viewPoint, value);
+        xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + viewPoint.getVector3D().i));
+        yCoordinate_TextView.setText(String.valueOf("y-Coordinate: " + viewPoint.getVector3D().j));
+        zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + viewPoint.getVector3D().k));
     }
 
-    public void getImage(Vector3D vector3D) {
-        viewPoint = new ViewPoint(vector3D, yaw, pitch, roll);
-        panguConnection = new PanguConnection(this, imgView, cm.getIpAddress(), Integer.parseInt(cm.getPortNum()), viewPoint, headerProgress);
+    public void setView() {
+        final EditViewDialog dialog = new EditViewDialog() {
+            @Override
+            public void submit(ViewPoint v) {
+                Toast.makeText(getApplicationContext(), "Updating Model", Toast.LENGTH_LONG).show();
+                viewPoint = v;
+                yawAngle = viewPoint.getYawAngle();
+                pitchAngle = viewPoint.getPitchAngle();
+                rollAngle_TextView.setText(String.valueOf("Roll Angle: " + rollAngle));
+                yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + yawAngle));
+                pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + pitchAngle));
+
+                value = true;
+                getImage(viewPoint, true);
+            }
+        };
+        dialog.setArgs("Edit View", viewPoint);
+        showDialogFragment(dialog);
+    }
+
+    public void getImage(ViewPoint viewPoint, boolean value) {
+        PanguConnection panguConnection = new PanguConnection(this, imgView, cm.getIpAddress(), Integer.parseInt(cm.getPortNum()), viewPoint, headerProgress, value);
         panguConnection.execute();
-    }
-
-    /**
-     * Called when the action bar is created.
-     *
-     * @param menu
-     * @return onCreateOptionsMenu()
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.pangu_activity_action_bar_actions, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     /**
@@ -126,10 +230,67 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener 
                 this.startActivity(intent);
                 return true;
             case R.id.action_reload:
-                vector3D = new Vector3D(x_coordinate, y_coordinate, z_coordinate);
-                getImage(vector3D);
+                getImage(viewPoint, value);
+                return true;
+            case R.id.action_editView:
+                setView();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * OnTouchListener for Yaw & Pitch Angles
+     *
+     * @param v
+     * @param event
+     * @return boolean
+     */
+    public boolean onTouch(View v, MotionEvent event) {
+        int action = event.getAction();
+        double endX, endY;
+        switch (action) {
+            //Get coordinates where finger touches display
+            case MotionEvent.ACTION_DOWN:
+                startX = event.getX();
+                startY = event.getY();
+                yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
+                pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
+                break;
+            //Keep track of coordinates when finger is in motion
+            case MotionEvent.ACTION_MOVE:
+                endX = event.getX();
+                endY = event.getY();
+
+                //ToDo: Change divide value to the width of the ImageView
+                yawAngle += (endX - startX) / 250;
+                pitchAngle += (endY - startY) / 250;
+
+                yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
+                pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
+                break;
+            //Set coordinates when finger is lifted
+            case MotionEvent.ACTION_UP:
+                endX = event.getX();
+                endY = event.getY();
+
+                //ToDo: Change divide value to the width of the ImageView
+                yawAngle += (endX - startX) / 250;
+                pitchAngle += (endY - startY) / 250;
+
+                yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
+                pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
+
+                viewPoint.setYawAngle(yawAngle);
+                viewPoint.setPitchAngle(pitchAngle);
+                getImage(viewPoint, value);
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

@@ -2,8 +2,11 @@ package com.pangu.mobile.client.background_tasks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.AsyncTask;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -13,10 +16,13 @@ import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.utils.LoggerHandler;
 import com.pangu.mobile.client.utils.NetworkHelper;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
+import uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidElevation;
 
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Vector;
+import java.util.logging.Logger;
 
 /**
  * @author Mark Goddard
@@ -32,18 +38,20 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
     private ClientConnection client;
     private Bitmap bitmap;
     private ViewPoint viewPoint;
+    private boolean value;
 
     /**
      * @param context the current state of application.
      * @desc Constructor for the Socket Connection class
      */
-    public PanguConnection(Context context, ImageView imageView, String dstName, int dstPort, ViewPoint viewPoint, LinearLayout headerProgress) {
+    public PanguConnection(Context context, ImageView imageView, String dstName, int dstPort, ViewPoint viewPoint, LinearLayout headerProgress, boolean value) {
         this.context = context;
         imageViewReference = new WeakReference<ImageView>(imageView);
         this.headerProgressReference = new WeakReference<LinearLayout>(headerProgress);
         this.dstPort = dstPort;
         this.viewPoint = viewPoint;
         this.dstName = dstName;
+        this.value = value;
     }
 
     /**
@@ -69,9 +77,12 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
                 InetAddress dstAddress = InetAddress.getByName(dstName);
                 Socket sock = new Socket(dstAddress, dstPort);
                 client = new ClientConnection(sock);
-                byte[] image_data = client.getImageByDegrees(viewPoint.getVector3D(), viewPoint.getYawAngle(), viewPoint.getPitchAngle(), viewPoint.getRollAngle());
-                //byte[] image_data = client.getImage();
-                bitmap = PanguImage.Image(image_data);
+                byte[] image_data;
+                if(value)
+                    image_data = client.getImageByDegrees(viewPoint.getVector3D(), viewPoint.getYawAngle(), viewPoint.getPitchAngle(), viewPoint.getRollAngle());
+                else
+                    image_data = client.getImage();
+                bitmap = getScaledImage(PanguImage.Image(image_data));
                 if(bitmap == null) return ErrorHandler.IO_ERROR;
                 client.stop();
                 return ErrorHandler.OK;
@@ -104,5 +115,14 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
             final ImageView imageView = imageViewReference.get();
             imageView.setImageResource(R.drawable.no_image_available);
         }
+    }
+
+    public Bitmap getScaledImage(Bitmap bitmap) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        return Bitmap.createScaledBitmap(bitmap, width, width, true);
     }
 }

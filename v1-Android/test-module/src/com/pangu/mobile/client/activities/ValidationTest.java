@@ -48,11 +48,11 @@ public class ValidationTest extends AndroidTestCase {
      */
     public void testIsParsable() {
         //Testing correct input
-        boolean correctValue = validation.isParsable("8080");
+        boolean correctValue = validation.isIntParsable("8080");
         assertEquals(correctValue, true);
 
         //Testing incorrect input
-        boolean incorrectValue = validation.isParsable("Config1");
+        boolean incorrectValue = validation.isIntParsable("Config1");
         assertEquals(incorrectValue, false);
     }
 

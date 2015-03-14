@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_editView"
+          android:icon="@drawable/ic_action_edit"
+          android:title="@string/action_editView"
+          android:showAsAction="always"/>
+
     <item android:id="@+id/action_reload"
           android:icon="@drawable/ic_action_reloading"
           android:title="@string/action_reload"

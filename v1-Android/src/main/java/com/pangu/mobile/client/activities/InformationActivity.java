@@ -2,12 +2,12 @@ package com.pangu.mobile.client.activities;
 
 import android.app.ActionBar;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.background_tasks.DataCollectionTask;
+import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.interfaces.AsyncResponse;
 import com.pangu.mobile.client.models.InformationModel;
 
@@ -20,7 +20,7 @@ public class InformationActivity extends BaseActivity implements AsyncResponse {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getResID());
+        setContentView(getMainLayoutResID());
         ActionBar actionBar = getActionBar();
         actionBar.setTitle("About Model");
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
@@ -31,9 +31,11 @@ public class InformationActivity extends BaseActivity implements AsyncResponse {
     }
 
     @Override
-    protected int getResID() {
+    protected int getMainLayoutResID() {
         return R.layout.information_view;
     }
+    @Override
+    protected int getOptionsMenuLayoutResID() { return 0; }
 
     /**
      * @desc processes the image from the async-task (Pangu Connection).

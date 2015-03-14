@@ -8,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.*;
 import com.pangu.mobile.client.R;
+import com.pangu.mobile.client.base_classes.BaseActivity;
+import com.pangu.mobile.client.base_classes.ConfirmationDialog;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
@@ -29,7 +31,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getResID());
+        setContentView(getMainLayoutResID());
 
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
@@ -37,9 +39,11 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     }
 
     @Override
-    protected int getResID() {
+    protected int getMainLayoutResID() {
         return R.layout.list_view;
     }
+    @Override
+    protected int getOptionsMenuLayoutResID() { return R.menu.main_activity_action_bar_actions; }
 
     /**
      * Called when the activity is resumed.
@@ -48,19 +52,6 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     public void onResume() {
         super.onResume();
         getGridItems();
-    }
-
-    /**
-     * Called when the action bar is created.
-     *
-     * @param menu
-     * @return onCreateOptionsMenu()
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_action_bar_actions, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     /**
@@ -154,9 +145,9 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     }
 
     public void addConfiguration() {
-        final InputDialog dialog = new InputDialog() {
+        final AddConfigDialog dialog = new AddConfigDialog() {
             @Override
-            public void confirm(ConfigurationModel cm) {
+            public void submit(ConfigurationModel cm) {
                 db = new DatabaseHelper(getApplicationContext());
                 DatabaseOperations databaseOperations = new DatabaseOperations(db);
                 ErrorHandler e = databaseOperations.insertConfiguration(cm);
@@ -171,22 +162,5 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         };
         dialog.setArgs("Add Configuration");
         showDialogFragment(dialog);
-    }
-
-    public void showDialogFragment(DialogFragment newFragment) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack("dialog");
-        newFragment.show(ft, "dialog");
-    }
-
-    public void startIntent(String intentStr) {
-        Intent intent = new Intent(intentStr);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 }

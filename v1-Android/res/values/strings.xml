@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Global Strings -->
     <string name="app_name">PANGU</string>
+    <string name="submit_btn">Submit</string>
 
+    <!-- Edit View Dialog Strings -->
     <string name="x_coordinate">x-coordinate</string>
     <string name="y_coordinate">y-coordinate</string>
     <string name="z_coordinate">z-coordinate</string>
-    <string name="range">range</string>
-    <string name="azimuth">azimuth</string>
-    <string name="elevation">elevation</string>
-    <string name="roll">roll</string>
-    <string name="coordinate_submit">Submit</string>
+    <string name="yaw">Yaw Angle</string>
+    <string name="pitch">Pitch Angle</string>
+    <string name="roll">Roll Angle</string>
 
-    <string name="left_control">left</string>
-    <string name="right_control">right</string>
-    <string name="up_control">up</string>
-    <string name="down_control">down</string>
+    <!-- PANGU Controls -->
+    <string name="left_control">Left</string>
+    <string name="right_control">Right</string>
+    <string name="up_control">Up</string>
+    <string name="down_control">Down</string>
+    <string name="edit_view_control">Edit View</string>
+    <string name="zoom_in">Zoom In</string>
+    <string name="zoo_out">Zoom Out</string>
 
     <!-- Action Bar Icon Names -->
     <string name="action_add">Add Configuration</string>
     <string name="action_info">Model Information</string>
     <string name="action_reload">Reload Model</string>
+    <string name="action_editView">Edit View</string>
 
     <!-- Close App Dialog -->
     <string name="dialog_yes">Yes</string>

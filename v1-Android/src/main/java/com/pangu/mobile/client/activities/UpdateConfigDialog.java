@@ -106,7 +106,7 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
             @Override
             public void afterTextChanged(Editable s) {
                 String portNum = s.toString();
-                if (Validation.getInstance().isEmpty(portNumEditText) || !Validation.getInstance().isParsable(portNum) || Integer.parseInt(portNum) > 65565) {
+                if (Validation.getInstance().isEmpty(portNumEditText) || !Validation.getInstance().isIntParsable(portNum) || Integer.parseInt(portNum) > 65565) {
                     portNumEditText.setError("e.g. 8080");
                     portNumCheck = false;
                 } else {

@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.activities;
+package com.pangu.mobile.client.base_classes;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;

@@ -2,6 +2,9 @@ package com.pangu.mobile.client.utils;
 
 import android.widget.EditText;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Created by Mark on 03/02/15.
  */
@@ -21,10 +24,25 @@ public class Validation {
      * @param input
      * @return
      */
-    public boolean isParsable(String input) {
+    public boolean isIntParsable(String input) {
         boolean parsable = true;
         try {
             Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            parsable = false;
+        }
+        return parsable;
+    }
+
+    /**
+     * Checks if a string is double parsable.
+     * @param input
+     * @return
+     */
+    public boolean isDoubleParsable(String input) {
+        boolean parsable = true;
+        try {
+            Double.parseDouble(input);
         } catch (NumberFormatException e) {
             parsable = false;
         }
@@ -51,5 +69,19 @@ public class Validation {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Format a double to 2-decimal places
+     * @param value
+     * @param places
+     * @return
+     */
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
