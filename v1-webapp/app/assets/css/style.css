@@ -7139,12 +7139,16 @@ body {
 
 .container {
   max-width: 680px;
-  padding: 0 15px;
+  padding: 0px 15px;
   width: auto;
 }
 
 .container .text-muted {
-  margin: 20px 0;
+  margin: 20px 0px;
+}
+
+.main-content {
+  margin-bottom: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */

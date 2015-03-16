@@ -3,11 +3,10 @@ $icon-font-path: '../../../app/components/bootstrap-sass-official/assets/fonts/b
 @import 'mixin';
 
 //Global Variables
-$margin-btm: 25px;
+$default-margin-bottom: 25px;
 
 .glyph {
   margin-top:2px;
-
 }
 
 html {
@@ -26,9 +25,12 @@ body {
 }
 .container {
   max-width: 680px;
-  padding: 0 15px;
+  padding: 0px 15px;
   width: auto;
 }
 .container .text-muted {
-  margin: 20px 0;
+  margin: 20px 0px;
+}
+.main-content {
+  margin-bottom: 20px;
 }

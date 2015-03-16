@@ -1,0 +1,38 @@
+<div ng-controller="editModelController" class="main-content">
+    <p class="lead">Edit Model</p>
+    <form>
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" class="form-control" id="inputName" value="{{pangu.name}}" ng-model="pangu.name">
+        </div>
+        <div class="form-group">
+            <label for="inputDiscoveredBy">Discovered By</label>
+            <input type="text" class="form-control" id="inputDiscoveredBy" value="{{pangu.discoveredBy}}" ng-model="pangu.discoveredBy">
+        </div>
+        <div class="form-group">
+            <label for="inputDiscoveryDate">Discovery Date</label>
+            <input type="text" class="form-control" id="inputDiscoveryDate" value="{{pangu.discoveryDate}}" ng-model="pangu.discoveryDate">
+        </div>
+        <div class="form-group">
+            <label for="inputSize">Size</label>
+            <input type="text" class="form-control" id="inputSize" value="{{pangu.size}}" ng-model="pangu.size">
+        </div>
+        <div class="form-group">
+            <label for="inputApproximateMass">Approximate Mass</label>
+            <input type="text" class="form-control" id="inputApproximateMass" value="{{pangu.approximateMass}}" ng-model="pangu.approximateMass">
+        </div>
+        <div class="form-group">
+            <label for="inputOrbitalPeriod">Orbital Period</label>
+            <input type="text" class="form-control" id="inputOrbitalPeriod" value="{{pangu.orbitalPeriod}}" ng-model="pangu.orbitalPeriod">
+        </div>
+        <div class="form-group">
+            <label for="inputDescription">Description</label>
+            <textarea type="text" class="form-control" id="inputDescription" rows="3" ng-model="pangu.description" >{{pangu.description}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="inputComments">Interesting Facts</label>
+            <textarea type="text" class="form-control" id="inputComments" rows="3" ng-model="pangu.comments">{{pangu.comments}}</textarea>
+        </div>
+        <button type="submit" ng-click="setSubmit(pangu)" class="btn btn-primary btn-block">Save</button>
+    </form>
+</div>

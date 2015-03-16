@@ -4,18 +4,30 @@ var webApp = angular.module('web-app', ['ngRoute', 'webAppControllers']);
 webApp.config(function($routeProvider, $locationProvider) {
     $routeProvider
 
-        //Route for the home page
+        //Route for the homepage
         .when('/', {
-            templateUrl : 'views/viewAll.html',
-            controller  : 'viewAllController'
+            templateUrl : 'views/viewModels.html',
+            controller  : 'viewModelsController'
         })
 
-        // route for the about page
-        .when('/viewOne', {
-            templateUrl : 'views/viewOne.html',
-            controller  : 'viewOneController'
+        //Route for viewing all models
+        .when('/models', {
+            templateUrl : 'views/viewModels.html',
+            controller  : 'viewModelsController'
+        })
+
+        //Route for editing an model
+        .when('/models/:id', {
+            templateUrl : 'views/editModel.html',
+            controller  : 'editModelController'
         });
 
-    //Use the HTML5 History API
-    $locationProvider.html5Mode(true);
+    //Check browser support
+    if(window.history && window.history.pushState){
+        //Use the HTML5 History API clean URLs (no has tag in URL)
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
+    }
 });

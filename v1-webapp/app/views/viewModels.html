@@ -1,4 +1,5 @@
-<div ng-controller="viewAllController" class="container">
+<div ng-controller="viewModelsController" class="main-content">
+    <p class="lead">View Models</p>
     <table ng-table class="table table-hover">
         <thead>
         <tr>
@@ -8,7 +9,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="x in pangu">
+        <tr ng-repeat="x in pangu" ng-click="setSelected(x)">
             <td>{{x.id}}</td>
             <td>{{x.name}}</td>
             <td>{{x.description}}</td>
