@@ -7,38 +7,70 @@
             <button type="submit" ng-click="deleteModel(pangu.id)" class="btn btn-danger btn-block">Delete Model</button>
         </div>
     </div>
-    <form>
+    <form novalidate name="editModelForm" role="form" method="post">
         <div class="form-group">
             <label for="inputName">Name</label>
-            <input type="text" class="form-control" id="inputName" value="{{pangu.name}}" ng-model="pangu.name">
+            <input required type="text" class="form-control" name="inputName" id="inputName" value="{{pangu.name}}" ng-model="pangu.name">
+            <div ng-show="editModelForm.$submitted || editModelForm.inputName.$touched">
+                <span ng-show="editModelForm.inputName.$error.required">Please enter a name.</span>
+                <span ng-show="editModelForm.inputName.$error.text">This is not a valid name.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputDiscoveredBy">Discovered By</label>
-            <input type="text" class="form-control" id="inputDiscoveredBy" value="{{pangu.discoveredBy}}" ng-model="pangu.discoveredBy">
+            <input required type="text" class="form-control" name="inputDiscoveredBy" id="inputDiscoveredBy" value="{{pangu.discoveredBy}}" ng-model="pangu.discoveredBy">
+            <div ng-show="editModelForm.$submitted || editModelForm.inputDiscoveredBy.$touched">
+                <span ng-show="editModelForm.inputDiscoveredBy.$error.required">Please enter a discoverer.</span>
+                <span ng-show="editModelForm.inputDiscoveredBy.$error.text">This is not a valid discoverer.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputDiscoveryDate">Discovery Date</label>
-            <input type="text" class="form-control" id="inputDiscoveryDate" value="{{pangu.discoveryDate}}" ng-model="pangu.discoveryDate">
+            <input required type="text" class="form-control" name="inputDiscoveryDate" id="inputDiscoveryDate" value="{{pangu.discoveryDate}}" ng-model="pangu.discoveryDate">
+            <div ng-show="editModelForm.$submitted || editModelForm.inputDiscoveryDate.$touched">
+                <span ng-show="editModelForm.inputDiscoveryDate.$error.required">Please enter a discovery date.</span>
+                <span ng-show="editModelForm.inputDiscoveryDate.$error.text">This is not a valid discovery date.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputSize">Size</label>
-            <input type="text" class="form-control" id="inputSize" value="{{pangu.size}}" ng-model="pangu.size">
+            <input required type="text" class="form-control" name="inputSize" id="inputSize" value="{{pangu.size}}" ng-model="pangu.size">
+            <div ng-show="editModelForm.$submitted || editModelForm.inputSize.$touched">
+                <span ng-show="editModelForm.inputSize.$error.required">Please enter a size.</span>
+                <span ng-show="editModelForm.inputSize.$error.text">This is not a valid size.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputApproximateMass">Approximate Mass</label>
-            <input type="text" class="form-control" id="inputApproximateMass" value="{{pangu.approximateMass}}" ng-model="pangu.approximateMass">
+            <input required type="text" class="form-control" name="inputApproximateMass" id="inputApproximateMass" value="{{pangu.approximateMass}}" ng-model="pangu.approximateMass">
+            <div ng-show="editModelForm.$submitted || editModelForm.inputApproximateMass.$touched">
+                <span ng-show="editModelForm.inputApproximateMass.$error.required">Please enter a approximate mass.</span>
+                <span ng-show="editModelForm.inputApproximateMass.$error.text">This is not a valid approximate mass.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputOrbitalPeriod">Orbital Period</label>
-            <input type="text" class="form-control" id="inputOrbitalPeriod" value="{{pangu.orbitalPeriod}}" ng-model="pangu.orbitalPeriod">
+            <input required type="text" class="form-control" name="inputOrbitalPeriod" id="inputOrbitalPeriod" value="{{pangu.orbitalPeriod}}" ng-model="pangu.orbitalPeriod">
+            <div ng-show="editModelForm.$submitted || editModelForm.inputOrbitalPeriod.$touched">
+                <span ng-show="editModelForm.inputOrbitalPeriod.$error.required">Please enter a orbital period.</span>
+                <span ng-show="editModelForm.inputOrbitalPeriod.$error.text">This is not a valid orbital period.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputDescription">Description</label>
-            <textarea type="text" class="form-control" id="inputDescription" rows="10" ng-model="pangu.description" >{{pangu.description}}</textarea>
+            <textarea required type="text" class="form-control" name="inputDescription" id="inputDescription" rows="10" ng-model="pangu.description" >{{pangu.description}}</textarea>
+            <div ng-show="editModelForm.$submitted || editModelForm.inputDescription.$touched">
+                <span ng-show="editModelForm.inputDescription.$error.required">Please enter a description.</span>
+                <span ng-show="editModelForm.inputDescription.$error.text">This is not a valid description.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputComments">Interesting Facts</label>
-            <textarea type="text" class="form-control" id="inputComments" rows="10" ng-model="pangu.comments">{{pangu.comments}}</textarea>
+            <textarea required type="text" class="form-control" name="inputComments" id="inputComments" rows="10" ng-model="pangu.comments">{{pangu.comments}}</textarea>
+            <div ng-show="editModelForm.$submitted || editModelForm.inputComments.$touched">
+                <span ng-show="editModelForm.inputComments.$error.required">Please enter interesting facts.</span>
+                <span ng-show="editModelForm.inputComments.$error.text">This is not valid interesting facts..</span>
+            </div>
         </div>
         <button type="submit" ng-click="updateModel(pangu)" class="btn btn-primary btn-block">Save</button>
     </form>

@@ -1,37 +1,69 @@
 <div ng-controller="addNewModelController" class="main-content">
     <p class="lead">Add New Model</p>
-    <form>
+    <form novalidate name="addModelForm">
         <div class="form-group">
             <label for="inputName">Name</label>
-            <input type="text" class="form-control" id="inputName" ng-model="pangu.name">
+            <input required type="text" class="form-control" name="inputName" id="inputName" ng-model="pangu.name">
+            <div ng-show="addModelForm.$submitted || addModelForm.inputName.$touched">
+                <span ng-show="addModelForm.inputName.$error.required">Please enter a name.</span>
+                <span ng-show="addModelForm.inputName.$error.text">This is not a valid name.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputDiscoveredBy">Discovered By</label>
-            <input type="text" class="form-control" id="inputDiscoveredBy" ng-model="pangu.discoveredBy">
+            <input required type="text" class="form-control" name="inputDiscoveredBy" id="inputDiscoveredBy" ng-model="pangu.discoveredBy">
+            <div ng-show="addModelForm.$submitted || addModelForm.inputDiscoveredBy.$touched">
+                <span ng-show="addModelForm.inputDiscoveredBy.$error.required">Please enter a discoverer.</span>
+                <span ng-show="addModelForm.inputDiscoveredBy.$error.text">This is not a valid discoverer.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputDiscoveryDate">Discovery Date</label>
-            <input type="text" class="form-control" id="inputDiscoveryDate" ng-model="pangu.discoveryDate">
+            <input required type="text" class="form-control" name="inputDiscoveryDate" id="inputDiscoveryDate" ng-model="pangu.discoveryDate">
+            <div ng-show="addModelForm.$submitted || addModelForm.inputDiscoveryDate.$touched">
+                <span ng-show="addModelForm.inputDiscoveryDate.$error.required">Please enter a discovery date.</span>
+                <span ng-show="addModelForm.inputDiscoveryDate.$error.text">This is not a valid discovery date.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputSize">Size</label>
-            <input type="text" class="form-control" id="inputSize" ng-model="pangu.size">
+            <input required type="text" class="form-control" name="inputSize" id="inputSize" ng-model="pangu.size">
+            <div ng-show="addModelForm.$submitted || addModelForm.inputSize.$touched">
+                <span ng-show="addModelForm.inputSize.$error.required">Please enter a size.</span>
+                <span ng-show="addModelForm.inputSize.$error.text">This is not a valid size.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputApproximateMass">Approximate Mass</label>
-            <input type="text" class="form-control" id="inputApproximateMass" ng-model="pangu.approximateMass">
+            <input required type="text" class="form-control" name="inputApproximateMass" id="inputApproximateMass" ng-model="pangu.approximateMass">
+            <div ng-show="addModelForm.$submitted || addModelForm.inputApproximateMass.$touched">
+                <span ng-show="addModelForm.inputApproximateMass.$error.required">Please enter a approximate mass.</span>
+                <span ng-show="addModelForm.inputApproximateMass.$error.text">This is not a valid approximate mass.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputOrbitalPeriod">Orbital Period</label>
-            <input type="text" class="form-control" id="inputOrbitalPeriod" ng-model="pangu.orbitalPeriod">
+            <input required type="text" class="form-control" name="inputOrbitalPeriod" id="inputOrbitalPeriod" ng-model="pangu.orbitalPeriod">
+            <div ng-show="addModelForm.$submitted || addModelForm.inputOrbitalPeriod.$touched">
+                <span ng-show="addModelForm.inputOrbitalPeriod.$error.required">Please enter a orbital period.</span>
+                <span ng-show="addModelForm.inputOrbitalPeriod.$error.text">This is not a valid orbital period.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputDescription">Description</label>
-            <textarea type="text" class="form-control" id="inputDescription" rows="10" ng-model="pangu.description" ></textarea>
+            <textarea required type="text" class="form-control" name="inputDescription" id="inputDescription" rows="10" ng-model="pangu.description" ></textarea>
+            <div ng-show="addModelForm.$submitted || addModelForm.inputDescription.$touched">
+                <span ng-show="addModelForm.inputDescription.$error.required">Please enter a description.</span>
+                <span ng-show="addModelForm.inputDescription.$error.text">This is not a valid description.</span>
+            </div>
         </div>
         <div class="form-group">
             <label for="inputComments">Interesting Facts</label>
-            <textarea type="text" class="form-control" id="inputComments" rows="10" ng-model="pangu.comments"></textarea>
+            <textarea required type="text" class="form-control" name="inputComments" id="inputComments" rows="10" ng-model="pangu.comments"></textarea>
+            <div ng-show="addModelForm.$submitted || addModelForm.inputComments.$touched">
+                <span ng-show="addModelForm.inputComments.$error.required">Please enter a size.</span>
+                <span ng-show="addModelForm.inputComments.$error.text">This is not a valid size.</span>
+            </div>
         </div>
         <button type="submit" ng-click="addModel(pangu)" class="btn btn-primary btn-block">Save</button>
     </form>
