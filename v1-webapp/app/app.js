@@ -6,8 +6,8 @@ webApp.config(function($routeProvider, $locationProvider) {
 
         //Route for the homepage
         .when('/', {
-            templateUrl : 'views/viewModels.html',
-            controller  : 'viewModelsController'
+            templateUrl : 'views/login.html',
+            controller : 'loginController'
         })
 
         //Route for viewing all models
@@ -20,7 +20,13 @@ webApp.config(function($routeProvider, $locationProvider) {
         .when('/models/:id', {
             templateUrl : 'views/editModel.html',
             controller  : 'editModelController'
-        });
+        })
+
+        //Route for adding an new model
+        .when('/add', {
+            templateUrl : 'views/addNewModel.html',
+            controller : 'addNewModelController'
+        })
 
     //Check browser support
     if(window.history && window.history.pushState){

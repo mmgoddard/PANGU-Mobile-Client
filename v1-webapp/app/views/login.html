@@ -1,0 +1,16 @@
+<div class="main-content">
+    <form novalidate name="loginForm" class="form-signin login-form" role="form" method="post">
+        <h3 class="form-signin-heading">Please sign in.</h3>
+        <input type="text" class="form-control" placeholder="Username" required autofocus name="username" ng-model="user.username">
+        <input type="password" class="form-control" placeholder="Password" required name="password" ng-model="user.password">
+        <button class="btn btn-lg btn-primary btn-block submit-btn" type="submit" ng-click="setLogin(user)">Sign in</button>
+        <div ng-show="loginForm.$submitted || loginForm.username.$touched">
+            <span ng-show="loginForm.username.$error.required">Please enter a username.</span>
+            <span ng-show="loginForm.username.$error.username">This is not a valid username.</span>
+        </div>
+        <div ng-show="loginForm.$submitted || loginForm.password.$touched">
+            <span ng-show="loginForm.password.$error.required">Please enter a password.</span>
+            <span ng-show="loginForm.password.$error.password">This is not a valid password.</span>
+        </div>
+    </form>
+</div>
