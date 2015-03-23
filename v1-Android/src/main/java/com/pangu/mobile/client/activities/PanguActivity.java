@@ -67,7 +67,11 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
 
         imgView = (ImageView) findViewById(R.id.pangu_image);
-        getImage(viewPoint, value);
+        if (cm.getSaved().equals("true")) {
+            viewPoint = cm.getViewPoint();
+            value = true;
+        }
+        getImage(viewPoint, true);
 
         Button leftControl = (Button) findViewById(R.id.left_button);
         leftControl.setOnClickListener(this);
@@ -121,13 +125,13 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         });
 
         yawAngle_TextView = (TextView) this.findViewById(R.id.yawAngle_TextView);
-        yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + yawAngle));
+        yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + viewPoint.getYawAngle()));
 
         pitchAngle_TextView = (TextView) this.findViewById(R.id.pitchAngle_TextView);
-        pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + pitchAngle));
+        pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + viewPoint.getPitchAngle()));
 
         rollAngle_TextView = (TextView) this.findViewById(R.id.rollAngle_TextView);
-        rollAngle_TextView.setText(String.valueOf("Roll Angle: " + rollAngle));
+        rollAngle_TextView.setText(String.valueOf("Roll Angle: " + viewPoint.getRollAngle()));
 
         xCoordinate_TextView = (TextView) this.findViewById(R.id.xCoordinate_TextView);
         xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + viewPoint.getVector3D().i));
@@ -146,6 +150,8 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         super.onResume();
         if (cm.getSaved().equals("true")) {
             viewPoint = cm.getViewPoint();
+            value = true;
+            getImage(viewPoint, true);
         }
     }
 

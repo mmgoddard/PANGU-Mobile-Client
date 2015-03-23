@@ -14,6 +14,7 @@ import com.pangu.mobile.client.base_classes.InputDialog;
 import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.models.ViewPoint;
 import com.pangu.mobile.client.utils.Validation;
+import org.apache.commons.validator.routines.DomainValidator;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
@@ -61,8 +62,7 @@ public abstract class AddConfigDialog extends InputDialog {
             @Override
             public void afterTextChanged(Editable s) {
                 String ipAddress = s.toString();
-                if (Validation.getInstance().isEmpty(ipAddressEditText) || !InetAddressValidator.getInstance().isValid(ipAddress)) {
-                    ipAddressEditText.setError("e.g. 192.168.0.13");
+                if (Validation.getInstance().isEmpty(ipAddressEditText)) {
                     ipAddressCheck = false;
                 } else {
                     ipAddressEditText.setError(null);
