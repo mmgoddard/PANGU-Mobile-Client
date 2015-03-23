@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.background_tasks.PanguConnection;
@@ -143,6 +141,14 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + viewPoint.getVector3D().k));
 
         imgView.setOnTouchListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if(getOptionsMenuLayoutResID() != 0)
+            inflater.inflate(getOptionsMenuLayoutResID(), menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.pangu.mobile.client.activities;
 
 import android.app.*;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.text.Layout;
+import android.view.*;
 import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.base_classes.BaseActivity;
@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class MainActivity extends BaseActivity implements UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
     private DatabaseHelper db;
+    private View topLevelLayout;
 
     /**
      * Called when the activity is first created.
@@ -32,6 +33,22 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getMainLayoutResID());
+
+        topLevelLayout = findViewById(R.id.top_layout);
+//        if (isFirstTime()) {
+//            topLevelLayout.setVisibility(View.INVISIBLE);
+//        }
+
+        topLevelLayout.setVisibility(View.VISIBLE);
+        topLevelLayout.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                topLevelLayout.setVisibility(View.INVISIBLE);
+                actionBarMenu.findItem(R.id.action_add).setEnabled(true);
+                return false;
+            }
+        });
 
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
@@ -42,8 +59,42 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     protected int getMainLayoutResID() {
         return R.layout.list_view;
     }
+
     @Override
-    protected int getOptionsMenuLayoutResID() { return R.menu.main_activity_action_bar_actions; }
+    protected int getOptionsMenuLayoutResID() {
+        return R.menu.main_activity_action_bar_actions;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if(getOptionsMenuLayoutResID() != 0)
+            inflater.inflate(getOptionsMenuLayoutResID(), menu);
+        menu.findItem(R.id.action_add).setEnabled(false);
+        actionBarMenu = menu;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private boolean isFirstTime() {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("RanBefore", false);
+        if (!ranBefore) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("RanBefore", true);
+            editor.commit();
+            topLevelLayout.setVisibility(View.VISIBLE);
+            topLevelLayout.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    topLevelLayout.setVisibility(View.INVISIBLE);
+                    actionBarMenu.findItem(R.id.action_add).setEnabled(true);
+                    return false;
+                }
+            });
+        }
+        return ranBefore;
+    }
 
     /**
      * Called when the activity is resumed.

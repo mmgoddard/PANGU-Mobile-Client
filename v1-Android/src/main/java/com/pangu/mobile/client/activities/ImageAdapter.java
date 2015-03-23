@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
+
+import java.net.InetAddress;
 import java.util.List;
 
 /**
@@ -51,11 +53,11 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         TextView title = (TextView)grid.findViewById(R.id.item_title);
-        TextView desc = (TextView)grid.findViewById(R.id.item_desc);
+        //TextView desc = (TextView)grid.findViewById(R.id.item_desc);
         final ConfigurationModel element = values.get(position);
         if(values.size() != 0) {
             title.setText(element.getName());
-            desc.setText(element.getIpAddress()+":"+element.getPortNum());
+            //desc.setText(element.getIpAddress()+":"+element.getPortNum());
         }
 
         TextView deleteBtn = (TextView)grid.findViewById(R.id.item_delete);

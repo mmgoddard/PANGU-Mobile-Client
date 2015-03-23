@@ -36,4 +36,10 @@
     <!-- Fonts -->
     <string name="condensed">sans-serif-condensed</string>
     <string name="light">sans-serif-light</string>
+
+    <!-- Main Activity Help -->
+    <string name="mainActivityHelp_title">Welcome to PANGU Mobile Client</string>
+    <string name="mainActivityHelp_desc">Get Started by adding a configuration using the plus icon in the top hand corner.</string>
+    <string name="mainActivityHelp_continue">(tap to continue)</string>
+
 </resources>

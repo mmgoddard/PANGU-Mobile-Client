@@ -1,13 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/grid_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:stretchMode="columnWidth"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"
-        android:layout_marginBottom="10dp">
-</ListView>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/main_layout">
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/grid_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="10dp"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:stretchMode="columnWidth"
+              android:divider="@android:color/transparent"
+              android:dividerHeight="10dp"
+              android:layout_marginBottom="10dp">
+    </ListView>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E6666666"
+            android:id="@+id/top_layout"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:gravity="center_vertical">
+
+        <TextView
+                android:id="@+id/mainActivity_help_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mainActivityHelp_title"
+                android:textSize="20dp"
+                android:fontFamily="@string/condensed"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+        <TextView
+                android:id="@+id/mainActivity_help_desc"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mainActivityHelp_desc"
+                android:textSize="18dp"
+                android:fontFamily="@string/condensed"
+                android:textColor="@color/white"/>
+
+        <TextView
+                android:id="@+id/mainActivity_help_continue"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/mainActivityHelp_continue"
+                android:textSize="16dp"
+                android:fontFamily="@string/condensed"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal"/>
+    </LinearLayout>
+</FrameLayout>

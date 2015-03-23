@@ -18,6 +18,7 @@ public abstract class BaseActivity extends Activity {
     private int screenWidth;
     protected int getScreenWidth() { return screenWidth; }
     protected void setScreenWidth() { this.screenWidth = calculateWidthOfScreen(); }
+    protected Menu actionBarMenu;
     public BaseActivity() {}
 
     @Override
@@ -41,20 +42,6 @@ public abstract class BaseActivity extends Activity {
     public void onPause() {
         super.onPause();
         overridePendingTransition(getSlideLeft(), getSlideRight());
-    }
-
-    /**
-     * Called when the action bar is created.
-     *
-     * @param menu
-     * @return onCreateOptionsMenu()
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        if(getOptionsMenuLayoutResID() != 0)
-            inflater.inflate(getOptionsMenuLayoutResID(), menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     private int getSlideLeft() {

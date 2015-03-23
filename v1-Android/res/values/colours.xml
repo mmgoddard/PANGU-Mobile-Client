@@ -11,4 +11,7 @@
 
     <!-- Progress Bar Color -->
     <color name="end_color">#DDDDDD</color>
+
+    <!-- Continue Btn -->
+    <color name="continueBtn_color">#5CBA5C</color>
 </resources>
