@@ -38,32 +38,14 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     private double yawAngle = 0.0, pitchAngle = 0.0, rollAngle = 0.0;
     private int step = 10000;
 
-    @Override
-    protected int getMainLayoutResID() {
-        return R.layout.pangu;
-    }
-
-    @Override
-    protected int getOptionsMenuLayoutResID() {
-        return R.menu.pangu_activity_action_bar_actions;
-    }
-
     /**
      * Called when the activity is first created.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getMainLayoutResID());
-
-        Toolbar toolbar = (Toolbar) findViewById(getToolbarLayoutResID());
-        setSupportActionBar(toolbar);
-        toolbar.setLogo(R.drawable.ic_action_planet);
-        TextView title = (TextView) findViewById(R.id.toolbar_title);
-        SpannableString s = new SpannableString("View Model");
-        s.setSpan(new TypefaceSpan(this, "Roboto-Regular.ttf"), 0, s.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        title.setText(s);
+        setContentView(R.layout.pangu);
+        setActionBarTitle("View Model");
 
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();
@@ -159,8 +141,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        if(getOptionsMenuLayoutResID() != 0)
-            inflater.inflate(getOptionsMenuLayoutResID(), menu);
+        inflater.inflate(R.menu.pangu_activity_action_bar_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -295,8 +276,8 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                 //pitchAngle += (endY - startY) / 250;
                 dx = endX - startX;
                 dy = endY - startY;
-                if(Math.abs(dx) > Math.abs(dy)) {
-                    if(dx>0) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    if (dx > 0) {
                         direction = "right";
                         yawAngle += dx / 250;
                     } else {
@@ -304,7 +285,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                         yawAngle -= dx / 250;
                     }
                 } else {
-                    if(dy>0) {
+                    if (dy > 0) {
                         direction = "down";
                         pitchAngle -= dy / 250;
                     } else {
@@ -331,8 +312,8 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
 
                 dx = endX - startX;
                 dy = endY - startY;
-                if(Math.abs(dx) > Math.abs(dy)) {
-                    if(dx>0) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    if (dx > 0) {
                         direction = "right";
                         yawAngle += dx / 250;
                     } else {
@@ -340,7 +321,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                         yawAngle -= dx / 250;
                     }
                 } else {
-                    if(dy>0) {
+                    if (dy > 0) {
                         direction = "down";
                         pitchAngle += dy / 250;
                     } else {

@@ -45,12 +45,13 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getMainLayoutResID());
+        setContentView(R.layout.list_view);
+        setActionBarTitle("PANGU");
 
         mainActivityTopLevelLayout = findViewById(R.id.top_layout);
         if (isFirstTime()) {
             mainActivityTopLevelLayout.setVisibility(View.INVISIBLE);
-            if(actionBarMenu != null) {
+            if (actionBarMenu != null) {
                 actionBarMenu.findItem(R.id.action_add).setEnabled(true);
             }
         }
@@ -63,35 +64,15 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(getToolbarLayoutResID());
-        setSupportActionBar(toolbar);
-        toolbar.setLogo(R.drawable.ic_action_planet);
-        TextView title = (TextView) findViewById(R.id.toolbar_title);
-        SpannableString s = new SpannableString("PANGU");
-        s.setSpan(new TypefaceSpan(this, "Roboto-Regular.ttf"), 0, s.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        title.setText(s);
-
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
         db = new DatabaseHelper(getApplicationContext());
     }
 
     @Override
-    protected int getMainLayoutResID() {
-        return R.layout.list_view;
-    }
-
-    @Override
-    protected int getOptionsMenuLayoutResID() {
-        return R.menu.main_activity_action_bar_actions;
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        if(getOptionsMenuLayoutResID() != 0)
-            inflater.inflate(getOptionsMenuLayoutResID(), menu);
+        inflater.inflate(R.menu.main_activity_action_bar_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

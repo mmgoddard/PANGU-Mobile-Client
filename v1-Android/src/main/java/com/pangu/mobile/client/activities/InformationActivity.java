@@ -23,28 +23,15 @@ public class InformationActivity extends BaseActivity implements AsyncResponse {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getMainLayoutResID());
-        Toolbar toolbar = (Toolbar) findViewById(getToolbarLayoutResID());
-        setSupportActionBar(toolbar);
-        toolbar.setLogo(R.drawable.ic_action_planet);
-        TextView title = (TextView) findViewById(R.id.toolbar_title);
-        SpannableString s = new SpannableString("About Model");
-        s.setSpan(new TypefaceSpan(this, "Roboto-Regular.ttf"), 0, s.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        title.setText(s);
+        setContentView(R.layout.information_view);
+        setActionBarTitle("About Model");
+
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
         Bundle extras = getIntent().getExtras();
         DataCollectionTask data = new DataCollectionTask(this, extras.getString("modelName"), headerProgress);
         data.asyncResponse = this;
         data.execute();
     }
-
-    @Override
-    protected int getMainLayoutResID() {
-        return R.layout.information_view;
-    }
-    @Override
-    protected int getOptionsMenuLayoutResID() { return 0; }
 
     /**
      * @desc processes the image from the async-task (Pangu Connection).

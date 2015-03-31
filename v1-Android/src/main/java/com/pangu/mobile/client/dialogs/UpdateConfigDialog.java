@@ -56,7 +56,7 @@ public class UpdateConfigDialog extends DialogFragment implements View.OnClickLi
         id = getArguments().getInt("id");
         String title = getArguments().getString("title");
 
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.global_toolbar);
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar_actionbar);
         toolbar.setLogo(R.drawable.ic_action_planet);
         TextView titleTextView = (TextView) v.findViewById(R.id.toolbar_title);
         SpannableString s = new SpannableString(title);
