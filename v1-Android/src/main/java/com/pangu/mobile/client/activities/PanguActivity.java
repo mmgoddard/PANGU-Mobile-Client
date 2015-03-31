@@ -2,8 +2,13 @@ package com.pangu.mobile.client.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.*;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
@@ -14,6 +19,8 @@ import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.models.ViewPoint;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
+import com.pangu.mobile.client.utils.LoggerHandler;
+import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
@@ -50,8 +57,15 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getMainLayoutResID());
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle("View Model");
+
+        Toolbar toolbar = (Toolbar) findViewById(getToolbarLayoutResID());
+        setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_action_planet);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        SpannableString s = new SpannableString("View Model");
+        s.setSpan(new TypefaceSpan(this, "Roboto-Regular.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        title.setText(s);
 
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();
@@ -65,6 +79,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
 
         imgView = (ImageView) findViewById(R.id.pangu_image);
+        //imgView.setImageResource(R.drawable.no_image_available);
         if (cm.getSaved().equals("true")) {
             viewPoint = cm.getViewPoint();
             value = true;
@@ -260,6 +275,8 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
      * @return boolean
      */
     public boolean onTouch(View v, MotionEvent event) {
+        double dx, dy;
+        String direction;
         int action = event.getAction();
         double endX, endY;
         switch (action) {
@@ -276,8 +293,28 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                 endY = event.getY();
 
                 //ToDo: Change divide value to the width of the ImageView
-                yawAngle += (endX - startX) / 250;
-                pitchAngle += (endY - startY) / 250;
+                //yawAngle += (endX - startX) / 250;
+                //pitchAngle += (endY - startY) / 250;
+                dx = endX - startX;
+                dy = endY - startY;
+                if(Math.abs(dx) > Math.abs(dy)) {
+                    if(dx>0) {
+                        direction = "right";
+                        yawAngle += dx / 250;
+                    } else {
+                        direction = "left";
+                        yawAngle -= dx / 250;
+                    }
+                } else {
+                    if(dy>0) {
+                        direction = "down";
+                        pitchAngle -= dy / 250;
+                    } else {
+                        direction = "up";
+                        pitchAngle += dy / 250;
+                    }
+                }
+                LoggerHandler.i(direction);
 
                 yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
                 pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
@@ -288,11 +325,32 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                 endY = event.getY();
 
                 //ToDo: Change divide value to the width of the ImageView
-                yawAngle += (endX - startX) / 250;
-                pitchAngle += (endY - startY) / 250;
+//                yawAngle += (endX - startX) / 250;
+//                pitchAngle += (endY - startY) / 250;
 
                 yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
                 pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
+
+                dx = endX - startX;
+                dy = endY - startY;
+                if(Math.abs(dx) > Math.abs(dy)) {
+                    if(dx>0) {
+                        direction = "right";
+                        yawAngle += dx / 250;
+                    } else {
+                        direction = "left";
+                        yawAngle -= dx / 250;
+                    }
+                } else {
+                    if(dy>0) {
+                        direction = "down";
+                        pitchAngle += dy / 250;
+                    } else {
+                        direction = "up";
+                        pitchAngle += dy / 250;
+                    }
+                }
+                LoggerHandler.i(direction);
 
                 viewPoint.setYawAngle(yawAngle);
                 viewPoint.setPitchAngle(pitchAngle);

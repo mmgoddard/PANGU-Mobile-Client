@@ -16,13 +16,9 @@ import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.utils.LoggerHandler;
 import com.pangu.mobile.client.utils.NetworkHelper;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection;
-import uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidElevation;
-
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Vector;
-import java.util.logging.Logger;
 
 /**
  * @author Mark Goddard

@@ -2,6 +2,9 @@ package com.pangu.mobile.client.activities;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,6 +13,7 @@ import com.pangu.mobile.client.background_tasks.DataCollectionTask;
 import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.interfaces.AsyncResponse;
 import com.pangu.mobile.client.models.InformationModel;
+import com.pangu.mobile.client.utils.TypefaceSpan;
 
 /**
  * Created by Mark on 24/02/15.
@@ -21,8 +25,14 @@ public class InformationActivity extends BaseActivity implements AsyncResponse {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getMainLayoutResID());
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle("About Model");
+        Toolbar toolbar = (Toolbar) findViewById(getToolbarLayoutResID());
+        setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_action_planet);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        SpannableString s = new SpannableString("About Model");
+        s.setSpan(new TypefaceSpan(this, "Roboto-Regular.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        title.setText(s);
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
         Bundle extras = getIntent().getExtras();
         DataCollectionTask data = new DataCollectionTask(this, extras.getString("modelName"), headerProgress);

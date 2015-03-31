@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:yourapp="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_editView"
           android:icon="@drawable/ic_action_edit"
           android:title="@string/action_editView"
-          android:showAsAction="always"/>
+          yourapp:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_reload"
           android:icon="@drawable/ic_action_reloading"
           android:title="@string/action_reload"
-          android:showAsAction="always"/>
+          yourapp:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_info"
           android:icon="@drawable/ic_action_info"
           android:title="@string/action_info"
-          android:showAsAction="always"/>
+          yourapp:showAsAction="ifRoom"/>
 </menu>

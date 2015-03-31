@@ -1,12 +1,22 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.*;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.*;
-import android.widget.*;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.base_classes.ConfirmationDialog;
@@ -14,6 +24,7 @@ import com.pangu.mobile.client.models.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.ErrorHandler;
+import com.pangu.mobile.client.utils.TypefaceSpan;
 
 import java.util.List;
 
@@ -24,7 +35,7 @@ import java.util.List;
  */
 public class MainActivity extends BaseActivity implements UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
     private DatabaseHelper db;
-    private View topLevelLayout;
+    private View mainActivityTopLevelLayout;
 
     /**
      * Called when the activity is first created.
@@ -34,21 +45,30 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         super.onCreate(savedInstanceState);
         setContentView(getMainLayoutResID());
 
-        topLevelLayout = findViewById(R.id.top_layout);
-//        if (isFirstTime()) {
-//            topLevelLayout.setVisibility(View.INVISIBLE);
-//        }
-
-        topLevelLayout.setVisibility(View.VISIBLE);
-        topLevelLayout.setOnTouchListener(new View.OnTouchListener() {
+        mainActivityTopLevelLayout = findViewById(R.id.top_layout);
+        if (isFirstTime()) {
+            mainActivityTopLevelLayout.setVisibility(View.INVISIBLE);
+            if(actionBarMenu != null) {
+                actionBarMenu.findItem(R.id.action_add).setEnabled(true);
+            }
+        }
+        mainActivityTopLevelLayout.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                topLevelLayout.setVisibility(View.INVISIBLE);
-                actionBarMenu.findItem(R.id.action_add).setEnabled(true);
+                mainActivityTopLevelLayout.setVisibility(View.INVISIBLE);
                 return false;
             }
         });
+
+        Toolbar toolbar = (Toolbar) findViewById(getToolbarLayoutResID());
+        setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_action_planet);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        SpannableString s = new SpannableString("PANGU");
+        s.setSpan(new TypefaceSpan(this, "Roboto-Regular.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        title.setText(s);
 
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
@@ -70,24 +90,22 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         MenuInflater inflater = getMenuInflater();
         if(getOptionsMenuLayoutResID() != 0)
             inflater.inflate(getOptionsMenuLayoutResID(), menu);
-        menu.findItem(R.id.action_add).setEnabled(false);
-        actionBarMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
     private boolean isFirstTime() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        boolean ranBefore = preferences.getBoolean("RanBefore", false);
+        boolean ranBefore = preferences.getBoolean("mainActivityHelp", false);
         if (!ranBefore) {
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("RanBefore", true);
+            editor.putBoolean("mainActivityHelp", true);
             editor.commit();
-            topLevelLayout.setVisibility(View.VISIBLE);
-            topLevelLayout.setOnTouchListener(new View.OnTouchListener() {
+            mainActivityTopLevelLayout.setVisibility(View.VISIBLE);
+            mainActivityTopLevelLayout.setOnTouchListener(new View.OnTouchListener() {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    topLevelLayout.setVisibility(View.INVISIBLE);
+                    mainActivityTopLevelLayout.setVisibility(View.INVISIBLE);
                     actionBarMenu.findItem(R.id.action_add).setEnabled(true);
                     return false;
                 }
@@ -189,7 +207,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         db = new DatabaseHelper(getApplicationContext());
         DatabaseOperations databaseOperations = new DatabaseOperations(db);
         final List<ConfigurationModel> values = databaseOperations.readConfiguration();
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         ImageAdapter imageAdapter = new ImageAdapter(this, values, fm);
         imageAdapter.setViewClickListener(this);
         gridView.setAdapter(imageAdapter);

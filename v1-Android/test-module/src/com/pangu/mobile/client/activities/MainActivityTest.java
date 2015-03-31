@@ -7,32 +7,32 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-@TargetApi(Build.VERSION_CODES.CUPCAKE)
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
-    private MainActivity mActivity;
-    private ListView listView;
-    private BaseAdapter baseAdapter;
-
-    @TargetApi(Build.VERSION_CODES.FROYO)
-    public MainActivityTest() {
-        super(MainActivity.class);
-    }
-
-    private ListView findlistViewById(int id) {
-        return (ListView) mActivity.findViewById(id);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        mActivity = getActivity();
-        listView = findlistViewById(com.pangu.mobile.client.R.layout.list_view);
-    }
-
-    public void testActivity() {
-        assertNotNull(mActivity);
-    }
+//@TargetApi(Build.VERSION_CODES.CUPCAKE)
+//public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+//    private MainActivity mActivity;
+//    private ListView listView;
+//    private BaseAdapter baseAdapter;
+//
+//    @TargetApi(Build.VERSION_CODES.FROYO)
+//    public MainActivityTest() {
+//        super(MainActivity.class);
+//    }
+//
+//    private ListView findlistViewById(int id) {
+//        return (ListView) mActivity.findViewById(id);
+//    }
+//
+//    @Override
+//    protected void setUp() throws Exception {
+//        super.setUp();
+//
+//        mActivity = getActivity();
+//        listView = findlistViewById(com.pangu.mobile.client.R.layout.list_view);
+//    }
+//
+//    public void testActivity() {
+//        assertNotNull(mActivity);
+//    }
 
 //    public void testImageAdapter() {
 //        listView.setAdapter(imageAdapter);
@@ -52,4 +52,4 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 //        listView.setSelection(listView.getCount());
 //        assertEquals(listView.getCount(), listView.getSelectedItemPosition());
 //    }
-}
+//}

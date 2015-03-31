@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyCustomTheme" parent="@android:style/Theme.Holo.Light">
+    <style name="MyCustomTheme" parent="style/Theme.AppCompat.NoActionBar">
         <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
         <item name="android:windowBackground">@color/background_colour</item>
         <item name="android:actionBarItemBackground">@color/default_color_theme</item>
@@ -9,18 +9,19 @@
         <item name="android:editTextStyle">@style/EditTextStyle</item>
     </style>
 
-    <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="MyActionBarTheme" parent="android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/default_color_theme</item>
-        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+        <!--<item name="background">@color/default_color_theme</item>-->
+        <item name="titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
     </style>
 
-    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <style name="MyTheme.ActionBar.TitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/action_bar_text_colour</item>
-        <item name="android:fontFamily">@string/condensed</item>
+        <!--<item name="fontFamily">@string/condensed</item>-->
     </style>
 
     <style name="TextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@string/light</item>
+        <!--<item name="fontFamily">@string/light</item>-->
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -39,7 +40,7 @@
     <style name="InformationActivityTextViewTitle" parent="android:Widget.TextView">
         <item name="android:textSize">20dp</item>
         <item name="android:paddingLeft">25dp</item>
-        <item name="android:fontFamily">@string/condensed</item>
+        <!--<item name="fontFamily">@string/condensed</item>-->
         <item name="android:textStyle">bold</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>

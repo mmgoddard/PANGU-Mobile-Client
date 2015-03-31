@@ -1,18 +1,17 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.models.ConfigurationModel;
-
-import java.net.InetAddress;
 import java.util.List;
 
 /**
@@ -100,7 +99,6 @@ public class ImageAdapter extends BaseAdapter {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-
         UpdateConfigDialog newFragment = UpdateConfigDialog.newInstance("Update Configuration", cm);
         newFragment.show(ft, "dialog");
     }

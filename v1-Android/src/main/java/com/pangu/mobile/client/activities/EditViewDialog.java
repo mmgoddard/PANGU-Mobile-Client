@@ -1,48 +1,51 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.base_classes.InputDialog;
 import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.utils.LoggerHandler;
+import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
+import android.support.v4.app.DialogFragment;
+
+import java.util.logging.Logger;
 
 /**
  * Created by Mark on 04/03/15.
  */
-public abstract class EditViewDialog extends DialogFragment {
+public abstract class EditViewDialog extends InputDialog {
     private EditText xCoordinateEditText, yCoordinateEditText, zCoordinateEditText, yawAngleEditText, pitchAngleEditText, rollAngleEditText;
     private boolean xCoordinateCheck = true, yCoordinateCheck = true, zCoordinateCheck = true, yawAngleCheck = true, pitchAngleCheck = true, rollAngleCheck = true;
     private double xCoordinate, yCoordinate, zCoordinate, yawAngle, pitchAngle, rollAngle;
     private Button submitBtn;
-    private ViewPoint viewPoint;
-
-    public void setArgs(String title, ViewPoint v) {
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        setArguments(args);
-        this.viewPoint = v;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.MyCustomTheme);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.edit_view_dialog, container);
         String title = getArguments().getString("title");
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.global_toolbar);
+        toolbar.setLogo(R.drawable.ic_action_planet);
+        TextView titleTextView = (TextView) v.findViewById(R.id.toolbar_title);
+        SpannableString s = new SpannableString(title);
+        s.setSpan(new TypefaceSpan(v.getContext(), "Roboto-Regular.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        titleTextView.setText(s);
 
         xCoordinateEditText = (EditText) v.findViewById(R.id.x_coordinate_editText);
         xCoordinateEditText.setText(String.valueOf(viewPoint.getVector3D().i));

@@ -1,111 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="10dp">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView android:id="@+id/x_coordinate_textView"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:textSize="20dp"
-              android:fontFamily="@string/condensed"
-              android:textStyle="bold"
-              android:text="@string/x_coordinate"/>
+    <include layout="@layout/toolbar" />
 
-    <EditText android:id="@+id/x_coordinate_editText"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:background="@drawable/border"
-              android:layout_marginBottom="10dp"
-              android:maxLines="1"
-              android:singleLine="true" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
-    <TextView android:id="@+id/y_coordinate_textView"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:textSize="20dp"
-              android:fontFamily="@string/condensed"
-              android:textStyle="bold"
-              android:text="@string/y_coordinate"/>
+        <TextView
+            android:id="@+id/x_coordinate_textView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:fontFamily="@string/condensed"
+            android:textStyle="bold"
+            android:text="@string/x_coordinate"/>
 
-    <EditText android:id="@+id/y_coordinate_editText"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:background="@drawable/border"
-              android:layout_marginBottom="10dp"
-              android:maxLines="1"
-              android:singleLine="true"/>
+        <EditText
+            android:id="@+id/x_coordinate_editText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/border"
+            android:layout_marginBottom="10dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"/>
 
-    <TextView android:id="@+id/z_coordinate_textView"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:textSize="20dp"
-              android:fontFamily="@string/condensed"
-              android:textStyle="bold"
-              android:text="@string/z_coordinate"/>
+        <TextView
+            android:id="@+id/y_coordinate_textView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:fontFamily="@string/condensed"
+            android:textStyle="bold"
+            android:text="@string/y_coordinate" />
 
-    <EditText android:id="@+id/z_coordinate_editText"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:background="@drawable/border"
-              android:layout_marginBottom="10dp"
-              android:maxLines="1"
-              android:singleLine="true"/>
+        <EditText
+            android:id="@+id/y_coordinate_editText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/border"
+            android:layout_marginBottom="10dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"/>
 
-    <TextView android:id="@+id/yaw_textView"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:textSize="20dp"
-              android:fontFamily="@string/condensed"
-              android:textStyle="bold"
-              android:text="@string/yaw"/>
+        <TextView
+            android:id="@+id/z_coordinate_textView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:fontFamily="@string/condensed"
+            android:textStyle="bold"
+            android:text="@string/z_coordinate" />
 
-    <EditText android:id="@+id/yaw_editText"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:background="@drawable/border"
-              android:layout_marginBottom="10dp"
-              android:maxLines="1"
-              android:singleLine="true"/>
+        <EditText
+            android:id="@+id/z_coordinate_editText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/border"
+            android:layout_marginBottom="10dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"/>
 
-    <TextView android:id="@+id/pitch_textView"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:textSize="20dp"
-              android:fontFamily="@string/condensed"
-              android:textStyle="bold"
-              android:text="@string/pitch"/>
+        <TextView
+            android:id="@+id/yaw_textView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:fontFamily="@string/condensed"
+            android:textStyle="bold"
+            android:text="@string/yaw" />
 
-    <EditText android:id="@+id/pitch_editText"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:background="@drawable/border"
-              android:layout_marginBottom="10dp"
-              android:maxLines="1"
-              android:singleLine="true"/>
+        <EditText
+            android:id="@+id/yaw_editText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/border"
+            android:layout_marginBottom="10dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"/>
 
-    <TextView android:id="@+id/roll_TextView"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:textSize="20dp"
-              android:fontFamily="@string/condensed"
-              android:textStyle="bold"
-              android:text="@string/roll"/>
+        <TextView
+            android:id="@+id/pitch_textView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:fontFamily="@string/condensed"
+            android:textStyle="bold"
+            android:text="@string/pitch" />
 
-    <EditText android:id="@+id/roll_editText"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:background="@drawable/border"
-              android:layout_marginBottom="10dp"
-              android:maxLines="1"
-              android:singleLine="true"/>
+        <EditText
+            android:id="@+id/pitch_editText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/border"
+            android:layout_marginBottom="10dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"/>
 
-    <Button android:id="@+id/edit_view_btn"
+        <TextView
+            android:id="@+id/roll_TextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:fontFamily="@string/condensed"
+            android:textStyle="bold"
+            android:text="@string/roll" />
+
+        <EditText
+            android:id="@+id/roll_editText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/border"
+            android:layout_marginBottom="10dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/edit_view_btn"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="@string/submit_btn"
             android:textSize="20dp"
             android:fontFamily="@string/condensed"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>

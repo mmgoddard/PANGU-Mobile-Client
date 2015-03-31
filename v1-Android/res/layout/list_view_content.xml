@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_action_edit"
                 android:layout_toStartOf="@+id/item_delete"
+                android:layout_toLeftOf="@+id/item_delete"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="32dp"/>
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_action_play"
                 android:layout_toStartOf="@+id/item_edit"
+                android:layout_toLeftOf="@id/item_edit"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="32dp"/>
