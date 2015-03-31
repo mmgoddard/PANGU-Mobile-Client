@@ -1,10 +1,7 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Spannable;
@@ -15,8 +12,9 @@ import android.widget.*;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.background_tasks.PanguConnection;
 import com.pangu.mobile.client.base_classes.BaseActivity;
-import com.pangu.mobile.client.models.ConfigurationModel;
-import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.dialogs.EditViewDialog;
+import com.pangu.mobile.client.domain.ConfigurationModel;
+import com.pangu.mobile.client.domain.ViewPoint;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.LoggerHandler;

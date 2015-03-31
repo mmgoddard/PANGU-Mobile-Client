@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.models;
+package com.pangu.mobile.client.domain;
 
 /**
  * Created by Mark on 23/02/15.

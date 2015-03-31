@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.pangu.mobile.client.interfaces.AsyncResponse;
-import com.pangu.mobile.client.models.InformationModel;
+import com.pangu.mobile.client.domain.InformationModel;
 import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.utils.LoggerHandler;
 import com.pangu.mobile.client.utils.NetworkHelper;
@@ -25,7 +25,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.net.URLEncoder;
 
 /**
  * @author Mark Goddard
@@ -118,6 +117,8 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
             asyncResponse.processData(data);
         } else if (result == ErrorHandler.NO_INTERNET_CONNECTION || result == ErrorHandler.IO_ERROR) {
             Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
+            data = new InformationModel(modelName);
+            asyncResponse.processData(data);
         }
     }
 

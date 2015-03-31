@@ -3,7 +3,7 @@ package com.pangu.mobile.client.base_classes;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPoint;
 
 /**
  * Created by Mark on 04/03/15.

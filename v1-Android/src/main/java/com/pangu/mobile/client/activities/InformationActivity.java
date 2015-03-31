@@ -1,6 +1,5 @@
 package com.pangu.mobile.client.activities;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -12,7 +11,7 @@ import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.background_tasks.DataCollectionTask;
 import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.interfaces.AsyncResponse;
-import com.pangu.mobile.client.models.InformationModel;
+import com.pangu.mobile.client.domain.InformationModel;
 import com.pangu.mobile.client.utils.TypefaceSpan;
 
 /**

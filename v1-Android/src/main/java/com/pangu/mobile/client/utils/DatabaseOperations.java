@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import com.pangu.mobile.client.models.ConfigurationModel;
-import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.domain.ConfigurationModel;
+import com.pangu.mobile.client.domain.ViewPoint;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
 import java.util.ArrayList;

@@ -2,7 +2,6 @@ package com.pangu.mobile.client.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -18,9 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pangu.mobile.client.R;
+import com.pangu.mobile.client.adapters.ImageAdapter;
 import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.base_classes.ConfirmationDialog;
-import com.pangu.mobile.client.models.ConfigurationModel;
+import com.pangu.mobile.client.dialogs.AddConfigDialog;
+import com.pangu.mobile.client.dialogs.UpdateConfigDialog;
+import com.pangu.mobile.client.domain.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.ErrorHandler;

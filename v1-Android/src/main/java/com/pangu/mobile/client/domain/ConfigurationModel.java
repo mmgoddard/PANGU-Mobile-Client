@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.models;
+package com.pangu.mobile.client.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;

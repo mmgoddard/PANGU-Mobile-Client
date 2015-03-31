@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.activities;
+package com.pangu.mobile.client.dialogs;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.base_classes.InputDialog;
-import com.pangu.mobile.client.models.ConfigurationModel;
-import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.domain.ConfigurationModel;
+import com.pangu.mobile.client.domain.ViewPoint;
 import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;

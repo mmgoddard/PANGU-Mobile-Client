@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.activities;
+package com.pangu.mobile.client.dialogs;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.base_classes.InputDialog;
-import com.pangu.mobile.client.models.ViewPoint;
-import com.pangu.mobile.client.utils.LoggerHandler;
+import com.pangu.mobile.client.domain.ViewPoint;
 import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
-import android.support.v4.app.DialogFragment;
-
-import java.util.logging.Logger;
 
 /**
  * Created by Mark on 04/03/15.

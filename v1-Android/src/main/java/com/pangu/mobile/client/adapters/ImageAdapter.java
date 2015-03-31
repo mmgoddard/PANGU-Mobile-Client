@@ -1,9 +1,8 @@
-package com.pangu.mobile.client.activities;
+package com.pangu.mobile.client.adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.models.ConfigurationModel;
+import com.pangu.mobile.client.activities.PanguActivity;
+import com.pangu.mobile.client.dialogs.UpdateConfigDialog;
+import com.pangu.mobile.client.domain.ConfigurationModel;
 import java.util.List;
 
 /**

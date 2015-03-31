@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.models.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPoint;
 import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.utils.LoggerHandler;
 import com.pangu.mobile.client.utils.NetworkHelper;

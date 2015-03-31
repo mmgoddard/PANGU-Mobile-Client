@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.activities;
+package com.pangu.mobile.client.dialogs;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.models.ConfigurationModel;
+import com.pangu.mobile.client.domain.ConfigurationModel;
 import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 import org.apache.commons.validator.routines.InetAddressValidator;

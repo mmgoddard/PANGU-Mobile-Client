@@ -1,6 +1,6 @@
 package com.pangu.mobile.client.interfaces;
 
-import com.pangu.mobile.client.models.InformationModel;
+import com.pangu.mobile.client.domain.InformationModel;
 
 /**
  * @author Mark Goddard

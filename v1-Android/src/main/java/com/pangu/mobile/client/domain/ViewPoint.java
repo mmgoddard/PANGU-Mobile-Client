@@ -1,4 +1,4 @@
-package com.pangu.mobile.client.models;
+package com.pangu.mobile.client.domain;
 
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 

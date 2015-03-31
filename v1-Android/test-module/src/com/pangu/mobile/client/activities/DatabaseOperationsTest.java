@@ -2,7 +2,7 @@ package com.pangu.mobile.client.activities;
 
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
-import com.pangu.mobile.client.models.ConfigurationModel;
+import com.pangu.mobile.client.domain.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.ErrorHandler;
