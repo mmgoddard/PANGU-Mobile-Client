@@ -35,7 +35,7 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
     private final WeakReference<LinearLayout> headerProgressReference;
     private Context context;
     private InformationModel data;
-    private String baseUrl = "http://192.168.0.7:8080/PANGU-RESTful-API-1.0-SNAPSHOT/api/models/name/";
+    private String baseUrl = "http://restapi-panguapp.rhcloud.com/api/models/name/";
     public AsyncResponse asyncResponse = null;
     private String modelName;
 
