@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class PanguModel implements Serializable {
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     @Column
     private String name;
     @Column
@@ -43,7 +43,7 @@ public class PanguModel implements Serializable {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

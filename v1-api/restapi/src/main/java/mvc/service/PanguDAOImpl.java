@@ -38,14 +38,16 @@ public class PanguDAOImpl implements PanguDAO {
 
     public void addModel(PanguModel panguModel) {
         String sql = "INSERT INTO pangu_model (id, name, discoveredBy, discoveryDate, size, approximateMass, orbitalPeriod, description, comments) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Object params [] = {panguModel.getId(), panguModel.getName(), panguModel.getDiscoveredBy(), panguModel.getDiscoveryDate(), panguModel.getSize(), panguModel.getApproximateMass(), panguModel.getOrbitalPeriod(), panguModel.getDescription(), panguModel.getComments()};
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update(sql, panguModel);
+        jdbcTemplate.update(sql, params);
     }
 
     public void updateModel(PanguModel panguModel) {
-        String sql = "UPDATE pangu_model SET id = ? WHERE id=?, name=?, discoveredBy=?, discoveryDate=?, size=?, approximateMass=?, orbitalPeriod=?, description=?, comments=?";
+        String sql = "UPDATE pangu_model SET name=?, discoveredBy=?, discoveryDate=?, size=?, approximateMass=?, orbitalPeriod=?, description=?, comments=? WHERE id=?";
+        Object params [] = {panguModel.getName(), panguModel.getDiscoveredBy(), panguModel.getDiscoveryDate(), panguModel.getSize(), panguModel.getApproximateMass(), panguModel.getOrbitalPeriod(), panguModel.getDescription(), panguModel.getComments(), panguModel.getId()};
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update(sql, panguModel);
+        jdbcTemplate.update(sql, params);
     }
 
     public void deleteModel(int id) {
