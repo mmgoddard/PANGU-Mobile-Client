@@ -36,3 +36,7 @@ local.properties
 
 # So db credentials are compromised
 application.properties
+
+#OpenShift Ignores
+.openshift/
+.gitkeep
