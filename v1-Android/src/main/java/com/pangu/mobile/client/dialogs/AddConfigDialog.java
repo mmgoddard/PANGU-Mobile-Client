@@ -110,7 +110,7 @@ public abstract class AddConfigDialog extends InputDialog {
                     String portNum = portNumEditText.getText().toString();
 
                     Vector3D vector3D = new Vector3D(0.0, 0.0, 0.0);
-                    ViewPoint viewPoint = new ViewPoint(vector3D, 0.0, 0.0, 0.0);
+                    ViewPoint viewPoint = new ViewPoint(vector3D, 0.0, 0.0, 0.0, 0.0);
                     ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum, viewPoint, "false");
                     submit(cm);
                 } else

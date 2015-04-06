@@ -1,126 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <LinearLayout
-            android:id="@+id/linlaHeaderProgress"
-            style="@style/ProgressBarLinearLayout">
+        android:id="@+id/linlaHeaderProgress"
+        style="@style/ProgressBarLinearLayout">
 
         <ProgressBar
-                android:id="@+id/pbHeaderProgress"
-                style="@style/ProgressBarHeader">
-        </ProgressBar>
+            android:id="@+id/pbHeaderProgress"
+            style="@style/ProgressBarHeader"></ProgressBar>
     </LinearLayout>
 
-    <include layout="@layout/toolbar_actionbar"/>
+    <include layout="@layout/toolbar_actionbar" />
 
-    <ImageView
-            android:id="@+id/pangu_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <LinearLayout android:id="@+id/linearLayout1"
-                  android:layout_height="wrap_content"
-                  android:layout_width="fill_parent"
-                  android:weightSum="1">
-
-        <Button android:id="@+id/left_button"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/left_control"
-                android:background="@drawable/border_grey"/>
-
-        <Button android:id="@+id/up_button"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/up_control"
-                android:background="@drawable/border_grey"/>
-
-        <Button android:id="@+id/right_button"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/right_control"
-                android:background="@drawable/border_grey"/>
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/linearLayout2"
-                  android:layout_height="wrap_content"
-                  android:layout_width="fill_parent"
-                  android:weightSum="1">
-
-        <Button android:id="@+id/zoom_in"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/zoom_in"
-                android:background="@drawable/border_grey"/>
-
-        <Button android:id="@+id/down_button"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/down_control"
-                android:background="@drawable/border_grey"/>
-
-        <Button android:id="@+id/zoom_out"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/zoo_out"
-                android:background="@drawable/border_grey"/>
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/linearLayout3"
-                  android:layout_height="wrap_content"
-                  android:layout_width="fill_parent"
-                  android:weightSum="1">
-
-        <TextView
-                android:id="@+id/step_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Step"/>
-
-        <EditText
-                android:id="@+id/step_EditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <TextView
-            android:id="@+id/yawAngle_TextView"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Yaw Angle: 0.0"/>
+            android:layout_height="fill_parent">
 
-    <TextView
-            android:id="@+id/pitchAngle_TextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Pitch Angle: 0.0"/>
+            <ImageView
+                android:id="@+id/pangu_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
-    <TextView
-            android:id="@+id/rollAngle_TextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Roll Angle: 0.0"/>
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:weightSum="1">
 
-    <TextView
-            android:id="@+id/xCoordinate_TextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="x-Coordinate: 0.0"/>
+                <Button
+                    android:id="@+id/left_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/left_control"
+                    android:background="@drawable/border_grey" />
 
-    <TextView
-            android:id="@+id/yCoordinate_TextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="y-Coordinate: 0.0"/>
+                <Button
+                    android:id="@+id/up_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/up_control"
+                    android:background="@drawable/border_grey" />
 
-    <TextView
-            android:id="@+id/zCoordinate_TextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="z-Coordinate: 0.0"/>
+                <Button
+                    android:id="@+id/right_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/right_control"
+                    android:background="@drawable/border_grey" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/zoom_in"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/zoom_in"
+                    android:background="@drawable/border_grey" />
+
+                <Button
+                    android:id="@+id/down_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/down_control"
+                    android:background="@drawable/border_grey" />
+
+                <Button
+                    android:id="@+id/zoom_out"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/zoo_out"
+                    android:background="@drawable/border_grey" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/yawAngle_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yaw Angle: 0.0"
+                    android:padding="3dip"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/xCoordinate_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="x-Coordinate: 0.0"
+                    android:padding="3dip"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/pitchAngle_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pitch Angle: 0.0"
+                    android:padding="3dip" />
+
+                <TextView
+                    android:id="@+id/yCoordinate_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="y-Coordinate: 0.0"
+                    android:padding="3dip" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/rollAngle_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Roll Angle: 0.0"
+                    android:padding="3dip" />
+
+                <TextView
+                    android:id="@+id/zCoordinate_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="z-Coordinate: 0.0"
+                    android:padding="3dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

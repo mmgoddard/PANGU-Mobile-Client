@@ -26,6 +26,7 @@ public class ConfigurationContract {
         public static final String PANGU_YAW_ANGLE = "yaw_angle";
         public static final String PANGU_PITCH_ANGLE = "pitch_angle";
         public static final String PANGU_ROLL_ANGLE = "roll_angle";
+        public static final String PANGU_STEP = "step";
         public static final String PANGU_SAVED = "saved";
 
         //PANGU Table - Create Statement
@@ -41,6 +42,7 @@ public class ConfigurationContract {
                 + PANGU_YAW_ANGLE + TEXT_TYPE + COMMA_SEP
                 + PANGU_PITCH_ANGLE + TEXT_TYPE + COMMA_SEP
                 + PANGU_ROLL_ANGLE + TEXT_TYPE + COMMA_SEP
+                + PANGU_STEP + TEXT_TYPE + COMMA_SEP
                 + PANGU_SAVED + TEXT_TYPE +")";
 
         //PANGU TABLE - Delete Statement

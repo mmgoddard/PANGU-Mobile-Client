@@ -33,6 +33,7 @@ public class DatabaseOperations {
             values.put(ConfigurationContract.PanguEntry.PANGU_YAW_ANGLE, String.valueOf(cm.getViewPoint().getYawAngle()));
             values.put(ConfigurationContract.PanguEntry.PANGU_PITCH_ANGLE, String.valueOf(cm.getViewPoint().getPitchAngle()));
             values.put(ConfigurationContract.PanguEntry.PANGU_ROLL_ANGLE, String.valueOf(cm.getViewPoint().getRollAngle()));
+            values.put(ConfigurationContract.PanguEntry.PANGU_STEP, String.valueOf(cm.getViewPoint().getStep()));
             values.put(ConfigurationContract.PanguEntry.PANGU_SAVED, cm.getSaved());
 
             db.insert(ConfigurationContract.PanguEntry.PANGU_TABLE, null, values);
@@ -82,6 +83,7 @@ public class DatabaseOperations {
             values.put(ConfigurationContract.PanguEntry.PANGU_YAW_ANGLE, String.valueOf(cm.getViewPoint().getYawAngle()));
             values.put(ConfigurationContract.PanguEntry.PANGU_PITCH_ANGLE, String.valueOf(cm.getViewPoint().getPitchAngle()));
             values.put(ConfigurationContract.PanguEntry.PANGU_ROLL_ANGLE, String.valueOf(cm.getViewPoint().getRollAngle()));
+            values.put(ConfigurationContract.PanguEntry.PANGU_STEP, String.valueOf(cm.getViewPoint().getStep()));
             values.put(ConfigurationContract.PanguEntry.PANGU_SAVED, cm.getSaved());
 
             String selection = ConfigurationContract.PanguEntry._ID + " = ?";
@@ -103,8 +105,8 @@ public class DatabaseOperations {
         int count = 0;
         while (c.moveToNext()) {
             vec3 = new Vector3D(Double.parseDouble(c.getString(4)), Double.parseDouble(c.getString(5)), Double.parseDouble(c.getString(6)));
-            v = new ViewPoint(vec3, Double.parseDouble(c.getString(7)), Double.parseDouble(c.getString(8)), Double.parseDouble(c.getString(9)));
-            cm = new ConfigurationModel(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), v, c.getString(10));
+            v = new ViewPoint(vec3, Double.parseDouble(c.getString(7)), Double.parseDouble(c.getString(8)), Double.parseDouble(c.getString(9)), Double.parseDouble(c.getString(10)));
+            cm = new ConfigurationModel(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), v, c.getString(11));
             list.add(count, cm);
             count++;
         }

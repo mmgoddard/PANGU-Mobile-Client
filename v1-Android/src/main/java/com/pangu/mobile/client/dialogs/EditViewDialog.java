@@ -24,9 +24,9 @@ import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
  * Created by Mark on 04/03/15.
  */
 public abstract class EditViewDialog extends InputDialog {
-    private EditText xCoordinateEditText, yCoordinateEditText, zCoordinateEditText, yawAngleEditText, pitchAngleEditText, rollAngleEditText;
-    private boolean xCoordinateCheck = true, yCoordinateCheck = true, zCoordinateCheck = true, yawAngleCheck = true, pitchAngleCheck = true, rollAngleCheck = true;
-    private double xCoordinate, yCoordinate, zCoordinate, yawAngle, pitchAngle, rollAngle;
+    private EditText xCoordinateEditText, yCoordinateEditText, zCoordinateEditText, yawAngleEditText, pitchAngleEditText, rollAngleEditText, stepEditText;
+    private boolean xCoordinateCheck = true, yCoordinateCheck = true, zCoordinateCheck = true, yawAngleCheck = true, pitchAngleCheck = true, rollAngleCheck = true, stepCheck = true;
+    private double xCoordinate, yCoordinate, zCoordinate, yawAngle, pitchAngle, rollAngle, step;
     private Button submitBtn;
 
     @Override
@@ -47,10 +47,12 @@ public abstract class EditViewDialog extends InputDialog {
         xCoordinateEditText.setSelection(xCoordinateEditText.getText().length());
         xCoordinateEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -172,20 +174,43 @@ public abstract class EditViewDialog extends InputDialog {
                 }
             }
         });
+        stepEditText = (EditText) v.findViewById(R.id.step_editText);
+        stepEditText.setText(String.valueOf(viewPoint.getStep()));
+        stepEditText.setSelection(stepEditText.getText().length());
+        stepEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String str = s.toString();
+                if (Validation.getInstance().isEmpty(stepEditText) || !Validation.getInstance().isDoubleParsable(str)) {
+                    stepEditText.setError("Value needs to be number");
+                    stepCheck = false;
+                } else {
+                    stepEditText.setError(null);
+                    stepCheck = true;
+                }
+            }
+        });
         submitBtn = (Button) v.findViewById(R.id.edit_view_btn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (xCoordinateCheck == true && yCoordinateCheck == true && zCoordinateCheck == true && yawAngleCheck == true && pitchAngleCheck == true && rollAngleCheck == true) {
+                if (xCoordinateCheck == true && yCoordinateCheck == true && zCoordinateCheck == true && yawAngleCheck == true && pitchAngleCheck == true && rollAngleCheck == true && stepCheck == true) {
                     xCoordinate = Double.parseDouble(xCoordinateEditText.getText().toString());
                     yCoordinate = Double.parseDouble(yCoordinateEditText.getText().toString());
                     zCoordinate = Double.parseDouble(zCoordinateEditText.getText().toString());
                     yawAngle = Double.parseDouble(yawAngleEditText.getText().toString());
                     pitchAngle = Double.parseDouble(pitchAngleEditText.getText().toString());
                     rollAngle = Double.parseDouble(rollAngleEditText.getText().toString());
+                    step = Double.parseDouble(stepEditText.getText().toString());
 
                     Vector3D vector3D = new Vector3D(xCoordinate, yCoordinate, zCoordinate);
-                    ViewPoint vp = new ViewPoint(vector3D, yawAngle, pitchAngle, rollAngle);
+                    ViewPoint vp = new ViewPoint(vector3D, yawAngle, pitchAngle, rollAngle, step);
                     submit(vp);
                     dismiss();
                 } else

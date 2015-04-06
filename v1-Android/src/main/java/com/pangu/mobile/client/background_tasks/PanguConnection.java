@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,6 +36,7 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
     private Bitmap bitmap;
     private ViewPoint viewPoint;
     private boolean value;
+    private int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 
     /**
      * @param context the current state of application.
@@ -42,8 +44,8 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
      */
     public PanguConnection(Context context, ImageView imageView, String dstName, int dstPort, ViewPoint viewPoint, LinearLayout headerProgress, boolean value) {
         this.context = context;
-        imageViewReference = new WeakReference<ImageView>(imageView);
-        this.headerProgressReference = new WeakReference<LinearLayout>(headerProgress);
+        imageViewReference = new WeakReference<>(imageView);
+        this.headerProgressReference = new WeakReference<>(headerProgress);
         this.dstPort = dstPort;
         this.viewPoint = viewPoint;
         this.dstName = dstName;
@@ -104,12 +106,14 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
                 final ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
+                    imageView.setTag(R.drawable.no_image_available, true);
                 }
             }
         } else if (result == ErrorHandler.NO_INTERNET_CONNECTION || result == ErrorHandler.IO_ERROR) {
             Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
             final ImageView imageView = imageViewReference.get();
             imageView.setImageResource(R.drawable.no_image_available);
+            imageView.setTag(R.drawable.no_image_available, false);
         }
     }
 
@@ -117,8 +121,13 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
+        int width;
+        if (currentApiVersion >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            display.getSize(size);
+            width = size.x;
+        } else {
+            width = display.getWidth();
+        }
         return Bitmap.createScaledBitmap(bitmap, width, width, true);
     }
 }

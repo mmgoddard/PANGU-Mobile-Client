@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
 
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
-        db = new DatabaseHelper(getApplicationContext());
+        //db = new DatabaseHelper(getApplicationContext());
     }
 
     @Override
@@ -155,6 +155,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         } else {
             Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
         }
+        db.close();
     }
 
     /**
@@ -175,6 +176,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
                 else
                     Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
                 getGridItems();
+                db.close();
             }
         };
         dialog.setArgs("", message);
@@ -194,6 +196,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         ImageAdapter imageAdapter = new ImageAdapter(this, values, fm);
         imageAdapter.setViewClickListener(this);
         gridView.setAdapter(imageAdapter);
+        db.close();
     }
 
     public void addConfiguration() {
@@ -210,6 +213,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
                 } else {
                     Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
                 }
+                db.close();
             }
         };
         dialog.setArgs("Add Configuration");

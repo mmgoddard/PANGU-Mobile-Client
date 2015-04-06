@@ -11,8 +11,9 @@ public class ViewPoint {
     private double yawAngle = 0.0;
     private double pitchAngle = 0.0;
     private double rollAngle = 0.0;
+    private double step = 0.0;
 
-    public ViewPoint(Vector3D v, double y, double p, double r) {
+    public ViewPoint(Vector3D v, double y, double p, double r, double step) {
         this.vector3D = v;
         this.yawAngle = Math.toRadians(y);
         this.pitchAngle = Math.toRadians(p);
@@ -66,6 +67,9 @@ public class ViewPoint {
         rollAngle += Math.toRadians(v);
         normalise();
     }
+
+    public double getStep() { return step; }
+    public void setStep(double step) { this.step = step; }
 
     //ORGIN
     public void setOrigin(Vector3D v) { vector3D = v; }
