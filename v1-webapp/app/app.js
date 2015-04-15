@@ -1,4 +1,4 @@
-var webApp = angular.module('web-app', ['ngRoute', 'webAppControllers']);
+var webApp = angular.module('web-app', ['webAppControllers', 'ngRoute']);
 
 //Configure our routes
 webApp.config(function($routeProvider, $locationProvider) {
@@ -29,11 +29,11 @@ webApp.config(function($routeProvider, $locationProvider) {
         })
 
     //Check browser support
-    if(window.history && window.history.pushState){
-        //Use the HTML5 History API clean URLs (no has tag in URL)
-        $locationProvider.html5Mode({
-            enabled: true,
-            requireBase: false
-        });
-    }
+    //if(window.history && window.history.pushState){
+    //    //Use the HTML5 History API clean URLs (no has tag in URL)
+    //    $locationProvider.html5Mode({
+    //        enabled: true,
+    //        requireBase: false
+    //    });
+    //}
 });

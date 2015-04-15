@@ -4,15 +4,16 @@
 var webAppControllers = angular.module('webAppControllers', [])
 
 //Global Variables
-var addUpdateModelAddress = 'http://localhost:11000/api/models/add';
-var deleteViewModelAddress = 'http://localhost:11000/api/models/';
+var addModelAddress = 'http://restapi-panguapp.rhcloud.com/api/models/add';
+var updateModelAddress = 'http://restapi-panguapp.rhcloud.com/api/models/update';
+var deleteViewModelAddress = 'http://restapi-panguapp.rhcloud.com/api/models/';
 
 webAppControllers.controller('viewModelsController', [
     '$scope',
     '$http',
     '$location',
     function ($scope, $http, $location) {
-        $http.get('http://localhost:11000/api/models').
+        $http.get('http://restapi-panguapp.rhcloud.com/api/models/').
             success(function (data) {
                 $scope.pangu = data;
             });
@@ -44,7 +45,7 @@ webAppControllers.controller('editModelController', [
             if ($scope.editModelForm.$valid) {
                 console.log("Update Model: " + x.id)
                 $scope.json = angular.toJson(x);
-                $http.post(addUpdateModelAddress, $scope.json).
+                $http.post(updateModelAddress, $scope.json).
                     success(function (data, status, headers, config) {
 
                     }).
@@ -77,7 +78,7 @@ webAppControllers.controller('addNewModelController', [
             if ($scope.addModelForm.$valid) {
                 console.log("Add New Model");
                 $scope.json = angular.toJson(panguRecord);
-                $http.post(addUpdateModelAddress, $scope.json).
+                $http.post(addModelAddress, $scope.json).
                     success(function (data, status, headers, config) {
 
                     }).
@@ -94,7 +95,9 @@ webAppControllers.controller('loginController', [
     '$http',
     '$location',
     function ($scope, $http, $location) {
-        $scope.setLogin = function (login) {
+        $scope.setLogin = function (credentials) {
+            console.log("Username: " + credentials.username);
+            console.log("Password: " + credentials.pass);
             if ($scope.loginForm.$valid) {
                 console.log("Login");
                 $location.path("/models");

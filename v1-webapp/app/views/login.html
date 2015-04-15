@@ -1,9 +1,9 @@
-<div class="main-content">
-    <form novalidate name="loginForm" class="form-signin login-form" role="form" method="post">
+<div ng-controller="loginController" class="main-content">
+    <form name="loginForm" ng-click="setLogin(credentials)" class="form-signin login-form" role="form" novalidate>
         <h3 class="form-signin-heading">Please sign in.</h3>
-        <input type="text" class="form-control" placeholder="Username" required autofocus name="inputUsername" ng-model="user.username">
-        <input type="password" class="form-control" placeholder="Password" required name="inputPassword" ng-model="user.password">
-        <button class="btn btn-lg btn-primary btn-block submit-btn" type="submit" ng-click="setLogin(user)">Sign in</button>
+        <input type="text" class="form-control" placeholder="Username" required autofocus name="inputUsername" ng-model="credentials.username">
+        <input type="password" class="form-control" placeholder="Password" required name="inputPassword" ng-model="credentials.pass">
+        <button class="btn btn-lg btn-primary btn-block submit-btn" type="submit">Sign in</button>
         <div ng-show="loginForm.$submitted || loginForm.inputUsername.$touched">
             <span ng-show="loginForm.inputUsername.$error.required">Please enter a username.</span>
             <span ng-show="loginForm.inputUsername.$error.text">This is not a valid username.</span>
