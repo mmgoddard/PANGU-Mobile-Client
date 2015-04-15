@@ -10,10 +10,10 @@ import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 public class ConfigurationModel extends BaseConfigurationModel implements Parcelable {
     private String ipAddress;
     private String portNum;
-    private ViewPoint viewPoint;
+    private ViewPointModel viewPoint;
     private String saved;
 
-    public ConfigurationModel(String name, String ipAddress, String portNum, ViewPoint viewPoint, String saved) {
+    public ConfigurationModel(String name, String ipAddress, String portNum, ViewPointModel viewPoint, String saved) {
         this.name = name;
         this.ipAddress = ipAddress;
         this.portNum = portNum;
@@ -28,7 +28,7 @@ public class ConfigurationModel extends BaseConfigurationModel implements Parcel
         this.portNum = portNum;
     }
 
-    public ConfigurationModel(int id, String name, String ipAddress, String portNum, ViewPoint viewPoint, String saved) {
+    public ConfigurationModel(int id, String name, String ipAddress, String portNum, ViewPointModel viewPoint, String saved) {
         this.id = id;
         this.name = name;
         this.ipAddress = ipAddress;
@@ -51,8 +51,8 @@ public class ConfigurationModel extends BaseConfigurationModel implements Parcel
         this.portNum = portNum;
     }
 
-    public ViewPoint getViewPoint() { return viewPoint; }
-    public void setViewPoint(ViewPoint viewPoint) { this.viewPoint = viewPoint; }
+    public ViewPointModel getViewPoint() { return viewPoint; }
+    public void setViewPoint(ViewPointModel viewPoint) { this.viewPoint = viewPoint; }
 
     public String getSaved() { return saved; }
     public void setSaved(String saved) { this.saved = saved; }
@@ -101,7 +101,7 @@ public class ConfigurationModel extends BaseConfigurationModel implements Parcel
         double roll = in.readDouble();
         double step = in.readDouble();
         Vector3D vec3 = new Vector3D(i, j, k);
-        this.viewPoint = new ViewPoint(vec3, yaw, pitch, roll, step);
+        this.viewPoint = new ViewPointModel(vec3, yaw, pitch, roll, step);
         this.saved = in.readString();
     }
 }

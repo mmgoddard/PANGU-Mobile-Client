@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.domain.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPointModel;
 import com.pangu.mobile.client.utils.ErrorHandler;
 import com.pangu.mobile.client.utils.LoggerHandler;
 import com.pangu.mobile.client.utils.NetworkHelper;
@@ -34,7 +34,7 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
     private int dstPort;
     private ClientConnection client;
     private Bitmap bitmap;
-    private ViewPoint viewPoint;
+    private ViewPointModel viewPoint;
     private boolean value;
     private int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 
@@ -42,10 +42,10 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
      * @param context the current state of application.
      * @desc Constructor for the Socket Connection class
      */
-    public PanguConnection(Context context, ImageView imageView, String dstName, int dstPort, ViewPoint viewPoint, LinearLayout headerProgress, boolean value) {
+    public PanguConnection(Context context, ImageView imageView, String dstName, int dstPort, ViewPointModel viewPoint, LinearLayout headerProgress, boolean value) {
         this.context = context;
-        imageViewReference = new WeakReference<>(imageView);
-        this.headerProgressReference = new WeakReference<>(headerProgress);
+        imageViewReference = new WeakReference<ImageView>(imageView);
+        this.headerProgressReference = new WeakReference<LinearLayout>(headerProgress);
         this.dstPort = dstPort;
         this.viewPoint = viewPoint;
         this.dstName = dstName;

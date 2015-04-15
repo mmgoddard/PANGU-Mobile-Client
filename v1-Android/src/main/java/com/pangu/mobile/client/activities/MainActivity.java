@@ -36,7 +36,6 @@ import java.util.List;
  * @Desc Starts the main activity.
  */
 public class MainActivity extends BaseActivity implements UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
-    private DatabaseHelper db;
     private View mainActivityTopLevelLayout;
 
     /**
@@ -146,16 +145,14 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
      * @param cm
      */
     public void onCompleteUpdateConfiguration(ConfigurationModel cm) {
-        db = new DatabaseHelper(getApplicationContext());
-        DatabaseOperations databaseOperations = new DatabaseOperations(db);
-        ErrorHandler e = databaseOperations.updateConfiguration(cm);
+        DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(this));
+        ErrorHandler e = dOp.updateConfiguration(cm);
         if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
             Toast.makeText(getApplicationContext(), "Updated Configuration", Toast.LENGTH_LONG).show();
             getGridItems();
         } else {
             Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
         }
-        db.close();
     }
 
     /**
@@ -168,15 +165,13 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         ConfirmationDialog dialog = new ConfirmationDialog() {
             @Override
             public void confirm() {
-                db = new DatabaseHelper(getApplicationContext());
-                DatabaseOperations databaseOperations = new DatabaseOperations(db);
-                ErrorHandler e = databaseOperations.deleteConfiguration(id);
+                DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(getApplicationContext()));
+                ErrorHandler e = dOp.deleteConfiguration(id);
                 if (e == ErrorHandler.SQL_EXECUTION_ERROR)
                     Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(getApplicationContext(), "Deleted Configuration", Toast.LENGTH_LONG).show();
                 getGridItems();
-                db.close();
             }
         };
         dialog.setArgs("", message);
@@ -189,23 +184,20 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
      */
     public void getGridItems() {
         final ListView gridView = (ListView) findViewById(R.id.grid_view);
-        db = new DatabaseHelper(getApplicationContext());
-        DatabaseOperations databaseOperations = new DatabaseOperations(db);
-        final List<ConfigurationModel> values = databaseOperations.readConfiguration();
+        DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(this));
+        final List<ConfigurationModel> values = dOp.readConfiguration();
         FragmentManager fm = getSupportFragmentManager();
         ImageAdapter imageAdapter = new ImageAdapter(this, values, fm);
         imageAdapter.setViewClickListener(this);
         gridView.setAdapter(imageAdapter);
-        db.close();
     }
 
     public void addConfiguration() {
         final AddConfigDialog dialog = new AddConfigDialog() {
             @Override
             public void submit(ConfigurationModel cm) {
-                db = new DatabaseHelper(getApplicationContext());
-                DatabaseOperations databaseOperations = new DatabaseOperations(db);
-                ErrorHandler e = databaseOperations.insertConfiguration(cm);
+                DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(getApplicationContext()));
+                ErrorHandler e = dOp.insertConfiguration(cm);
                 if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
                     Toast.makeText(getApplicationContext(), "Added Configuration", Toast.LENGTH_LONG).show();
                     dismiss();
@@ -213,7 +205,6 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
                 } else {
                     Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
                 }
-                db.close();
             }
         };
         dialog.setArgs("Add Configuration");

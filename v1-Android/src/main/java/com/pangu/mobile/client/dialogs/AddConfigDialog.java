@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.base_classes.InputDialog;
 import com.pangu.mobile.client.domain.ConfigurationModel;
-import com.pangu.mobile.client.domain.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPointModel;
 import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
@@ -110,7 +110,7 @@ public abstract class AddConfigDialog extends InputDialog {
                     String portNum = portNumEditText.getText().toString();
 
                     Vector3D vector3D = new Vector3D(0.0, 0.0, 0.0);
-                    ViewPoint viewPoint = new ViewPoint(vector3D, 0.0, 0.0, 0.0, 0.0);
+                    ViewPointModel viewPoint = new ViewPointModel(vector3D, 0.0, 0.0, 0.0, 0.0);
                     ConfigurationModel cm = new ConfigurationModel(name, ipAddress, portNum, viewPoint, "false");
                     submit(cm);
                 } else

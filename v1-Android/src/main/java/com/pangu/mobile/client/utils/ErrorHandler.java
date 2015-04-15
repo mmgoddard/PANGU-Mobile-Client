@@ -16,7 +16,7 @@ public enum ErrorHandler {
     private final String shortMessage;
     private final String longMessage;
 
-    private ErrorHandler(String code, String shortMessage, String longMessage) {
+    ErrorHandler(String code, String shortMessage, String longMessage) {
         this.code = code;
         this.shortMessage = shortMessage;
         this.longMessage = longMessage;

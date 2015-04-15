@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import com.pangu.mobile.client.domain.ConfigurationModel;
-import com.pangu.mobile.client.domain.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPointModel;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ public class DatabaseOperations {
             values.put(ConfigurationContract.PanguEntry.PANGU_SAVED, cm.getSaved());
 
             db.insert(ConfigurationContract.PanguEntry.PANGU_TABLE, null, values);
+            db.close();
             return ErrorHandler.SQL_EXECUTION_SUCCESS;
         } catch (SQLiteException e) {
             return ErrorHandler.SQL_EXECUTION_ERROR;
@@ -48,6 +49,7 @@ public class DatabaseOperations {
             String selection = ConfigurationContract.PanguEntry._ID + " = ?";
             String[] selectionArgs = {String.valueOf(id)};
             db.delete(ConfigurationContract.PanguEntry.PANGU_TABLE, selection, selectionArgs);
+            db.close();
             return ErrorHandler.SQL_EXECUTION_SUCCESS;
         } catch (SQLiteException e) {
             return ErrorHandler.SQL_EXECUTION_ERROR;
@@ -65,6 +67,7 @@ public class DatabaseOperations {
             String[] selectionArgs = {String.valueOf(cm.getId())};
 
             db.update(ConfigurationContract.PanguEntry.PANGU_TABLE, values, selection, selectionArgs);
+            db.close();
             return ErrorHandler.SQL_EXECUTION_SUCCESS;
         } catch (SQLiteException e) {
             return ErrorHandler.SQL_EXECUTION_ERROR;
@@ -90,6 +93,7 @@ public class DatabaseOperations {
             String[] selectionArgs = {String.valueOf(cm.getId())};
 
             db.update(ConfigurationContract.PanguEntry.PANGU_TABLE, values, selection, selectionArgs);
+            db.close();
             return ErrorHandler.SQL_EXECUTION_SUCCESS;
         } catch (SQLiteException e) {
             return ErrorHandler.SQL_EXECUTION_ERROR;
@@ -100,17 +104,18 @@ public class DatabaseOperations {
         Cursor c = db.query(ConfigurationContract.PanguEntry.PANGU_TABLE, null, null, null, null, null, null);
         List<ConfigurationModel> list = new ArrayList<ConfigurationModel>();
         ConfigurationModel cm;
-        ViewPoint v;
+        ViewPointModel v;
         Vector3D vec3;
         int count = 0;
         while (c.moveToNext()) {
             vec3 = new Vector3D(Double.parseDouble(c.getString(4)), Double.parseDouble(c.getString(5)), Double.parseDouble(c.getString(6)));
-            v = new ViewPoint(vec3, Double.parseDouble(c.getString(7)), Double.parseDouble(c.getString(8)), Double.parseDouble(c.getString(9)), Double.parseDouble(c.getString(10)));
+            v = new ViewPointModel(vec3, Double.parseDouble(c.getString(7)), Double.parseDouble(c.getString(8)), Double.parseDouble(c.getString(9)), Double.parseDouble(c.getString(10)));
             cm = new ConfigurationModel(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), v, c.getString(11));
             list.add(count, cm);
             count++;
         }
         c.close();
+        db.close();
         return list;
     }
 }

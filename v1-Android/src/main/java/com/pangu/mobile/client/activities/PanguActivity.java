@@ -2,11 +2,6 @@ package com.pangu.mobile.client.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
 
@@ -15,11 +10,10 @@ import com.pangu.mobile.client.background_tasks.PanguConnection;
 import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.dialogs.EditViewDialog;
 import com.pangu.mobile.client.domain.ConfigurationModel;
-import com.pangu.mobile.client.domain.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPointModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.LoggerHandler;
-import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
@@ -33,7 +27,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     private LinearLayout headerProgress;
     private Bundle extras;
     private ConfigurationModel cm;
-    private ViewPoint viewPoint = new ViewPoint(vector3D, 0, 0, 0, 0);
+    private ViewPointModel viewPoint = new ViewPointModel(vector3D, 0, 0, 0, 0);
     private boolean value = false;
     private TextView yawAngle_TextView, pitchAngle_TextView, rollAngle_TextView, xCoordinate_TextView, yCoordinate_TextView, zCoordinate_TextView, step_TextView;
     private double startX = 0, startY = 0;
@@ -142,12 +136,10 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         super.onPause();
         cm.setViewPoint(viewPoint);
         cm.setSaved("true");
-        DatabaseHelper db = new DatabaseHelper(this);
-        DatabaseOperations dOp = new DatabaseOperations(db);
+        DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(this));
         dOp.updateAll(cm);
     }
 
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.left_button:
@@ -180,7 +172,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     public void setView() {
         final EditViewDialog dialog = new EditViewDialog() {
             @Override
-            public void submit(ViewPoint v) {
+            public void submit(ViewPointModel v) {
                 Toast.makeText(getApplicationContext(), "Updating Model", Toast.LENGTH_LONG).show();
                 viewPoint = v;
                 yawAngle = viewPoint.getYawAngle();
@@ -192,8 +184,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
 
                 cm.setViewPoint(viewPoint);
                 cm.setSaved("true");
-                DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-                DatabaseOperations dOp = new DatabaseOperations(db);
+                DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(getApplicationContext()));
                 dOp.updateAll(cm);
 
                 value = true;
@@ -204,7 +195,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         showDialogFragment(dialog);
     }
 
-    public void getImage(ViewPoint v, boolean value) {
+    public void getImage(ViewPointModel v, boolean value) {
         viewPoint = v;
         PanguConnection panguConnection = new PanguConnection(this, imgView, cm.getIpAddress(), Integer.parseInt(cm.getPortNum()), viewPoint, headerProgress, value);
         panguConnection.execute();
@@ -244,7 +235,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
      * @return boolean
      */
     public boolean onTouch(View v, MotionEvent event) {
-        if (imgView.getTag(R.drawable.no_image_available) == true) {
+        if (imgView.getTag(R.drawable.no_image_available).toString() == "true") {
             double dx, dy;
             String direction;
             int action = event.getAction();

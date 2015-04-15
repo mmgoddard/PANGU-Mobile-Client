@@ -39,9 +39,6 @@ public class PanguImage {
         cp++;
         if (cp >= ep) return null; // Invalid image
 
-        // For maxval < 256 we have one byte per sample, otherwise
-        // we have two bytes. If we don't have enough bytes for this
-        // then stop now. This saves us continuously bound-checking.
         int isize = 3 * img_width * img_height;
         if (img_depth >= 256) isize *= 2;
         if (ep - cp < isize) return null;
@@ -55,12 +52,10 @@ public class PanguImage {
         else
             pixels = ppmByte(img_data, cp, img_width, img_height, pixels, 2);
 
-
-        Bitmap bmp = Bitmap.createBitmap(pixels, img_width, img_height, Bitmap.Config.ARGB_8888);
-        return bmp;
+        return Bitmap.createBitmap(pixels, img_width, img_height, Bitmap.Config.ARGB_8888);
     }
 
-    //Read PPM RAW with @param bps per sample.
+    //Read PPM RAW
     private static int[] ppmByte(byte s[], int i, int w, int h, int d[], int bps) {
         //Samples are stored RGB.
         for (int p = 0; p < w * h; p++) {

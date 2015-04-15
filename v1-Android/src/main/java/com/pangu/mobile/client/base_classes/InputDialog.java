@@ -3,13 +3,13 @@ package com.pangu.mobile.client.base_classes;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.domain.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPointModel;
 
 /**
  * Created by Mark on 04/03/15.
  */
 public class InputDialog extends DialogFragment {
-    protected ViewPoint viewPoint;
+    protected ViewPointModel viewPoint;
 
     public void setArgs(String title) {
         Bundle args = new Bundle();
@@ -17,7 +17,7 @@ public class InputDialog extends DialogFragment {
         setArguments(args);
     }
 
-    public void setArgs(String title, ViewPoint v) {
+    public void setArgs(String title, ViewPointModel v) {
         Bundle args = new Bundle();
         args.putString("title", title);
         setArguments(args);

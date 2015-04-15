@@ -29,7 +29,6 @@ import com.pangu.mobile.client.utils.TypefaceSpan;
  */
 public abstract class BaseActivity extends ActionBarActivity {
     protected Menu actionBarMenu;
-    protected int currentApiVersion = android.os.Build.VERSION.SDK_INT;
     protected TextView toolbarTitle;
     protected Toolbar mActionBarToolbar;
     private int screenWidth;
@@ -37,9 +36,11 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected int getScreenWidth() {
         return screenWidth;
     }
-
     protected void setScreenWidth() {
         this.screenWidth = calculateWidthOfScreen();
+    }
+    protected int getCurrentApiVersion() {
+        return android.os.Build.VERSION.SDK_INT;
     }
 
     public BaseActivity() {}
@@ -89,7 +90,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected int calculateWidthOfScreen() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
-        if (currentApiVersion >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+        if (getCurrentApiVersion() >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             display.getSize(size);
             return size.x;
         } else {

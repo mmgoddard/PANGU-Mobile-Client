@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.pangu.mobile.client.R;
 import com.pangu.mobile.client.base_classes.InputDialog;
-import com.pangu.mobile.client.domain.ViewPoint;
+import com.pangu.mobile.client.domain.ViewPointModel;
 import com.pangu.mobile.client.utils.TypefaceSpan;
 import com.pangu.mobile.client.utils.Validation;
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
@@ -210,7 +210,7 @@ public abstract class EditViewDialog extends InputDialog {
                     step = Double.parseDouble(stepEditText.getText().toString());
 
                     Vector3D vector3D = new Vector3D(xCoordinate, yCoordinate, zCoordinate);
-                    ViewPoint vp = new ViewPoint(vector3D, yawAngle, pitchAngle, rollAngle, step);
+                    ViewPointModel vp = new ViewPointModel(vector3D, yawAngle, pitchAngle, rollAngle, step);
                     submit(vp);
                     dismiss();
                 } else
@@ -224,5 +224,5 @@ public abstract class EditViewDialog extends InputDialog {
     /**
      * Must override this method to handle confirmation event
      */
-    public abstract void submit(ViewPoint v);
+    public abstract void submit(ViewPointModel v);
 }

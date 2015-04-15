@@ -6,14 +6,14 @@ import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 /**
  * Created by Mark on 20/01/15.
  */
-public class ViewPoint {
+public class ViewPointModel {
     private Vector3D vector3D;
     private double yawAngle = 0.0;
     private double pitchAngle = 0.0;
     private double rollAngle = 0.0;
     private double step = 0.0;
 
-    public ViewPoint(Vector3D v, double y, double p, double r, double step) {
+    public ViewPointModel(Vector3D v, double y, double p, double r, double step) {
         this.vector3D = v;
         this.yawAngle = Math.toRadians(y);
         this.pitchAngle = Math.toRadians(p);
