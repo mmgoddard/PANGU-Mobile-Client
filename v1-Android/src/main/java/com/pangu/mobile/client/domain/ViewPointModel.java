@@ -37,7 +37,7 @@ public class ViewPointModel {
         this.yawAngle = yawAngle;
     }
     public void adjustYawAngle(double v) {
-        yawAngle -= v;
+        yawAngle += v;
     }
 
     //PITCH ANGLE

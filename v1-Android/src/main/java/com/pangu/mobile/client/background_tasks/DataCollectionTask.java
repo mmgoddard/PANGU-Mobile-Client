@@ -20,11 +20,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author Mark Goddard
@@ -74,6 +77,7 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
         }
 
         if (NetworkHelper.isOnline(context)) {
+
             DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
             Reader reader = null;
             HttpGet httpGet = new HttpGet(formattedUrl);
@@ -84,9 +88,6 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
                 HttpEntity entity = response.getEntity();
                 reader = new InputStreamReader(entity.getContent());
                 data = new Gson().fromJson(reader, InformationModel.class);
-                if(data == null) {
-                    data = new InformationModel(modelName);
-                }
                 return ErrorHandler.OK;
             } catch (IOException e) {
                 LoggerHandler.e("IO Exception has occurred when connecting to PANGU server.");
@@ -113,11 +114,11 @@ public class DataCollectionTask extends AsyncTask<Void, Void, ErrorHandler> {
     protected void onPostExecute(ErrorHandler result) {
         final LinearLayout linearLayout = headerProgressReference.get();
         linearLayout.setVisibility(View.GONE);
+        data.setName(modelName);
         if (result == ErrorHandler.OK) {
             asyncResponse.processData(data);
         } else if (result == ErrorHandler.NO_INTERNET_CONNECTION || result == ErrorHandler.IO_ERROR) {
             Toast.makeText(context, result.getLongMessage(), Toast.LENGTH_LONG).show();
-            data = new InformationModel(modelName);
             asyncResponse.processData(data);
         }
     }

@@ -1,6 +1,7 @@
 package com.pangu.mobile.client.activities;
 
 import android.content.Intent;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.view.Menu;
@@ -35,11 +36,16 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     private ConfigurationModel cm;
     private ViewPointModel viewPoint = new ViewPointModel(vector3D, 0, 0, 0, 0);
     private boolean value = false;
-    private TextView yawAngle_TextView, pitchAngle_TextView, rollAngle_TextView, xCoordinate_TextView, yCoordinate_TextView, zCoordinate_TextView, step_TextView;
+    private TextView yawAngle_TextView, pitchAngle_TextView, rollAngle_TextView, xCoordinate_TextView, yCoordinate_TextView, zCoordinate_TextView;
     private double yawAngle = 0.0, pitchAngle = 0.0, rollAngle = 0.0;
-    private double step = 0.0;
+    private int step = 0;
     private ScrollView scrollView;
     private VelocityTracker mVelocityTracker = null;
+    private static final int NONE = 0;
+    private static final int TOUCH = 1;
+    private static final int ZOOM = 2;
+    private int mode = NONE;
+    private float oldDist = 1f;
 
     /**
      * Called when the activity is first created.
@@ -62,7 +68,6 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
 
         imgView = (ImageView) findViewById(R.id.pangu_image);
-        //imgView.setImageResource(R.drawable.no_image_available);
         if (cm.getSaved().equals("true")) {
             viewPoint = cm.getViewPoint();
             value = true;
@@ -107,15 +112,15 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         rollAngle_TextView.setWidth(getScreenWidth() / 2);
 
         xCoordinate_TextView = (TextView) this.findViewById(R.id.xCoordinate_TextView);
-        xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + viewPoint.getVector3D().i));
+        xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + Validation.round(viewPoint.getVector3D().i,2)));
         xCoordinate_TextView.setWidth(getScreenWidth() / 2);
 
         yCoordinate_TextView = (TextView) this.findViewById(R.id.yCoordinate_TextView);
-        yCoordinate_TextView.setText(String.valueOf("y-Coordinate: " + viewPoint.getVector3D().j));
+        yCoordinate_TextView.setText(String.valueOf("y-Coordinate: " + Validation.round(viewPoint.getVector3D().j, 2)));
         yCoordinate_TextView.setWidth(getScreenWidth() / 2);
 
         zCoordinate_TextView = (TextView) this.findViewById(R.id.zCoordinate_TextView);
-        zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + viewPoint.getVector3D().k));
+        zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + Validation.round(viewPoint.getVector3D().k, 2)));
         zCoordinate_TextView.setWidth(getScreenWidth() / 2);
 
         scrollView = (ScrollView) findViewById(R.id.pangu_activity_scrollView);
@@ -150,6 +155,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     }
 
     public void onClick(View v) {
+        step = viewPoint.getStep();
         switch (v.getId()) {
             case R.id.left_button:
                 viewPoint.adjustOrigin(new Vector3D(-step, 0, 0));
@@ -173,9 +179,9 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                 break;
         }
         getImage(viewPoint, value);
-        xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + viewPoint.getVector3D().i));
-        yCoordinate_TextView.setText(String.valueOf("y-Coordinate: " + viewPoint.getVector3D().j));
-        zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + viewPoint.getVector3D().k));
+        xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + Validation.round(viewPoint.getVector3D().i,2)));
+        yCoordinate_TextView.setText(String.valueOf("y-Coordinate: " + Validation.round(viewPoint.getVector3D().j,2)));
+        zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + Validation.round(viewPoint.getVector3D().k,2)));
     }
 
     public void setView() {
@@ -190,6 +196,9 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                 rollAngle_TextView.setText(String.valueOf("Roll Angle: " + Validation.round(rollAngle, 2)));
                 yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
                 pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
+                xCoordinate_TextView.setText(String.valueOf("x-Coordinate: " + Validation.round(viewPoint.getVector3D().i, 2)));
+                yCoordinate_TextView.setText(String.valueOf("y-Coordinate: " + Validation.round(viewPoint.getVector3D().j,2)));
+                zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + Validation.round(viewPoint.getVector3D().k,2)));
 
                 cm.setViewPoint(viewPoint);
                 cm.setSaved("true");
@@ -237,30 +246,46 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     }
 
     /**
-     * OnTouchListener for Yaw & Pitch Angles
+     * OnTouchListener for Touch Gestures
      *
      * @param v
-     * @param e
+     * @param event
      * @return boolean
      */
-    public boolean onTouch(View v, MotionEvent e) {
-        if (imgView.getTag(R.drawable.no_image_available).toString() == "true") {
-            scrollView.requestDisallowInterceptTouchEvent(true);
+    public boolean onTouch(View v, MotionEvent event) {
+        float scale;
+        int action = event.getAction() & MotionEvent.ACTION_MASK;
+        int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+        int pointerId = event.getPointerId(pointerIndex);
 
-            int action = e.getAction() & MotionEvent.ACTION_MASK;
-            int pointerIndex = (e.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-            int pointerId = e.getPointerId(pointerIndex);
-
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    if (mVelocityTracker == null)
-                        mVelocityTracker = VelocityTracker.obtain();
-                    else
-                        mVelocityTracker.clear();
-                    mVelocityTracker.addMovement(e);
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    mVelocityTracker.addMovement(e);
+        switch (action) {
+            case MotionEvent.ACTION_DOWN: {
+                if (mVelocityTracker == null)
+                    mVelocityTracker = VelocityTracker.obtain();
+                else
+                    mVelocityTracker.clear();
+                mVelocityTracker.addMovement(event);
+                mode = TOUCH;
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                getImage(viewPoint, value);
+            }
+            case MotionEvent.ACTION_POINTER_UP: {
+                mode = NONE;
+                break;
+            }
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                oldDist = distanceBetweenTwoPoints(event);
+                //minimum distance between both the fingers
+                if (oldDist > 5f) {
+                    mode = ZOOM;
+                }
+                break;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                if (mode == TOUCH) {
+                    mVelocityTracker.addMovement(event);
                     mVelocityTracker.computeCurrentVelocity(1);
 
                     double xVelocity = VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId);
@@ -276,15 +301,33 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
                     yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(viewPoint.getYawAngle(), 2)));
                     pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(viewPoint.getPitchAngle(), 2)));
 
-                    break;
-                case MotionEvent.ACTION_UP:
-                    getImage(viewPoint, value);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    mVelocityTracker.recycle();
-                    break;
+                } else if (mode == ZOOM) {
+                    float newDist = distanceBetweenTwoPoints(event);
+                    if (newDist > 5f) {
+                        scale = newDist / oldDist * 1000;
+                        LoggerHandler.i("SCALE: " + scale);
+                        if (newDist < oldDist)
+                            viewPoint.adjustOrigin(new Vector3D(0, 0, scale));
+                        else
+                            viewPoint.adjustOrigin(new Vector3D(0, 0, -scale));
+                        zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + Validation.round(viewPoint.getVector3D().k, 2)));
+                    }
+                }
+                break;
             }
         }
         return true;
+    }
+
+    /**
+     * Calculates the distance between two points
+     *
+     * @param event
+     * @return boolean
+     */
+    private float distanceBetweenTwoPoints(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float)Math.sqrt(x * x + y * y);
     }
 }

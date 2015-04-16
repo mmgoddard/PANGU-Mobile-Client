@@ -1,7 +1,9 @@
 package com.pangu.mobile.client.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -45,7 +47,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view);
-        setActionBarTitle("PANGU");
+        setActionBarTitle("PANGU (v"+getApplicationVersionCode()+")");
 
         mainActivityTopLevelLayout = findViewById(R.id.top_layout);
         if (isFirstTime()) {
@@ -208,5 +210,19 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         };
         dialog.setArgs("Add Configuration");
         showDialogFragment(dialog);
+    }
+
+    private String getApplicationVersionCode() {
+        Context context = getApplicationContext();
+        PackageManager packageManager = context.getPackageManager();
+        String packageName = context.getPackageName();
+        String myVersionName = "";
+
+        try {
+            myVersionName = packageManager.getPackageInfo(packageName, 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return myVersionName;
     }
 }

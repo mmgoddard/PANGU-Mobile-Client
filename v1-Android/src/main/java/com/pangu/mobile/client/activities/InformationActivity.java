@@ -62,7 +62,7 @@ public class InformationActivity extends BaseActivity implements AsyncResponse {
             TextView interestingFactsText = (TextView) this.findViewById(R.id.info_interestingFacts_content);
             interestingFactsText.setText(im.getComments());
         } else {
-            Toast.makeText(this, "There is currently no data available for this model.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "There is currently no data available for this model.", Toast.LENGTH_SHORT).show();
         }
     }
 }
