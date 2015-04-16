@@ -26,7 +26,8 @@ import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 public abstract class EditViewDialog extends InputDialog {
     private EditText xCoordinateEditText, yCoordinateEditText, zCoordinateEditText, yawAngleEditText, pitchAngleEditText, rollAngleEditText, stepEditText;
     private boolean xCoordinateCheck = true, yCoordinateCheck = true, zCoordinateCheck = true, yawAngleCheck = true, pitchAngleCheck = true, rollAngleCheck = true, stepCheck = true;
-    private double xCoordinate, yCoordinate, zCoordinate, yawAngle, pitchAngle, rollAngle, step;
+    private double xCoordinate, yCoordinate, zCoordinate, yawAngle, pitchAngle, rollAngle;
+    private int step;
     private Button submitBtn;
 
     @Override
@@ -207,7 +208,7 @@ public abstract class EditViewDialog extends InputDialog {
                     yawAngle = Double.parseDouble(yawAngleEditText.getText().toString());
                     pitchAngle = Double.parseDouble(pitchAngleEditText.getText().toString());
                     rollAngle = Double.parseDouble(rollAngleEditText.getText().toString());
-                    step = Double.parseDouble(stepEditText.getText().toString());
+                    step = Integer.parseInt(stepEditText.getText().toString());
 
                     Vector3D vector3D = new Vector3D(xCoordinate, yCoordinate, zCoordinate);
                     ViewPointModel vp = new ViewPointModel(vector3D, yawAngle, pitchAngle, rollAngle, step);

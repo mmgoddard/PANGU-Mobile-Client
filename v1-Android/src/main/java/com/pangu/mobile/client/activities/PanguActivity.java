@@ -2,7 +2,13 @@ package com.pangu.mobile.client.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.*;
+import android.support.v4.view.VelocityTrackerCompat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
+import android.view.View;
 import android.widget.*;
 
 import com.pangu.mobile.client.R;
@@ -30,9 +36,10 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     private ViewPointModel viewPoint = new ViewPointModel(vector3D, 0, 0, 0, 0);
     private boolean value = false;
     private TextView yawAngle_TextView, pitchAngle_TextView, rollAngle_TextView, xCoordinate_TextView, yCoordinate_TextView, zCoordinate_TextView, step_TextView;
-    private double startX = 0, startY = 0;
     private double yawAngle = 0.0, pitchAngle = 0.0, rollAngle = 0.0;
     private double step = 0.0;
+    private ScrollView scrollView;
+    private VelocityTracker mVelocityTracker = null;
 
     /**
      * Called when the activity is first created.
@@ -111,6 +118,8 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         zCoordinate_TextView.setText(String.valueOf("z-Coordinate: " + viewPoint.getVector3D().k));
         zCoordinate_TextView.setWidth(getScreenWidth() / 2);
 
+        scrollView = (ScrollView) findViewById(R.id.pangu_activity_scrollView);
+        scrollView.requestDisallowInterceptTouchEvent(true);
         imgView.setOnTouchListener(this);
     }
 
@@ -231,95 +240,48 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
      * OnTouchListener for Yaw & Pitch Angles
      *
      * @param v
-     * @param event
+     * @param e
      * @return boolean
      */
-    public boolean onTouch(View v, MotionEvent event) {
+    public boolean onTouch(View v, MotionEvent e) {
         if (imgView.getTag(R.drawable.no_image_available).toString() == "true") {
-            double dx, dy;
-            String direction;
-            int action = event.getAction();
-            double endX, endY;
+            scrollView.requestDisallowInterceptTouchEvent(true);
+
+            int action = e.getAction() & MotionEvent.ACTION_MASK;
+            int pointerIndex = (e.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+            int pointerId = e.getPointerId(pointerIndex);
+
             switch (action) {
-                //Get coordinates where finger touches display
                 case MotionEvent.ACTION_DOWN:
-                    startX = event.getX();
-                    startY = event.getY();
-                    yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
-                    pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
+                    if (mVelocityTracker == null)
+                        mVelocityTracker = VelocityTracker.obtain();
+                    else
+                        mVelocityTracker.clear();
+                    mVelocityTracker.addMovement(e);
                     break;
-                //Keep track of coordinates when finger is in motion
                 case MotionEvent.ACTION_MOVE:
-                    endX = event.getX();
-                    endY = event.getY();
+                    mVelocityTracker.addMovement(e);
+                    mVelocityTracker.computeCurrentVelocity(1);
 
-                    //ToDo: Change divide value to the width of the ImageView
-                    //yawAngle += (endX - startX) / 250;
-                    //pitchAngle += (endY - startY) / 250;
-                    dx = endX - startX;
-                    dy = endY - startY;
-                    if (Math.abs(dx) > Math.abs(dy)) {
-                        if (dx > 0) {
-                            direction = "right";
-                            yawAngle += dx / 250;
-                        } else {
-                            direction = "left";
-                            yawAngle -= dx / 250;
-                        }
-                    } else {
-                        if (dy > 0) {
-                            direction = "down";
-                            pitchAngle -= dy / 250;
-                        } else {
-                            direction = "up";
-                            pitchAngle += dy / 250;
-                        }
-                    }
-                    LoggerHandler.i(direction);
+                    double xVelocity = VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId);
+                    double yVelocity = VelocityTrackerCompat.getYVelocity(mVelocityTracker, pointerId);
+                    LoggerHandler.i("X velocity: " + xVelocity);
+                    LoggerHandler.i("Y velocity: " + yVelocity);
 
-                    yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
-                    pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
+                    viewPoint.adjustYawAngle(xVelocity);
+                    viewPoint.adjustPitchAngle(yVelocity);
+                    LoggerHandler.i("Yaw Angle: " + viewPoint.getYawAngle());
+                    LoggerHandler.i("Pitch Angle: " + viewPoint.getPitchAngle());
+
+                    yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(viewPoint.getYawAngle(), 2)));
+                    pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(viewPoint.getPitchAngle(), 2)));
+
                     break;
-                //Set coordinates when finger is lifted
                 case MotionEvent.ACTION_UP:
-                    endX = event.getX();
-                    endY = event.getY();
-
-                    //ToDo: Change divide value to the width of the ImageView
-//                yawAngle += (endX - startX) / 250;
-//                pitchAngle += (endY - startY) / 250;
-
-                    yawAngle_TextView.setText(String.valueOf("Yaw Angle: " + Validation.round(yawAngle, 2)));
-                    pitchAngle_TextView.setText(String.valueOf("Pitch Angle: " + Validation.round(pitchAngle, 2)));
-
-                    dx = endX - startX;
-                    dy = endY - startY;
-                    if (Math.abs(dx) > Math.abs(dy)) {
-                        if (dx > 0) {
-                            direction = "right";
-                            yawAngle += dx / 250;
-                        } else {
-                            direction = "left";
-                            yawAngle -= dx / 250;
-                        }
-                    } else {
-                        if (dy > 0) {
-                            direction = "down";
-                            pitchAngle -= dy / 250;
-                        } else {
-                            direction = "up";
-                            pitchAngle += dy / 250;
-                        }
-                    }
-                    LoggerHandler.i(direction);
-
-                    viewPoint.setYawAngle(yawAngle);
-                    viewPoint.setPitchAngle(pitchAngle);
                     getImage(viewPoint, value);
                     break;
                 case MotionEvent.ACTION_CANCEL:
-                    break;
-                default:
+                    mVelocityTracker.recycle();
                     break;
             }
         }

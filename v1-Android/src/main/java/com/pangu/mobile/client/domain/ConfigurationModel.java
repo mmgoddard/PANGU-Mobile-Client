@@ -73,7 +73,7 @@ public class ConfigurationModel extends BaseConfigurationModel implements Parcel
         out.writeDouble(viewPoint.getYawAngle());
         out.writeDouble(viewPoint.getPitchAngle());
         out.writeDouble(viewPoint.getRollAngle());
-        out.writeDouble(viewPoint.getStep());
+        out.writeInt(viewPoint.getStep());
         out.writeString(saved);
     }
 
@@ -99,7 +99,7 @@ public class ConfigurationModel extends BaseConfigurationModel implements Parcel
         double yaw = in.readDouble();
         double pitch = in.readDouble();
         double roll = in.readDouble();
-        double step = in.readDouble();
+        int step = in.readInt();
         Vector3D vec3 = new Vector3D(i, j, k);
         this.viewPoint = new ViewPointModel(vec3, yaw, pitch, roll, step);
         this.saved = in.readString();

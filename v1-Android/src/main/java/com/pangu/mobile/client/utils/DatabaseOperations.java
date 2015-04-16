@@ -109,7 +109,7 @@ public class DatabaseOperations {
         int count = 0;
         while (c.moveToNext()) {
             vec3 = new Vector3D(Double.parseDouble(c.getString(4)), Double.parseDouble(c.getString(5)), Double.parseDouble(c.getString(6)));
-            v = new ViewPointModel(vec3, Double.parseDouble(c.getString(7)), Double.parseDouble(c.getString(8)), Double.parseDouble(c.getString(9)), Double.parseDouble(c.getString(10)));
+            v = new ViewPointModel(vec3, Double.parseDouble(c.getString(7)), Double.parseDouble(c.getString(8)), Double.parseDouble(c.getString(9)), Integer.parseInt(c.getString(10)));
             cm = new ConfigurationModel(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), v, c.getString(11));
             list.add(count, cm);
             count++;

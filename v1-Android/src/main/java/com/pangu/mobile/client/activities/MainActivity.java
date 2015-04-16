@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
 
         //Testing Database
         //getApplicationContext().deleteDatabase("Pangu.db");
-        //db = new DatabaseHelper(getApplicationContext());
     }
 
     @Override

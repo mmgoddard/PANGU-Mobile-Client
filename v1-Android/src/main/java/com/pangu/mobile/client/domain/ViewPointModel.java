@@ -11,14 +11,14 @@ public class ViewPointModel {
     private double yawAngle = 0.0;
     private double pitchAngle = 0.0;
     private double rollAngle = 0.0;
-    private double step = 0.0;
+    private int step = 0;
 
-    public ViewPointModel(Vector3D v, double y, double p, double r, double step) {
+    public ViewPointModel(Vector3D v, double yaw, double pitch, double roll, int step) {
         this.vector3D = v;
-        this.yawAngle = Math.toRadians(y);
-        this.pitchAngle = Math.toRadians(p);
-        this.rollAngle = Math.toRadians(r);
-        normalise();
+        this.yawAngle = yaw;
+        this.pitchAngle = pitch;
+        this.rollAngle = roll;
+        this.step = step;
     }
 
     //VECTOR 3D
@@ -31,66 +31,42 @@ public class ViewPointModel {
 
     //YAW ANGLE
     public double getYawAngle() {
-        return Math.toDegrees(yawAngle);
+        return yawAngle;
     }
     public void setYawAngle(double yawAngle) {
-        this.yawAngle = Math.toRadians(yawAngle);
-        normalise();
+        this.yawAngle = yawAngle;
     }
     public void adjustYawAngle(double v) {
-        yawAngle += Math.toRadians(v);
-        normalise();
+        yawAngle -= v;
     }
 
     //PITCH ANGLE
     public double getPitchAngle() {
-        return Math.toDegrees(pitchAngle);
+        return pitchAngle;
     }
     public void setPitchAngle(double pitchAngle) {
-        this.pitchAngle = Math.toRadians(pitchAngle);
-        normalise();
+        this.pitchAngle = pitchAngle;
     }
     public void adjustPitchAngle(double v) {
-        pitchAngle += Math.toRadians(v);
-        normalise();
+        pitchAngle += v;
     }
 
     //ROLL ANGLE
     public double getRollAngle() {
-        return Math.toDegrees(rollAngle);
+        return rollAngle;
     }
     public void setRollAngle(double rollAngle) {
-        this.rollAngle = Math.toRadians(rollAngle);
-        normalise();
+        this.rollAngle = rollAngle;
     }
     public void adjustRollAngle(double v) {
-        rollAngle += Math.toRadians(v);
-        normalise();
+        rollAngle += v;
     }
 
-    public double getStep() { return step; }
-    public void setStep(double step) { this.step = step; }
+    public int getStep() { return step; }
+    public void setStep(int step) { this.step = step; }
 
     //ORGIN
     public void setOrigin(Vector3D v) { vector3D = v; }
     public Vector3D getOrigin() { return vector3D; }
     public void adjustOrigin(Vector3D v) { vector3D = vector3D.add(v); }
-
-    private void normalise() {
-        // Useful constants.
-        double M_180_DEG = Math.PI;
-        double M_360_DEG = 2*M_180_DEG;
-
-        // Normalise the yaw angle to [0, 360)
-        while (yawAngle < 0) yawAngle += M_360_DEG;
-        while (yawAngle >= M_360_DEG) yawAngle -= M_360_DEG;
-
-        // Normalise the pitch angle to (-180, 180]
-        while (pitchAngle - M_180_DEG <= -M_360_DEG) pitchAngle += M_360_DEG;
-        while (pitchAngle + M_180_DEG > M_360_DEG) pitchAngle -= M_360_DEG;
-
-        // Normalise the roll angle to (-180, 180]
-        while (rollAngle - M_180_DEG <= -M_360_DEG) rollAngle += M_360_DEG;
-        while (rollAngle + M_180_DEG > M_360_DEG) rollAngle -= M_360_DEG;
-    }
 }
