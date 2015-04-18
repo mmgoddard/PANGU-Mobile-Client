@@ -5,30 +5,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.pangu.mobile.client.R;
-import com.pangu.mobile.client.adapters.ImageAdapter;
+import com.pangu.mobile.client.interfaces.CallbackCodes;
+import com.pangu.mobile.client.adapters.ListAdapter;
 import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.base_classes.ConfirmationDialog;
-import com.pangu.mobile.client.dialogs.AddConfigDialog;
-import com.pangu.mobile.client.dialogs.UpdateConfigDialog;
+import com.pangu.mobile.client.dialogs.AddDialog;
 import com.pangu.mobile.client.domain.ConfigurationModel;
 import com.pangu.mobile.client.utils.DatabaseHelper;
 import com.pangu.mobile.client.utils.DatabaseOperations;
 import com.pangu.mobile.client.utils.ErrorHandler;
-import com.pangu.mobile.client.utils.TypefaceSpan;
 
 import java.util.List;
 
@@ -37,7 +30,7 @@ import java.util.List;
  * @Date 08/10/2014
  * @Desc Starts the main activity.
  */
-public class MainActivity extends BaseActivity implements UpdateConfigDialog.UpdateOnCompleteListener, ImageAdapter.ViewClickListener {
+public class MainActivity extends BaseActivity implements ListAdapter.ViewClickListener {
     private View mainActivityTopLevelLayout;
 
     /**
@@ -47,7 +40,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view);
-        setActionBarTitle("PANGU (v"+getApplicationVersionCode()+")");
+        setToolbarTitle("PANGU (v" + getApplicationVersionCode() + ")");
 
         mainActivityTopLevelLayout = findViewById(R.id.top_layout);
         if (isFirstTime()) {
@@ -140,19 +133,17 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
         showDialogFragment(dialog);
     }
 
-    /**
-     * After the AddConfigDialog fragment completes, it calls this callback.
-     *
-     * @param cm
-     */
-    public void onCompleteUpdateConfiguration(ConfigurationModel cm) {
-        DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(this));
-        ErrorHandler e = dOp.updateConfiguration(cm);
-        if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
-            Toast.makeText(getApplicationContext(), "Updated Configuration", Toast.LENGTH_LONG).show();
-            getGridItems();
-        } else {
-            Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
+    public void onListViewClickListener(int code, ConfigurationModel cm) {
+        switch (code) {
+            case CallbackCodes.DELETE_MODEL_CONFIG:
+                deleteConfiguration(cm.id);
+                break;
+            case CallbackCodes.UPDATE_MODEL_CONFIG:
+                updateConfiguration(cm);
+                break;
+            case CallbackCodes.RUN_MODEL_CONFIG:
+                runConfiguration(cm);
+                break;
         }
     }
 
@@ -161,7 +152,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
      *
      * @param id
      */
-    public void onCompleteDeleteConfiguration(final int id) {
+    public void deleteConfiguration(final int id) {
         String message = "Are are you sure you want to delete this configuration?";
         ConfirmationDialog dialog = new ConfirmationDialog() {
             @Override
@@ -180,21 +171,45 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
 
     }
 
+    private void runConfiguration(ConfigurationModel config) {
+        Intent intent = new Intent(this, PanguActivity.class);
+        intent.putExtra("Configuration", config);
+        this.startActivity(intent);
+    }
+
+    public void updateConfiguration(ConfigurationModel cm) {
+        final AddDialog dialog = new AddDialog() {
+            @Override
+            public void submit(ConfigurationModel cm) {
+                DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(getApplicationContext()));
+                ErrorHandler e = dOp.updateConfiguration(cm);
+                if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
+                    Toast.makeText(getApplicationContext(), "Updated Configuration", Toast.LENGTH_LONG).show();
+                    dismiss();
+                    getGridItems();
+                } else {
+                    Toast.makeText(getApplicationContext(), e.getLongMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        dialog.setArgs("Update Configuration", cm, CallbackCodes.UPDATE_MODEL_CONFIG);
+        showDialogFragment(dialog);
+    }
+
     /**
      * Get configurations from database.
      */
     public void getGridItems() {
-        final ListView gridView = (ListView) findViewById(R.id.grid_view);
+        final ListView listView = (ListView) findViewById(R.id.list_view);
         DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(this));
         final List<ConfigurationModel> values = dOp.readConfiguration();
-        FragmentManager fm = getSupportFragmentManager();
-        ImageAdapter imageAdapter = new ImageAdapter(this, values, fm);
-        imageAdapter.setViewClickListener(this);
-        gridView.setAdapter(imageAdapter);
+        ListAdapter listAdapter = new ListAdapter(this, values);
+        listAdapter.setViewClickListener(this);
+        listView.setAdapter(listAdapter);
     }
 
     public void addConfiguration() {
-        final AddConfigDialog dialog = new AddConfigDialog() {
+        final AddDialog dialog = new AddDialog() {
             @Override
             public void submit(ConfigurationModel cm) {
                 DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(getApplicationContext()));
@@ -208,7 +223,7 @@ public class MainActivity extends BaseActivity implements UpdateConfigDialog.Upd
                 }
             }
         };
-        dialog.setArgs("Add Configuration");
+        dialog.setArgs("Add Configuration", null, CallbackCodes.ADD_MODEL_CONFIG);
         showDialogFragment(dialog);
     }
 

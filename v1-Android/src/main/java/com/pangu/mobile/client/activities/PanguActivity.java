@@ -1,7 +1,6 @@
 package com.pangu.mobile.client.activities;
 
 import android.content.Intent;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.view.Menu;
@@ -54,7 +53,16 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pangu);
-        setActionBarTitle("View Model");
+        setToolbarTitle("View Model");
+        mActionBarToolbar.setNavigationIcon(R.drawable.ic_action_arrow_left);
+        mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //finish();
+                //AddDialog generalDialogFragment = AddDialog.newInstance("CUNT");
+                //generalDialogFragment.show(getSupportFragmentManager(),"dialog");
+            }
+        });
 
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();

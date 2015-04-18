@@ -131,7 +131,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         return mActionBarToolbar;
     }
 
-    protected TextView setActionBarTitle(String title) {
+    protected TextView setToolbarTitle(String title) {
         if (toolbarTitle != null) {
             SpannableString s = new SpannableString(title);
             s.setSpan(new TypefaceSpan(this, "Roboto-Regular.ttf"), 0, s.length(),

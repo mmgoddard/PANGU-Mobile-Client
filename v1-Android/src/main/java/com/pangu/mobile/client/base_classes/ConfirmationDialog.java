@@ -11,6 +11,7 @@ import com.pangu.mobile.client.R;
  * Created by Mark on 06/02/15.
  */
 public abstract class ConfirmationDialog extends DialogFragment {
+    public ConfirmationDialog() {}
 
     public void setArg(String message) {
         setArgs("", message);

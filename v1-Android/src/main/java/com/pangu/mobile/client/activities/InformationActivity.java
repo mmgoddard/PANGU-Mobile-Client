@@ -1,9 +1,6 @@
 package com.pangu.mobile.client.activities;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,7 +9,6 @@ import com.pangu.mobile.client.background_tasks.DataCollectionTask;
 import com.pangu.mobile.client.base_classes.BaseActivity;
 import com.pangu.mobile.client.interfaces.AsyncResponse;
 import com.pangu.mobile.client.domain.InformationModel;
-import com.pangu.mobile.client.utils.TypefaceSpan;
 
 /**
  * Created by Mark on 24/02/15.
@@ -24,7 +20,7 @@ public class InformationActivity extends BaseActivity implements AsyncResponse {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.information_view);
-        setActionBarTitle("About Model");
+        setToolbarTitle("About Model");
 
         headerProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
         Bundle extras = getIntent().getExtras();

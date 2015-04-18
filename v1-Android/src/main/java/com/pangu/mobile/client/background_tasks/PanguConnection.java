@@ -1,5 +1,6 @@
 package com.pangu.mobile.client.background_tasks;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -117,6 +118,7 @@ public class PanguConnection extends AsyncTask<Void, Void, ErrorHandler> {
         }
     }
 
+    @TargetApi(13)
     public Bitmap getScaledImage(Bitmap bitmap) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
