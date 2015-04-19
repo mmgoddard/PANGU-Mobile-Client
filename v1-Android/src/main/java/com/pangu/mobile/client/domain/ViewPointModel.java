@@ -2,7 +2,6 @@ package com.pangu.mobile.client.domain;
 
 import uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D;
 
-
 /**
  * Created by Mark on 20/01/15.
  */

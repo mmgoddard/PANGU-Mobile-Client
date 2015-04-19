@@ -195,9 +195,9 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
     public void setView() {
         final EditViewDialog dialog = new EditViewDialog() {
             @Override
-            public void submit(ViewPointModel v) {
+            public <T> void submit(T v) {
                 Toast.makeText(getApplicationContext(), "Updating Model", Toast.LENGTH_LONG).show();
-                viewPoint = v;
+                viewPoint = (ViewPointModel)v;
                 yawAngle = viewPoint.getYawAngle();
                 pitchAngle = viewPoint.getPitchAngle();
                 step = viewPoint.getStep();

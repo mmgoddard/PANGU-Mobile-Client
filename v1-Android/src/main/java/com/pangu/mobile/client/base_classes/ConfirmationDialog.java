@@ -13,7 +13,7 @@ import com.pangu.mobile.client.R;
 public abstract class ConfirmationDialog extends DialogFragment {
     public ConfirmationDialog() {}
 
-    public void setArg(String message) {
+    public void setArgs(String message) {
         setArgs("", message);
     }
 

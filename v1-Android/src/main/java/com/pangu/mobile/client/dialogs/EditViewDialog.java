@@ -89,7 +89,6 @@ public abstract class EditViewDialog extends BaseDialog implements View.OnClickL
         return v;
     }
 
-    @Override
     public void onClick(View v) {
         if (xCoordinateCheck && yCoordinateCheck && zCoordinateCheck && yawAngleCheck && pitchAngleCheck && rollAngleCheck && stepCheck) {
             Double xCoordinate = Double.parseDouble(xCoordinateEditText.getText().toString());
@@ -190,9 +189,4 @@ public abstract class EditViewDialog extends BaseDialog implements View.OnClickL
             }
         }
     }
-
-    /**
-     * Must override this method to handle confirmation event
-     */
-    public abstract void submit(ViewPointModel v);
 }

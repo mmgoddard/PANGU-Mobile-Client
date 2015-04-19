@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -180,9 +181,9 @@ public class MainActivity extends BaseActivity implements ListAdapter.ViewClickL
     public void updateConfiguration(ConfigurationModel cm) {
         final AddDialog dialog = new AddDialog() {
             @Override
-            public void submit(ConfigurationModel cm) {
+            public <T> void submit(T cm) {
                 DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(getApplicationContext()));
-                ErrorHandler e = dOp.updateConfiguration(cm);
+                ErrorHandler e = dOp.updateConfiguration((ConfigurationModel)cm);
                 if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
                     Toast.makeText(getApplicationContext(), "Updated Configuration", Toast.LENGTH_LONG).show();
                     dismiss();
@@ -211,9 +212,9 @@ public class MainActivity extends BaseActivity implements ListAdapter.ViewClickL
     public void addConfiguration() {
         final AddDialog dialog = new AddDialog() {
             @Override
-            public void submit(ConfigurationModel cm) {
+            public <T> void submit(T cm) {
                 DatabaseOperations dOp = new DatabaseOperations(DatabaseHelper.getInstance(getApplicationContext()));
-                ErrorHandler e = dOp.insertConfiguration(cm);
+                ErrorHandler e = dOp.insertConfiguration((ConfigurationModel)cm);
                 if (e == ErrorHandler.SQL_EXECUTION_SUCCESS) {
                     Toast.makeText(getApplicationContext(), "Added Configuration", Toast.LENGTH_LONG).show();
                     dismiss();

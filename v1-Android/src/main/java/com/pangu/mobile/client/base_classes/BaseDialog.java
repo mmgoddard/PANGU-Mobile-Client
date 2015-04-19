@@ -9,13 +9,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.pangu.mobile.client.R;
+import com.pangu.mobile.client.domain.ConfigurationModel;
 import com.pangu.mobile.client.domain.ViewPointModel;
 import com.pangu.mobile.client.utils.TypefaceSpan;
 
 /**
  * Created by Mark on 04/03/15.
  */
-public class BaseDialog extends DialogFragment {
+public abstract class BaseDialog extends DialogFragment {
     private final int LOGO_DRAWABLE = R.drawable.ic_action_planet;
     private final int TOOLBAR_ID = R.id.toolbar_actionbar;
     private final int TOOLBAR_TITLE_ID = R.id.toolbar_title;
@@ -36,4 +37,6 @@ public class BaseDialog extends DialogFragment {
         toolbarTitle.setText(s);
         return toolbar;
     }
+
+    public abstract <T> void submit(T v);
 }

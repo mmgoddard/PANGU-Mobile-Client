@@ -3,6 +3,8 @@ package com.pangu.mobile.client.activities;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.test.AndroidTestCase;
+import android.widget.EditText;
+
 import com.pangu.mobile.client.utils.Validation;
 
 /**
@@ -44,15 +46,28 @@ public class ValidationTest extends AndroidTestCase {
     }
 
     /**
-     * Test to check if a string is parsable to a integer.
+     * Test to check if a string is parsable to a Integer.
      */
-    public void testIsParsable() {
+    public void testIsIntParsable() {
         //Testing correct input
         boolean correctValue = validation.isIntParsable("8080");
         assertEquals(correctValue, true);
 
         //Testing incorrect input
         boolean incorrectValue = validation.isIntParsable("Config1");
+        assertEquals(incorrectValue, false);
+    }
+
+    /**
+     * Test to check if a string is parsable to a Double.
+     */
+    public void testIsDoubleParsable() {
+        //Testing correct input
+        boolean correctValue = validation.isDoubleParsable("9.8");
+        assertEquals(correctValue, true);
+
+        //Testing incorrect input
+        boolean incorrectValue = validation.isDoubleParsable("Config1");
         assertEquals(incorrectValue, false);
     }
 

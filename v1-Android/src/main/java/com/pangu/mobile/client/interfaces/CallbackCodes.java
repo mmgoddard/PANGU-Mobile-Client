@@ -6,6 +6,6 @@ package com.pangu.mobile.client.interfaces;
 public interface CallbackCodes {
     int DELETE_MODEL_CONFIG = 0;
     int UPDATE_MODEL_CONFIG = 1;
-    int RUN_MODEL_CONFIG = 3;
-    int ADD_MODEL_CONFIG = 4;
+    int RUN_MODEL_CONFIG = 2;
+    int ADD_MODEL_CONFIG = 3;
 }

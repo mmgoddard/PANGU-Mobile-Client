@@ -138,6 +138,4 @@ public abstract class AddDialog extends BaseDialog implements View.OnClickListen
             }
         }
     }
-
-    public abstract void submit(ConfigurationModel v);
 }

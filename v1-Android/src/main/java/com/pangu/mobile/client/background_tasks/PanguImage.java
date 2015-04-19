@@ -13,29 +13,29 @@ public class PanguImage {
         //Check if it is a .ppm image or not
         if (img_data.length < 3) return null;
         if (img_data[0] != 'P' || img_data[1] != '6') return null;
-        if (!ppmIsSpace(img_data[2])) return null;
+        if (!isSpace(img_data[2])) return null;
 
         // Continue the parsing after the first white space.
         int cp = 3, ep = img_data.length;
         int ptr[] = {0};
 
         // Read the width.
-        cp = ppmReadInteger(img_data, cp, ep, ptr);
+        cp = readInteger(img_data, cp, ep, ptr);
         if (cp >= ep) return null; // Invalid image
         int img_width = ptr[0];
 
         // Read the height.
-        cp = ppmReadInteger(img_data, cp, ep, ptr);
+        cp = readInteger(img_data, cp, ep, ptr);
         if (cp >= ep) return null; // Invalid image
         int img_height = ptr[0];
 
         // Read the depth.
-        cp = ppmReadInteger(img_data, cp, ep, ptr);
+        cp = readInteger(img_data, cp, ep, ptr);
         if (cp >= ep) return null; // Invalid image
         int img_depth = ptr[0];
 
         // Skip the single white space between header and data.
-        if (!ppmIsSpace(img_data[cp])) return null;
+        if (!isSpace(img_data[cp])) return null;
         cp++;
         if (cp >= ep) return null; // Invalid image
 
@@ -48,15 +48,15 @@ public class PanguImage {
 
         //Read single or double-pixels.
         if (img_depth < 256)
-            pixels = ppmByte(img_data, cp, img_width, img_height, pixels, 1);
+            pixels = readRAW(img_data, cp, img_width, img_height, pixels, 1);
         else
-            pixels = ppmByte(img_data, cp, img_width, img_height, pixels, 2);
+            pixels = readRAW(img_data, cp, img_width, img_height, pixels, 2);
 
         return Bitmap.createBitmap(pixels, img_width, img_height, Bitmap.Config.ARGB_8888);
     }
 
     //Read PPM RAW
-    private static int[] ppmByte(byte s[], int i, int w, int h, int d[], int bps) {
+    private static int[] readRAW(byte s[], int i, int w, int h, int d[], int bps) {
         //Samples are stored RGB.
         for (int p = 0; p < w * h; p++) {
             //Read the samples.
@@ -76,37 +76,37 @@ public class PanguImage {
         return d;
     }
 
-    private static boolean ppmIsSpace(byte b) {
+    private static boolean isSpace(byte b) {
         if (b == 9 || b == '\n' || b == '\r' || b == ' ') return true;
         return false;
     }
 
-    private static boolean ppmIsDigit(byte b) {
+    private static boolean isDigit(byte b) {
         if (b < '0' || b > '9') return false;
         return true;
     }
 
-    private static int ppmEatWhitespace(byte[] v, int cp, int ep) {
+    private static int eatWhitespace(byte[] v, int cp, int ep) {
         while (true) {
             // Consume whitespace.
-            while (cp < ep && ppmIsSpace(v[cp])) cp++;
+            while (cp < ep && isSpace(v[cp])) cp++;
             if (cp >= ep || v[cp] != '#') return cp;
 
             // Eat the comment.
             while (cp < ep && v[cp] != '\n') cp++;
-            if (cp >= ep || !ppmIsSpace(v[cp])) return cp;
+            if (cp >= ep || !isSpace(v[cp])) return cp;
         }
     }
 
     // Read and return a decimal integer with leading whitespace.
-    private static int ppmReadInteger(byte v[], int cp, int ep, int rptr[]) {
+    private static int readInteger(byte v[], int cp, int ep, int rptr[]) {
         // Skip leading whitespace.
-        cp = ppmEatWhitespace(v, cp, ep);
-        if (cp >= ep || !ppmIsDigit(v[cp])) return ep;
+        cp = eatWhitespace(v, cp, ep);
+        if (cp >= ep || !isDigit(v[cp])) return ep;
 
         // Read the integer.
         rptr[0] = 0;
-        while (cp < ep && ppmIsDigit(v[cp])) {
+        while (cp < ep && isDigit(v[cp])) {
             rptr[0] = rptr[0] * 10 + (int) (v[cp] - '0');
             cp++;
         }
