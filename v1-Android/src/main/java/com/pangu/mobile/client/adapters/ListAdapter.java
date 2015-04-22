@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Mark on 20/01/15.
  */
-public class ListAdapter extends BaseAdapter implements View.OnClickListener {
+public class ListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<ConfigurationModel> values;
     private ViewClickListener mViewClickListener;
@@ -38,7 +38,7 @@ public class ListAdapter extends BaseAdapter implements View.OnClickListener {
         return 0;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final View grid;
         if (convertView == null) {
             grid = inflater.inflate(R.layout.list_view_content, parent, false);
@@ -53,27 +53,27 @@ public class ListAdapter extends BaseAdapter implements View.OnClickListener {
         }
 
         TextView deleteBtn = (TextView) grid.findViewById(R.id.item_delete);
-        deleteBtn.setOnClickListener(this);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewClickListener.onListViewClickListener(CallbackCodes.DELETE_MODEL_CONFIG, values.get(position));
+            }
+        });
         TextView editBtn = (TextView) grid.findViewById(R.id.item_edit);
-        editBtn.setOnClickListener(this);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewClickListener.onListViewClickListener(CallbackCodes.UPDATE_MODEL_CONFIG, values.get(position));
+            }
+        });
         TextView runBtn = (TextView) grid.findViewById(R.id.item_run);
-        runBtn.setOnClickListener(this);
+        runBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewClickListener.onListViewClickListener(CallbackCodes.RUN_MODEL_CONFIG, values.get(position));
+            }
+        });
         return grid;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.item_delete:
-                mViewClickListener.onListViewClickListener(CallbackCodes.DELETE_MODEL_CONFIG, element);
-                break;
-            case R.id.item_edit:
-                mViewClickListener.onListViewClickListener(CallbackCodes.UPDATE_MODEL_CONFIG, element);
-                break;
-            case R.id.item_run:
-                mViewClickListener.onListViewClickListener(CallbackCodes.RUN_MODEL_CONFIG, element);
-                break;
-        }
     }
 
     public interface ViewClickListener {
