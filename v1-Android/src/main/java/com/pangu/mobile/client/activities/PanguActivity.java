@@ -54,15 +54,6 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pangu);
         setToolbarTitle("View Model");
-        mActionBarToolbar.setNavigationIcon(R.drawable.ic_action_arrow_left);
-        mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //finish();
-                //AddDialog generalDialogFragment = AddDialog.newInstance("CUNT");
-                //generalDialogFragment.show(getSupportFragmentManager(),"dialog");
-            }
-        });
 
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();
@@ -261,6 +252,7 @@ public class PanguActivity extends BaseActivity implements View.OnClickListener,
      * @return boolean
      */
     public boolean onTouch(View v, MotionEvent event) {
+        scrollView.requestDisallowInterceptTouchEvent(true);
         float scale;
         int action = event.getAction() & MotionEvent.ACTION_MASK;
         int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
